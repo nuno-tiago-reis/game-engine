@@ -4,6 +4,8 @@
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+#include "fmod_errors.h"
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -94,6 +96,15 @@ class Utility {
 
 				cerr << fragmentShader << endl;
 			}	
+		}
+
+		static void checkFMODError(FMOD_RESULT result) {
+
+			if (result != FMOD_OK) {
+
+				printf("FMOD error! (%d) %s\n",result,FMOD_ErrorString(result));
+				exit(-1);
+			}
 		}
 };
         

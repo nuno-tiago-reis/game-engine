@@ -42,26 +42,8 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>glsl;vert;frag;v;f</Extensions>
     </Filter>
-    <Filter Include="Source Files\Camera">
-      <UniqueIdentifier>{73afb099-d3ed-4887-949f-b5c23bb2a393}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility\OBJ">
       <UniqueIdentifier>{9e4b9495-261c-4261-8663-a843b10f6a51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneGraph">
-      <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MatrixStack">
-      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\PostProcessing">
-      <UniqueIdentifier>{3716a1d3-fae0-477d-8ce1-7568d4686ac2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\FrameBuffer">
-      <UniqueIdentifier>{501cca1d-17c8-45b2-a604-44bf2cf94f28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{a200c648-222f-4126-a22c-8d1145317659}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Shader\BlinnPhong">
       <UniqueIdentifier>{bc5a4213-15f7-4b6b-9def-7fc103f3fdba}</UniqueIdentifier>
@@ -84,43 +66,64 @@
     <Filter Include="Source Files\Textures">
       <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\PerlinNoise">
-      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\PostProcessing\glsl">
-      <UniqueIdentifier>{16154b9a-5697-4ade-bcb3-96108b3e8022}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\JointObject">
-      <UniqueIdentifier>{067d7691-c181-4840-bf3d-f0776b0b9182}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Object">
-      <UniqueIdentifier>{bf0edfff-b0ff-49d7-aea0-c34d68d2aef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Object\BufferObject">
-      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Textures\NoiseTexture">
       <UniqueIdentifier>{a1d170dc-e493-4772-966c-3eda42b689b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights">
+    <Filter Include="Source Files\SceneManager\SceneGraph">
+      <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\MatrixStack">
+      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Lights">
       <UniqueIdentifier>{bb8781fb-89ca-4a99-9f01-a99654781bc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights\DirectionalLight">
+    <Filter Include="Source Files\SceneManager\Lights\DirectionalLight">
       <UniqueIdentifier>{a729dcf1-3ec1-4a9f-ad9d-ed8c6671bba1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights\Light">
+    <Filter Include="Source Files\SceneManager\Lights\Light">
       <UniqueIdentifier>{d00b9e45-7407-4ed0-a657-60cc1f561f54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights\PositionalLight">
+    <Filter Include="Source Files\SceneManager\Lights\PositionalLight">
       <UniqueIdentifier>{04b6a256-a01d-4c7e-ac10-7596ecc14bc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lights\SpotLight">
+    <Filter Include="Source Files\SceneManager\Lights\SpotLight">
       <UniqueIdentifier>{d771b2c8-bb9f-4e61-b9db-32f96589506a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Camera">
+      <UniqueIdentifier>{73afb099-d3ed-4887-949f-b5c23bb2a393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Objects">
+      <UniqueIdentifier>{a200c648-222f-4126-a22c-8d1145317659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Objects\JointObject">
+      <UniqueIdentifier>{067d7691-c181-4840-bf3d-f0776b0b9182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Objects\Object">
+      <UniqueIdentifier>{bf0edfff-b0ff-49d7-aea0-c34d68d2aef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Objects\Object\BufferObject">
+      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures\NoiseTexture\PerlinNoise">
+      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Motion Blur">
+      <UniqueIdentifier>{501cca1d-17c8-45b2-a604-44bf2cf94f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Motion Blur\PostProcessing">
+      <UniqueIdentifier>{3716a1d3-fae0-477d-8ce1-7568d4686ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Motion Blur\PostProcessing\glsl">
+      <UniqueIdentifier>{16154b9a-5697-4ade-bcb3-96108b3e8022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\Sounds">
+      <UniqueIdentifier>{a0c6af7b-6ec4-45ce-8f51-0094327b77b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BufferObject.cpp">
-      <Filter>Source Files\Objects\Object\BufferObject</Filter>
+      <Filter>Source Files\SceneManager\Objects\Object\BufferObject</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
@@ -144,37 +147,37 @@
       <Filter>Source Files\Algebra\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="source\Camera.cpp">
-      <Filter>Source Files\Camera</Filter>
+      <Filter>Source Files\SceneManager\Camera</Filter>
     </ClCompile>
     <ClCompile Include="source\MatrixStack.cpp">
-      <Filter>Source Files\MatrixStack</Filter>
+      <Filter>Source Files\SceneManager\MatrixStack</Filter>
     </ClCompile>
     <ClCompile Include="source\OBJ_Reader.cpp">
       <Filter>Source Files\Utility\OBJ</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneNode.cpp">
-      <Filter>Source Files\SceneGraph</Filter>
+      <Filter>Source Files\SceneManager\SceneGraph</Filter>
     </ClCompile>
     <ClCompile Include="source\ShaderProgram.cpp">
       <Filter>Source Files\Shader</Filter>
     </ClCompile>
     <ClCompile Include="source\PostProcessing.cpp">
-      <Filter>Source Files\Shader\PostProcessing</Filter>
+      <Filter>Source Files\Motion Blur\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="source\FrameBuffer.cpp">
-      <Filter>Source Files\FrameBuffer</Filter>
+      <Filter>Source Files\Motion Blur</Filter>
     </ClCompile>
     <ClCompile Include="source\DirectionalLight.cpp">
-      <Filter>Source Files\Lights\DirectionalLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\DirectionalLight</Filter>
     </ClCompile>
     <ClCompile Include="source\SpotLight.cpp">
-      <Filter>Source Files\Lights\SpotLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\SpotLight</Filter>
     </ClCompile>
     <ClCompile Include="source\PositionalLight.cpp">
-      <Filter>Source Files\Lights\PositionalLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\PositionalLight</Filter>
     </ClCompile>
     <ClCompile Include="source\Light.cpp">
-      <Filter>Source Files\Lights\Light</Filter>
+      <Filter>Source Files\SceneManager\Lights\Light</Filter>
     </ClCompile>
     <ClCompile Include="source\BlinnPhongShader.cpp">
       <Filter>Source Files\Shader\BlinnPhong</Filter>
@@ -186,16 +189,16 @@
       <Filter>Source Files\Textures</Filter>
     </ClCompile>
     <ClCompile Include="source\PerlinNoise.cpp">
-      <Filter>Source Files\PerlinNoise</Filter>
+      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClCompile>
     <ClCompile Include="source\RealWoodShader.cpp">
       <Filter>Source Files\Shader\Wood</Filter>
     </ClCompile>
     <ClCompile Include="source\JointObject.cpp">
-      <Filter>Source Files\Objects\JointObject</Filter>
+      <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
     </ClCompile>
     <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files\Objects\Object</Filter>
+      <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
       <Filter>Source Files\Textures\NoiseTexture</Filter>
@@ -203,13 +206,16 @@
     <ClCompile Include="source\XML_Reader.cpp">
       <Filter>Source Files\Utility\XML</Filter>
     </ClCompile>
+    <ClCompile Include="source\Sound.cpp">
+      <Filter>Source Files\SceneManager\Sounds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SceneManager.h">
       <Filter>Source Files\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="source\BufferObject.h">
-      <Filter>Source Files\Objects\Object\BufferObject</Filter>
+      <Filter>Source Files\SceneManager\Objects\Object\BufferObject</Filter>
     </ClInclude>
     <ClInclude Include="source\Utility.h">
       <Filter>Source Files\Utility</Filter>
@@ -233,37 +239,37 @@
       <Filter>Source Files\Algebra\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="source\Camera.h">
-      <Filter>Source Files\Camera</Filter>
+      <Filter>Source Files\SceneManager\Camera</Filter>
     </ClInclude>
     <ClInclude Include="source\MatrixStack.h">
-      <Filter>Source Files\MatrixStack</Filter>
+      <Filter>Source Files\SceneManager\MatrixStack</Filter>
     </ClInclude>
     <ClInclude Include="source\OBJ_Reader.h">
       <Filter>Source Files\Utility\OBJ</Filter>
     </ClInclude>
     <ClInclude Include="source\SceneNode.h">
-      <Filter>Source Files\SceneGraph</Filter>
+      <Filter>Source Files\SceneManager\SceneGraph</Filter>
     </ClInclude>
     <ClInclude Include="source\ShaderProgram.h">
       <Filter>Source Files\Shader</Filter>
     </ClInclude>
     <ClInclude Include="source\PostProcessing.h">
-      <Filter>Source Files\Shader\PostProcessing</Filter>
+      <Filter>Source Files\Motion Blur\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="source\FrameBuffer.h">
-      <Filter>Source Files\FrameBuffer</Filter>
+      <Filter>Source Files\Motion Blur</Filter>
     </ClInclude>
     <ClInclude Include="source\DirectionalLight.h">
-      <Filter>Source Files\Lights\DirectionalLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\DirectionalLight</Filter>
     </ClInclude>
     <ClInclude Include="source\SpotLight.h">
-      <Filter>Source Files\Lights\SpotLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\SpotLight</Filter>
     </ClInclude>
     <ClInclude Include="source\PositionalLight.h">
-      <Filter>Source Files\Lights\PositionalLight</Filter>
+      <Filter>Source Files\SceneManager\Lights\PositionalLight</Filter>
     </ClInclude>
     <ClInclude Include="source\Light.h">
-      <Filter>Source Files\Lights\Light</Filter>
+      <Filter>Source Files\SceneManager\Lights\Light</Filter>
     </ClInclude>
     <ClInclude Include="source\BumpMapShader.h">
       <Filter>Source Files\Shader\BumpMap</Filter>
@@ -275,22 +281,25 @@
       <Filter>Source Files\Textures</Filter>
     </ClInclude>
     <ClInclude Include="source\PerlinNoise.h">
-      <Filter>Source Files\PerlinNoise</Filter>
+      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClInclude>
     <ClInclude Include="source\RealWoodShader.h">
       <Filter>Source Files\Shader\Wood</Filter>
     </ClInclude>
     <ClInclude Include="source\JointObject.h">
-      <Filter>Source Files\Objects\JointObject</Filter>
+      <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
     </ClInclude>
     <ClInclude Include="source\Object.h">
-      <Filter>Source Files\Objects\Object</Filter>
+      <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\GeneratedTexture.h">
       <Filter>Source Files\Textures\NoiseTexture</Filter>
     </ClInclude>
     <ClInclude Include="source\XML_Reader.h">
       <Filter>Source Files\Utility\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Sound.h">
+      <Filter>Source Files\SceneManager\Sounds</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -313,10 +322,10 @@
       <Filter>Source Files\Shader\Wood\glsl</Filter>
     </None>
     <None Include="shaders\post_proc_VertexShader.glsl">
-      <Filter>Source Files\Shader\PostProcessing\glsl</Filter>
+      <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
     </None>
     <None Include="shaders\post_proc_FragmentShader.glsl">
-      <Filter>Source Files\Shader\PostProcessing\glsl</Filter>
+      <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

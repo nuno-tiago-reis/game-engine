@@ -7,28 +7,48 @@
 	#include <crtdbg.h>
 #endif
 
+/* FMODEX Sound Library */
+#include "fmod.h"
+#include "fmod.hpp"
+#include "fmod_errors.h"
+
+#define MAX_SOUND_CHANNELS 32
+
+/* FreeGlut Library */
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+/* STL Data Storage and Iteration */
 #include <map>
 #include <iterator>
 
+/* Matrix - Ray Cast */
 #include "Matrix.h"
 
+/* Light - Light Map */
 #include "Light.h"
+/* Camera - Camera Map */
 #include "Camera.h"
+/* Shader - Shader Map */
 #include "ShaderProgram.h"
+/* Sound - Sound Map */
+#include "Sound.h"
 
+/* SceneNode - SceneNode Map*/
 #include "SceneNode.h"
 
+/* Object - Object Map*/
 #include "Object.h"
 #include "JointObject.h"
 
+/* Noise Generator */
 #include "PerlinNoise.h"
 
+/* User Interaction Handlers */
 #include "KeyboardHandler.h"
 #include "MouseHandler.h"
 
+/* Error Checking */
 #include "Utility.h"
 
 /* Object Names */
@@ -49,6 +69,7 @@
 #define PIN_B "Pin B"
 #define PIN_C "Pin C"
 
+/* Joint Object Names */
 #define DRAGON_HEAD "Dragon Head"
 #define DRAGON_NOSE "Dragon Nose"
 
@@ -67,6 +88,21 @@
 #define DRAGON_TAIL_2 "Dragon Tail 2"
 #define DRAGON_TAIL_3 "Dragon Tail 3"
 
+#define ARROW_SOUND_NAME "Arrow Sound"
+#define ARROW_SOUND_FILE "sounds/arrow.mp3"
+
+#define CANNON_SOUND_NAME "Cannon Sound"
+#define CANNON_SOUND_FILE "sounds/cannon.mp3"
+
+#define PUNCH_SOUND_NAME "Punch Sound"
+#define PUNCH_SOUND_FILE "sounds/punch.mp3"
+
+#define SWEEPER_SOUND_NAME "Sweeper Sound"
+#define SWEEPER_SOUND_FILE "sounds/sweeper.mp3"
+
+#define MUSIC_SOUND_NAME "Underwear"
+#define MUSIC_SOUND_FILE "sounds/Royal Republic - I can see your Underwear.mp3"
+
 class SceneManager {
 
 	private:
@@ -80,19 +116,24 @@ class SceneManager {
 
 		/* Interpolation */
 		GLfloat _timeCounter;
+
+		/* FMOD Sound System */
+		FMOD::System* _fmodSystem;
+		FMOD::Channel* channel[MAX_SOUND_CHANNELS];
 		
 		/* Active Camera */
 		Camera* _activeCamera;
 		/* Active Shader Program */
 		ShaderProgram* _activeShaderProgram;
 
+		/* Sound Map */
+		map<string,Sound*> _soundMap;
 		/* Light Map  */
 		map<string,Light*> _lightMap;
 		/* Camera Map  */
 		map<string,Camera*> _cameraMap;
 		/* Shader Program Map  */
 		map<string,ShaderProgram*> _shaderProgramMap;
-
 		/* Object Map  */
 		map<string,Object*> _objectMap;
 		/* Scene Graph Map  */
@@ -109,6 +150,8 @@ class SceneManager {
 		static void destroyInstance();
 
 		/* Scene Methods */
+		void init();
+
 		void loadUniforms();
 
 		void draw();
@@ -132,6 +175,12 @@ class SceneManager {
 		/* Setters */
 		void setActiveCamera(Camera* camera);
 		void setActiveShaderProgram(ShaderProgram* shaderProgram);
+
+		/* Sound Map Manipulation Methods */
+		void addSound(Sound* sound);
+		void removeSound(string soundName);
+
+		Sound* getSound(string soundName);
 
 		/* Light Map Manipulation Methods */
 		void addLight(Light* light);

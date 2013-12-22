@@ -11,6 +11,10 @@ SceneManager::SceneManager() {
 
 	_activeCamera = NULL;
 	_activeShaderProgram = NULL;
+
+	/* FMOD Sound System Initialization */
+	FMOD::System_Create(&_fmodSystem);
+	_fmodSystem->init(MAX_SOUND_CHANNELS,FMOD_INIT_NORMAL,0);
 }
 
 SceneManager::~SceneManager() {
@@ -34,6 +38,15 @@ SceneManager::~SceneManager() {
 	map<string,Light*>::const_iterator lightIterator;
 	for(lightIterator = _lightMap.begin(); lightIterator != _lightMap.end(); lightIterator++)
 		delete lightIterator->second;
+
+	/* Destroy Sound */
+	map<string,Sound*>::const_iterator soundIterator;
+	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
+		delete soundIterator->second;
+
+	/* Sound System Shutdown */
+	_fmodSystem->close();
+	_fmodSystem->release();
 
 	/* Destroy Matrix Stack */
 	MatrixStack::destroyInstance();
@@ -59,6 +72,16 @@ void SceneManager::destroyInstance() {
 	delete instance;
 
 	instance = NULL;
+}
+
+void SceneManager::init() {
+
+	loadUniforms();
+
+	/* Load Sounds */
+	map<string,Sound*>::const_iterator soundIterator;
+	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
+		soundIterator->second->createSound(_fmodSystem);
 }
 
 void SceneManager::loadUniforms() {
@@ -121,9 +144,9 @@ void SceneManager::update(GLfloat elapsedTime) {
 		rotateJoint(_objectMap[DRAGON_LEFT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), -elapsedTime);
 
 		rotateJoint(_objectMap[DRAGON_RIGHT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), elapsedTime);
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), elapsedTime);
+		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],Vector(0.0f,45.0f,0.0f,1.0f), elapsedTime);
 
-		rotateJoint(_objectMap[DRAGON_TAIL],		Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
+		rotateJoint(_objectMap[DRAGON_TAIL],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_2],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_3],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
 	}
@@ -135,9 +158,9 @@ void SceneManager::update(GLfloat elapsedTime) {
 		rotateJoint(_objectMap[DRAGON_LEFT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), elapsedTime);
 
 		rotateJoint(_objectMap[DRAGON_RIGHT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), -elapsedTime);
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), -elapsedTime);
+		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],Vector(0.0f,45.0f,0.0f,1.0f), -elapsedTime);
 
-		rotateJoint(_objectMap[DRAGON_TAIL],		Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
+		rotateJoint(_objectMap[DRAGON_TAIL],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_2],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_3],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
 	}
@@ -158,6 +181,8 @@ void SceneManager::update(GLfloat elapsedTime) {
 	/* Scene Update */
 	readMouse(elapsedTime);
 	readKeyboard(elapsedTime);
+
+	_fmodSystem->update();
 
 	/* Update Scene Graph */
 	map<string,SceneNode*>::const_iterator sceneNodeIterator;
@@ -183,6 +208,51 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 		return;	
 
 	handler->disableKeyboard();
+
+	/* Sound Buttons */
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F1)) {
+		
+		/* Edit Mode - Increment Up */
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_F1) == false) {
+
+			
+			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[CANNON_SOUND_NAME]->getFmodSound(), false, &channel[0]);
+		}
+	}
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F2)) {
+		
+		/* Edit Mode - Increment Up */
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_F2) == false) {
+
+			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[MUSIC_SOUND_NAME]->getFmodSound(), false, &channel[1]);
+		}
+	}
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F3)) {
+		
+		/* Edit Mode - Increment Up */
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_F3) == false) {
+
+			bool paused;
+
+			channel[1]->getPaused(&paused);
+
+			if(paused)
+				channel[1]->setPaused(false);
+			else
+				channel[1]->setPaused(true);
+		}
+	}
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F4)) {
+		
+		/* Edit Mode - Increment Up */
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_F4) == false) {
+
+			channel[1]->stop();
+		}
+	}
 
 	/* Reset Button */
 	if(handler->isKeyPressed('i')) {
@@ -383,6 +453,21 @@ ShaderProgram* SceneManager::getActiveShaderProgram() {
 	return _activeShaderProgram;
 }
 
+void SceneManager::addSound(Sound* sound) {
+
+	_soundMap[sound->getName()] = sound;
+}
+
+void SceneManager::removeSound(string soundName) {
+
+	_soundMap.erase(soundName);
+}
+
+Sound* SceneManager::getSound(string soundName) {
+
+	return _soundMap[soundName];
+}
+
 void SceneManager::addLight(Light* light) {
 
 	_lightMap[light->getName()] = light;
@@ -454,6 +539,11 @@ void SceneManager::dump() {
 	/* Active Shader Program */
 	cout << "<SceneManager Active Shader Program> = " << endl;
 	_activeShaderProgram->dump(); 
+
+	/* Sound Map */
+	cout << "<SceneManager Sound List> = " << endl;
+	for(map<string,Sound*>::const_iterator soundMap = _soundMap.begin(); soundMap != _soundMap.end(); soundMap++)
+		soundMap->second->dump();
 
 	/* Light Map */
 	cout << "<SceneManager Light List> = " << endl;

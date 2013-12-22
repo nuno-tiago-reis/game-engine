@@ -682,8 +682,34 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addSceneNode(platformNode);
 
+	/* FMOD Sound Loading */
+	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);
+	arrowSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(arrowSound);
+
+	Sound* cannonSound = new Sound(CANNON_SOUND_NAME,CANNON_SOUND_FILE);
+	cannonSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(cannonSound);
+
+	Sound* punchSound = new Sound(PUNCH_SOUND_NAME,PUNCH_SOUND_FILE);
+	punchSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(punchSound);
+
+	Sound* sweeperSound = new Sound(SWEEPER_SOUND_NAME,SWEEPER_SOUND_FILE);
+	sweeperSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(sweeperSound);
+
+	Sound* musicSound = new Sound(MUSIC_SOUND_NAME,MUSIC_SOUND_FILE);
+	musicSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(musicSound);
+
 	/* Init the SceneManager */
-	sceneManager->loadUniforms();
+	sceneManager->init();
 
 	/* Init the FrameBuffer */
 	framebuffer = FrameBuffer::getInstance();
