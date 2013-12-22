@@ -301,6 +301,9 @@
     <ClInclude Include="source\Sound.h">
       <Filter>Source Files\SceneManager\Sounds</Filter>
     </ClInclude>
+    <ClInclude Include="source\Names.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\blinn_phong_FragShader.glsl">

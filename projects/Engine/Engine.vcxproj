@@ -50,6 +50,7 @@
     <ClInclude Include="source\DirectionalLight.h" />
     <ClInclude Include="source\FrameBuffer.h" />
     <ClInclude Include="source\GeneratedTexture.h" />
+    <ClInclude Include="source\Names.h" />
     <ClInclude Include="source\Object.h" />
     <ClInclude Include="source\JointObject.h" />
     <ClInclude Include="source\KeyboardHandler.h" />
@@ -82,6 +83,13 @@
     <None Include="shaders\post_proc_VertexShader.glsl" />
     <None Include="shaders\woodFragmentShader.glsl" />
     <None Include="shaders\woodVertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{32F9991F-30E3-4B87-81D8-F5C958610FDC}</ProjectGuid>
@@ -120,8 +128,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)output\</OutDir>
-    <IncludePath>$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\freeglut\include;$(SolutionDir)\dependencies\tinyxml\include;$(SolutionDir)\dependencies\soil\include;$(SolutionDir)\dependencies\fmodex\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\dependencies\freeglut\lib;$(SolutionDir)\dependencies\glew\lib;$(SolutionDir)\dependencies\tinyxml\lib;$(SolutionDir)\dependencies\soil\lib;$(SolutionDir)\dependencies\fmodex\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\freeglut\include;$(SolutionDir)\dependencies\tinyxml\include;$(SolutionDir)\dependencies\soil\include;$(SolutionDir)\dependencies\fmodex\include;$(SolutionDir)\dependencies\bulletphysics\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dependencies\freeglut\lib;$(SolutionDir)\dependencies\glew\lib;$(SolutionDir)\dependencies\tinyxml\lib;$(SolutionDir)\dependencies\soil\lib;$(SolutionDir)\dependencies\fmodex\lib;$(SolutionDir)\dependencies\bulletphysics\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)\source</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -131,6 +139,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLUT_BUILDING_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,7 +162,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;freeglut.lib;tinyxml2.lib;soil.lib;fmodex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;tinyxml2.lib;soil.lib;fmodex.lib;BulletDynamics.lib;BulletCollision.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

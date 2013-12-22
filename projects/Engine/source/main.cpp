@@ -579,9 +579,23 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addObject(dragonTail3);
 
+	/* Test Cube */
+	Object* testCube = new Object(TEST_CUBE);
+	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
+	testCube->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
+	testCube->setScale(Vector(1.0f,1.0f,1.0f,1.0f));
+
+	objReader->loadModel("testcube", testCube);
+
+	sceneManager->addObject(testCube);
+
 	/* Create Scene Graph Nodes */
 
 	/* Table */
+	SceneNode* testCubeNode = new SceneNode(TEST_CUBE);
+	testCubeNode->setObject(testCube);
+	testCubeNode->setShaderProgram(realWoodShader);
+
 	SceneNode* tableNode = new SceneNode(TABLE);
 	tableNode->setObject(table);
 	tableNode->setShaderProgram(realWoodShader);
@@ -668,6 +682,8 @@ void init(int argc, char* argv[]) {
 			dragonTail2Node->addChildNode(dragonTail3Node);
 
 	/* Add the Root Nodes to the Scene */
+	sceneManager->addSceneNode(testCubeNode);
+
 	sceneManager->addSceneNode(tableNode);
 	sceneManager->addSceneNode(tableSurfaceNode);
 

@@ -28,7 +28,8 @@ void SceneNode::draw(ShaderProgram* shaderProgram) {
 		return;
 	}
 
-	_graphicObject->draw(_shaderProgram->getProgramID());
+	if(_name.compare("Platform") != 0)
+		_graphicObject->draw(_shaderProgram->getProgramID());
 
 	for(map<string,SceneNode*>::const_iterator sceneNodeIterator = _sceneNodeMap.begin(); sceneNodeIterator != _sceneNodeMap.end(); sceneNodeIterator++)
 		sceneNodeIterator->second->draw(_shaderProgram);

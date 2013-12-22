@@ -30,9 +30,6 @@ void Object::draw(GLuint programID) {
 		return;
 	}
 
-	if(_name.compare("Platform") == 0)
-		return;
-
 	/* Bind the Shader Program */
 	glBindVertexArray(_bufferObject->getVertexArrayObjectID());
 	glUseProgram(programID);

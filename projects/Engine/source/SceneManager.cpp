@@ -79,6 +79,7 @@ void SceneManager::init() {
 
 	loadUniforms();
 
+
 	/* Load Sounds */
 	map<string,Sound*>::const_iterator soundIterator;
 	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
@@ -131,6 +132,10 @@ void SceneManager::rotateJoint(Object* object, Vector rotationDelta, GLfloat ela
 }
 
 void SceneManager::update(GLfloat elapsedTime) {
+
+	/* Physics - START */
+
+	/* Physics - END */
 
 	_timeCounter += elapsedTime;
 
