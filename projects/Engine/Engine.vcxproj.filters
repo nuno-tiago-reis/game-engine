@@ -63,17 +63,8 @@
     <Filter Include="Source Files\Shader\Wood\glsl">
       <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Textures">
-      <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Textures\NoiseTexture">
-      <UniqueIdentifier>{a1d170dc-e493-4772-966c-3eda42b689b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SceneManager\SceneGraph">
       <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\MatrixStack">
-      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\SceneManager\Lights">
       <UniqueIdentifier>{bb8781fb-89ca-4a99-9f01-a99654781bc0}</UniqueIdentifier>
@@ -105,9 +96,6 @@
     <Filter Include="Source Files\SceneManager\Objects\Object\BufferObject">
       <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Textures\NoiseTexture\PerlinNoise">
-      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Motion Blur">
       <UniqueIdentifier>{501cca1d-17c8-45b2-a604-44bf2cf94f28}</UniqueIdentifier>
     </Filter>
@@ -119,6 +107,18 @@
     </Filter>
     <Filter Include="Source Files\SceneManager\Sounds">
       <UniqueIdentifier>{a0c6af7b-6ec4-45ce-8f51-0094327b77b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManager\SceneGraph\MatrixStack">
+      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Textures">
+      <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Textures\NoiseTexture">
+      <UniqueIdentifier>{a1d170dc-e493-4772-966c-3eda42b689b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Textures\NoiseTexture\PerlinNoise">
+      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +150,7 @@
       <Filter>Source Files\SceneManager\Camera</Filter>
     </ClCompile>
     <ClCompile Include="source\MatrixStack.cpp">
-      <Filter>Source Files\SceneManager\MatrixStack</Filter>
+      <Filter>Source Files\SceneManager\SceneGraph\MatrixStack</Filter>
     </ClCompile>
     <ClCompile Include="source\OBJ_Reader.cpp">
       <Filter>Source Files\Utility\OBJ</Filter>
@@ -186,10 +186,10 @@
       <Filter>Source Files\Shader\BumpMap</Filter>
     </ClCompile>
     <ClCompile Include="source\Texture.cpp">
-      <Filter>Source Files\Textures</Filter>
+      <Filter>Source Files\Shader\Textures</Filter>
     </ClCompile>
     <ClCompile Include="source\PerlinNoise.cpp">
-      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
+      <Filter>Source Files\Shader\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClCompile>
     <ClCompile Include="source\RealWoodShader.cpp">
       <Filter>Source Files\Shader\Wood</Filter>
@@ -201,7 +201,7 @@
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
-      <Filter>Source Files\Textures\NoiseTexture</Filter>
+      <Filter>Source Files\Shader\Textures\NoiseTexture</Filter>
     </ClCompile>
     <ClCompile Include="source\XML_Reader.cpp">
       <Filter>Source Files\Utility\XML</Filter>
@@ -242,7 +242,7 @@
       <Filter>Source Files\SceneManager\Camera</Filter>
     </ClInclude>
     <ClInclude Include="source\MatrixStack.h">
-      <Filter>Source Files\SceneManager\MatrixStack</Filter>
+      <Filter>Source Files\SceneManager\SceneGraph\MatrixStack</Filter>
     </ClInclude>
     <ClInclude Include="source\OBJ_Reader.h">
       <Filter>Source Files\Utility\OBJ</Filter>
@@ -278,10 +278,10 @@
       <Filter>Source Files\Shader\BlinnPhong</Filter>
     </ClInclude>
     <ClInclude Include="source\Texture.h">
-      <Filter>Source Files\Textures</Filter>
+      <Filter>Source Files\Shader\Textures</Filter>
     </ClInclude>
     <ClInclude Include="source\PerlinNoise.h">
-      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
+      <Filter>Source Files\Shader\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClInclude>
     <ClInclude Include="source\RealWoodShader.h">
       <Filter>Source Files\Shader\Wood</Filter>
@@ -293,7 +293,7 @@
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\GeneratedTexture.h">
-      <Filter>Source Files\Textures\NoiseTexture</Filter>
+      <Filter>Source Files\Shader\Textures\NoiseTexture</Filter>
     </ClInclude>
     <ClInclude Include="source\XML_Reader.h">
       <Filter>Source Files\Utility\XML</Filter>

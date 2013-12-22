@@ -14,6 +14,7 @@ SceneManager::SceneManager() {
 
 	/* FMOD Sound System Initialization */
 	FMOD::System_Create(&_fmodSystem);
+
 	_fmodSystem->init(MAX_SOUND_CHANNELS,FMOD_INIT_NORMAL,0);
 }
 
@@ -216,7 +217,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 		if(handler->wasSpecialKeyPressed(GLUT_KEY_F1) == false) {
 
 			
-			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[CANNON_SOUND_NAME]->getFmodSound(), false, &channel[0]);
+			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[RAYQUAZA_SOUND_NAME]->getFmodSound(), false, &channel[0]);
 		}
 	}
 

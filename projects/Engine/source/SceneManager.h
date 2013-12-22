@@ -103,6 +103,9 @@
 #define MUSIC_SOUND_NAME "Underwear"
 #define MUSIC_SOUND_FILE "sounds/Royal Republic - I can see your Underwear.mp3"
 
+#define RAYQUAZA_SOUND_NAME "Rayquaza"
+#define RAYQUAZA_SOUND_FILE "sounds/rayquaza.ogg"
+
 class SceneManager {
 
 	private:

@@ -708,6 +708,11 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addSound(musicSound);
 
+	Sound* rayquazaSound = new Sound(RAYQUAZA_SOUND_NAME,RAYQUAZA_SOUND_FILE);
+	rayquazaSound->setMode(FMOD_LOOP_OFF);
+
+	sceneManager->addSound(rayquazaSound);
+
 	/* Init the SceneManager */
 	sceneManager->init();
 
