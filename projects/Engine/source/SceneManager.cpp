@@ -4,6 +4,8 @@ SceneManager* SceneManager::instance = NULL;
 
 SceneManager::SceneManager() {
 
+	_rotationAxis = 0;
+
 	_malletPicked = false;
 	_malletDepth = 0.0f;
 
@@ -137,7 +139,7 @@ void SceneManager::update(GLfloat elapsedTime) {
 
 	/* Physics - END */
 
-	_timeCounter += elapsedTime;
+	/*_timeCounter += elapsedTime;
 
 	if(_timeCounter > 10.0f)
 		_timeCounter = 7.5f;
@@ -169,10 +171,10 @@ void SceneManager::update(GLfloat elapsedTime) {
 		rotateJoint(_objectMap[DRAGON_TAIL],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_2],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
 		rotateJoint(_objectMap[DRAGON_TAIL_3],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
-	}
+	}*(
 
 	/* Dragon Movement */
-	Vector dragonRotation = _objectMap[DRAGON_BODY]->getRotation();
+	/*Vector dragonRotation = _objectMap[DRAGON_BODY]->getRotation();
 	dragonRotation[VZ] += 0.75f;
 
 	_objectMap[DRAGON_BODY]->setRotation(dragonRotation);
@@ -183,6 +185,23 @@ void SceneManager::update(GLfloat elapsedTime) {
 	dragonPosition[VY] += sin((dragonRotation[VZ] + 90) * DEGREES_TO_RADIANS) * 0.075f;
 
 	_objectMap[DRAGON_BODY]->setPosition(dragonPosition);
+	*/
+
+	Vector cubeRotation = _objectMap[TEST_CUBE]->getRotation();
+
+	switch(_rotationAxis) {
+	
+		case 0:	break;
+
+		case 1:	cubeRotation[VX] += 0.75f;
+				break;
+		case 2:	cubeRotation[VY] += 0.75f;
+				break;
+		case 3:	cubeRotation[VZ] += 0.75f;
+				break;
+	}
+
+	_objectMap[TEST_CUBE]->setRotation(cubeRotation);
 	
 	/* Scene Update */
 	readMouse(elapsedTime);
@@ -214,6 +233,32 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 		return;	
 
 	handler->disableKeyboard();
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_UP)) {
+
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_UP) == true) {
+
+			Vector position = _lightMap["Positional Light 2"]->getPosition();
+
+			position[VZ] += 0.1f;
+
+			_lightMap["Positional Light 2"]->setPosition(position);
+			_lightMap["Positional Light 2"]->loadUniforms();
+		}
+	}
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
+
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_DOWN) == true) {
+
+			Vector position = _lightMap["Positional Light 2"]->getPosition();
+
+			position[VZ] -= 0.1f;
+
+			_lightMap["Positional Light 2"]->setPosition(position);
+			_lightMap["Positional Light 2"]->loadUniforms();
+		}
+	}
 
 	/* Sound Buttons */
 	if(handler->isSpecialKeyPressed(GLUT_KEY_F1)) {
@@ -286,6 +331,22 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 		_activeCamera->loadUniforms();
 	}	
 
+	if(handler->isKeyPressed('x'))
+		if(!handler->wasKeyPressed('x'))
+			_rotationAxis = 1;
+
+	if(handler->isKeyPressed('y'))
+		if(!handler->wasKeyPressed('y'))
+			_rotationAxis = 2;
+
+	if(handler->isKeyPressed('z'))
+		if(!handler->wasKeyPressed('z'))
+			_rotationAxis = 3;
+
+	if(handler->isKeyPressed('s'))
+		if(!handler->wasKeyPressed('s'))
+			_rotationAxis = 0;
+
 	if(handler->wasKeyPressedThisFrame('q'))
 		exit(0);
 	
@@ -311,7 +372,7 @@ void SceneManager::readMouse(GLfloat elapsedTime) {
 
 		GLint* mousePosition = handler->getMouseClickPosition(GLUT_LEFT_BUTTON);
 
-		rayCast(mousePosition,elapsedTime);
+		//rayCast(mousePosition,elapsedTime);
 
 		delete mousePosition;
 

@@ -40,8 +40,8 @@ layout(std140) uniform LightSources {
 	LightSource lightSource[10];
 };
 
-uniform sampler2D DiffuseTexture;
-uniform sampler2D NormalTexture;
+uniform sampler2D Texture0;
+uniform sampler2D Texture1;
 
 out vec4 out_Color;
 
@@ -54,8 +54,7 @@ void main() {
 		if(lightSource[i].lightType == 0)
 			continue;
 
-		vec3 NormalMap = texture2D(NormalTexture, out_TextureUV).rgb;
-		vec3 Normal = normalize(NormalMap * 2.0 - 1.0);
+		vec3 Normal = normalize(out_Normal);
 
 		vec4 LightDirection = out_Position - lightSource[i].Position;
 		float Distance = length(LightDirection);  
@@ -64,10 +63,13 @@ void main() {
 		float LightIntensity = 1.0 / (lightSource[i].ConstantAttenuation + lightSource[i].LinearAttenuation * Distance + lightSource[i].ExponentialAttenuation * Distance * Distance);
 
 		vec4 AmbientColor = out_Ambient * lightSource[i].Color * lightSource[i].AmbientIntensity;
-		vec4 DiffuseColor =  vec4(0, 0, 0, 0);                                            
+		vec4 DiffuseColor = vec4(0, 0, 0, 0);                                            
 		vec4 SpecularColor = vec4(0, 0, 0, 0);
 		
-		vec4 TextureColor = texture2D(DiffuseTexture, out_TextureUV);     
+		vec4 TextureColor0 = texture2D(Texture0, out_TextureUV);
+		vec4 TextureColor1 = texture2D(Texture1, out_TextureUV);       
+
+		vec4 TextureColor = TextureColor0 * 0.5 + TextureColor1 * 0.5;
 
 		float DiffuseFactor = dot(Normal, vec3(-LightDirection));
 

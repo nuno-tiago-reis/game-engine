@@ -82,6 +82,8 @@ void main() {
 		vec4 LightDirection = out_Position - lightSource[i].Position;
 		float Distance = length(LightDirection);  
 		LightDirection = normalize(LightDirection);
+
+		float LightIntensity = 1.0 / (lightSource[i].ConstantAttenuation + lightSource[i].LinearAttenuation * Distance + lightSource[i].ExponentialAttenuation * Distance * Distance);
 		
 		vec4 AmbientColor = noiseColor * lightSource[i].Color * lightSource[i].AmbientIntensity;
 		vec4 DiffuseColor = noiseColor * lightSource[i].Color * lightSource[i].DiffuseIntensity;
@@ -116,6 +118,6 @@ void main() {
 				SpecularColor = SpecularColor * SpecularFactor;
 		}
 
-		out_Color += AmbientColor + DiffuseColor + SpecularColor;
+		out_Color += AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
 	}
 }

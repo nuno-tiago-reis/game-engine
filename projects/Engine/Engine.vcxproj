@@ -38,6 +38,7 @@
     <ClCompile Include="source\Sound.cpp" />
     <ClCompile Include="source\SpotLight.cpp" />
     <ClCompile Include="source\Texture.cpp" />
+    <ClCompile Include="source\MixedTextureShader.cpp" />
     <ClCompile Include="source\Vector.cpp" />
     <ClCompile Include="source\XML_Reader.cpp" />
   </ItemGroup>
@@ -68,6 +69,7 @@
     <ClInclude Include="source\Sound.h" />
     <ClInclude Include="source\SpotLight.h" />
     <ClInclude Include="source\Texture.h" />
+    <ClInclude Include="source\MixedTextureShader.h" />
     <ClInclude Include="source\Utility.h" />
     <ClInclude Include="source\SceneManager.h" />
     <ClInclude Include="source\ShaderProgram.h" />
@@ -83,6 +85,8 @@
     <None Include="shaders\post_processing_vertex_shader.glsl" />
     <None Include="shaders\real_wood_fragment_shader.glsl" />
     <None Include="shaders\real_wood_vertex_shader.glsl" />
+    <None Include="shaders\mixed_texture_fragment_shader.glsl" />
+    <None Include="shaders\mixed_texture_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

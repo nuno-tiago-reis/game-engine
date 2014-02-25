@@ -17,6 +17,7 @@
 
 #include "BufferObject.h"
 
+#include "MixedTextureShader.h"
 #include "RealWoodShader.h"
 #include "ShaderProgram.h"
 
@@ -26,10 +27,14 @@
 #define NO_MAPPING 0
 #define WOOD_MAPPING 1
 #define BUMP_MAPPING 2
+#define MIXED_TEXTURE_MAPPING 3
 
 #define WOOD_TEXTURE "Wood Texture"
 #define DIFFUSE_TEXTURE "Diffuse Texture"
 #define NORMAL_TEXTURE "Normal Texture"
+
+#define MIXED_TEXTURE_0 "Texture 0"
+#define MIXED_TEXTURE_1 "Texture 1"
 
 using namespace std;
 
@@ -86,6 +91,10 @@ class Object {
 		void activateWoodTexture(GLfloat noiseAlpha, GLfloat noiseBeta, GLint noiseOctaves, GLfloat noiseScale);
 		void bindWoodTexture(GLuint programID);
 		void unbindWoodTexture();
+
+		void activateMixedTexture(string texture0FileName, string texture1FileName);
+		void bindMixedTexture(GLuint programID);
+		void unbindMixedTexture();
 
 		void deactivateTexture();
 

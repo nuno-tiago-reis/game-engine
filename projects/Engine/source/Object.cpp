@@ -47,6 +47,9 @@ void Object::draw(GLuint programID) {
 		case WOOD_MAPPING:	bindWoodTexture(programID);
 							break;
 
+		case MIXED_TEXTURE_MAPPING:	bindMixedTexture(programID);
+									break;
+
 		default:			break;
 	}
 
@@ -61,6 +64,9 @@ void Object::draw(GLuint programID) {
 
 		case WOOD_MAPPING:	unbindWoodTexture();
 							break;
+
+		case MIXED_TEXTURE_MAPPING:	unbindMixedTexture();
+									break;
 
 		default:			break;
 	}
@@ -213,6 +219,41 @@ void Object::unbindWoodTexture() {
 
 	Texture* woodTexture = _textureMap[WOOD_TEXTURE];				
 	woodTexture->unbind(GL_TEXTURE0);
+}
+
+void Object::activateMixedTexture(string texture0FileName, string texture1FileName) {
+
+	_activeTexture = MIXED_TEXTURE_MAPPING;
+
+	_textureMap[MIXED_TEXTURE_0] = new Texture(GL_TEXTURE_2D, texture0FileName);
+	_textureMap[MIXED_TEXTURE_0]->load();
+
+	_textureMap[MIXED_TEXTURE_1] = new Texture(GL_TEXTURE_2D, texture1FileName);
+	_textureMap[MIXED_TEXTURE_1]->load();
+}
+
+void Object::bindMixedTexture(GLuint programID) {
+
+	Texture* diffuseTexture = _textureMap[MIXED_TEXTURE_0];
+	diffuseTexture->bind(GL_TEXTURE0);
+
+	glProgramUniform1i(programID, glGetUniformLocation(programID, MIXED_TEXTURE_0_UNIFORM), 0);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" + diffuseTexture->getFileName() + "\" error.");
+
+	Texture* normalTexture = _textureMap[MIXED_TEXTURE_1];				
+	normalTexture->bind(GL_TEXTURE1);
+
+	glProgramUniform1i(programID, glGetUniformLocation(programID, MIXED_TEXTURE_1_UNIFORM), 1);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" + normalTexture->getFileName() + "\" error.");
+}
+
+void Object::unbindMixedTexture() {
+
+	Texture* diffuseTexture = _textureMap[MIXED_TEXTURE_0];
+	diffuseTexture->unbind(GL_TEXTURE0);
+
+	Texture* normalTexture = _textureMap[MIXED_TEXTURE_1];
+	normalTexture->unbind(GL_TEXTURE1);
 }
 
 void Object::deactivateTexture() {

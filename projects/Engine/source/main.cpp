@@ -25,6 +25,7 @@
 
 /* Shaders */
 #include "BlinnPhongShader.h"
+#include "MixedTextureShader.h"
 #include "BumpMapShader.h"
 #include "RealWoodShader.h"
 
@@ -228,7 +229,7 @@ void setupOpenGL() {
 
 	std::cerr << "CONTEXT: OpenGL v" << glGetString(GL_VERSION) << std::endl;
 
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -291,6 +292,15 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addShaderProgram(bumpMapShader);
 
+	/* Create Mixed Texture Map Shader*/
+	MixedTextureShader* mixedTextureShader = new MixedTextureShader(MIXED_TEXTURE_SHADER);
+	mixedTextureShader->createShaderProgram();
+	mixedTextureShader->bindAttributes();
+	mixedTextureShader->linkShaderProgram();
+	mixedTextureShader->bindUniforms();
+
+	sceneManager->addShaderProgram(mixedTextureShader);
+
 	/* Create Blinn Phong Shader */
 	BlinnPhongShader* blinnPhongShader = new BlinnPhongShader(BLINN_PHONG_SHADER);
 	blinnPhongShader->createShaderProgram();
@@ -313,40 +323,40 @@ void init(int argc, char* argv[]) {
 	sceneManager->setActiveShaderProgram(blinnPhongShader);
 
 	/* Light Source 0 */
-	PositionalLight* positionalLight0 = new PositionalLight(POSITIONAL_LIGHT_0);
+	/*PositionalLight* positionalLight0 = new PositionalLight(POSITIONAL_LIGHT_0);
 
 	positionalLight0->setIdentifier(LIGHT_SOURCE_0);
 
-	positionalLight0->setPosition(Vector(0.0f,-10.0f, 10.0f, 1.0f));
+	positionalLight0->setPosition(Vector(0.0f,-10.0f, 0.0f, 1.0f));
 	positionalLight0->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
 	positionalLight0->setAmbientIntensity(0.2f);
 	positionalLight0->setDiffuseIntensity(0.50f);
 	positionalLight0->setSpecularIntensity(0.50f);
 
-	positionalLight0->setConstantAttenuation(1.0f);
-	positionalLight0->setLinearAttenuation(0.0f);
-	positionalLight0->setExponentialAttenuation(0.0f);
+	positionalLight0->setConstantAttenuation(2.0f);
+	positionalLight0->setLinearAttenuation(0.005f);
+	positionalLight0->setExponentialAttenuation(0.00005f);
 
-	sceneManager->addLight(positionalLight0);
+	sceneManager->addLight(positionalLight0);*/
 
 	/* Light Source 1 */
-	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
+	/*PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
 
 	positionalLight1->setIdentifier(LIGHT_SOURCE_1);
 
-	positionalLight1->setPosition(Vector(0.0f, 10.0f, 10.0f, 1.0f));
+	positionalLight1->setPosition(Vector(0.0f, 10.0f, 0.0f, 1.0f));
 	positionalLight1->setColor(Vector(0.0f, 1.0f, 0.0f, 1.0f));
 
 	positionalLight1->setAmbientIntensity(0.2f);
 	positionalLight1->setDiffuseIntensity(0.50f);
 	positionalLight1->setSpecularIntensity(0.50f);
 
-	positionalLight1->setConstantAttenuation(1.0f);
-	positionalLight1->setLinearAttenuation(0.0f);
-	positionalLight1->setExponentialAttenuation(0.0f);
+	positionalLight1->setConstantAttenuation(2.0f);
+	positionalLight1->setLinearAttenuation(0.005f);
+	positionalLight1->setExponentialAttenuation(0.00005f);
 
-	sceneManager->addLight(positionalLight1);
+	sceneManager->addLight(positionalLight1);*/
 
 	/* Light Source 2 */
 	PositionalLight* positionalLight2 = new PositionalLight(POSITIONAL_LIGHT_2);
@@ -356,15 +366,51 @@ void init(int argc, char* argv[]) {
 	positionalLight2->setPosition(Vector(0.0f, 0.0f, 10.0f, 1.0f));
 	positionalLight2->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	positionalLight2->setAmbientIntensity(0.2f);
-	positionalLight2->setDiffuseIntensity(0.25f);
-	positionalLight2->setSpecularIntensity(0.25f);
+	positionalLight2->setAmbientIntensity(0.00f);
+	positionalLight2->setDiffuseIntensity(1.00f);
+	positionalLight2->setSpecularIntensity(1.00f);
 
-	positionalLight2->setConstantAttenuation(1.0f);
-	positionalLight2->setLinearAttenuation(0.0f);
-	positionalLight2->setExponentialAttenuation(0.0f);
+	positionalLight2->setConstantAttenuation(1.00f);
+	positionalLight2->setLinearAttenuation(0.125f);
+	positionalLight2->setExponentialAttenuation(0.005f);
 
 	sceneManager->addLight(positionalLight2);
+
+	/* Light Source 3 */
+	/*PositionalLight* positionalLight3 = new PositionalLight(POSITIONAL_LIGHT_3);
+
+	positionalLight3->setIdentifier(LIGHT_SOURCE_3);
+
+	positionalLight3->setPosition(Vector(-10.0f, 0.0f, 0.0f, 1.0f));
+	positionalLight3->setColor(Vector(0.0f, 1.0f, 1.0f, 1.0f));
+
+	positionalLight3->setAmbientIntensity(0.2f);
+	positionalLight3->setDiffuseIntensity(0.25f);
+	positionalLight3->setSpecularIntensity(0.25f);
+
+	positionalLight3->setConstantAttenuation(2.0f);
+	positionalLight3->setLinearAttenuation(0.005f);
+	positionalLight3->setExponentialAttenuation(0.00005f);
+
+	sceneManager->addLight(positionalLight3);*/
+
+	/* Light Source 4 */
+	/*PositionalLight* positionalLight4 = new PositionalLight(POSITIONAL_LIGHT_4);
+
+	positionalLight4->setIdentifier(LIGHT_SOURCE_4);
+
+	positionalLight4->setPosition(Vector(10.0f, 0.0f, 0.0f, 1.0f));
+	positionalLight4->setColor(Vector(1.0f, 1.0f, 0.0f, 1.0f));
+
+	positionalLight4->setAmbientIntensity(0.2f);
+	positionalLight4->setDiffuseIntensity(0.25f);
+	positionalLight4->setSpecularIntensity(0.25f);
+
+	positionalLight4->setConstantAttenuation(2.0f);
+	positionalLight4->setLinearAttenuation(0.005f);
+	positionalLight4->setExponentialAttenuation(0.00005f);
+
+	sceneManager->addLight(positionalLight4);*/
 
 	/* Create Orthogonal Camera */
 	Camera* orthogonalCamera = new Camera(ORTHOGONAL_NAME);
@@ -391,194 +437,6 @@ void init(int argc, char* argv[]) {
 
 	xmlReader->openTransformationFile(TRANSFORMATION_FILE);
 
-	/* Table */
-	Object* table = new Object(TABLE);
-	table->activateWoodTexture(1.0f,2.0f,4,0.16f);
-	
-	objReader->loadModel(TABLE, table);
-	xmlReader->loadTransformation(table);
-
-	sceneManager->addObject(table);
-
-	/* Table Surface */
-	Object* tableSurface = new Object(TABLE_SURFACE);
-	tableSurface->activateBumpTexture("textures/tampo_diffuse.png","textures/tampo_bump.png");
-
-	objReader->loadModel(TABLE_SURFACE, tableSurface);
-	xmlReader->loadTransformation(tableSurface);
-
-	sceneManager->addObject(tableSurface);
-
-	/* Mallet */
-	Object* mallet = new Object(MALLET);
-	mallet->activateBumpTexture("textures/mallet_diffuse.png","textures/mallet_bump.png");
-
-	objReader->loadModel(MALLET, mallet);	
-	xmlReader->loadTransformation(mallet);
-
-	sceneManager->addObject(mallet);
-
-	/* Puck */
-	Object* puck = new Object(PUCK);
-	puck->activateBumpTexture("textures/puck_diffuse.png","textures/puck_bump.png");
-
-	objReader->loadModel(PUCK, puck);
-	xmlReader->loadTransformation(puck);
-
-	sceneManager->addObject(puck);
-
-	/* Pin A */
-	Object* pinA = new Object(PIN_A);
-	pinA->activateWoodTexture(1.0f,1.0f,4,0.3f);
-
-	objReader->loadModel("testcircle", pinA);	
-	xmlReader->loadTransformation(pinA);
-
-	sceneManager->addObject(pinA);
-
-	/* Pin B */
-	Object* pinB = new Object(PIN_B);
-	pinB->activateWoodTexture(1.0f,1.0f,4,0.3f);
-
-	objReader->loadModel("testcircle", pinB);
-	xmlReader->loadTransformation(pinB);
-
-	sceneManager->addObject(pinB);
-
-	/* Pin C */
-	Object* pinC = new Object(PIN_C);
-	pinC->activateWoodTexture(1.0f,1.0f,4,0.3f);
-
-	objReader->loadModel("testcircle", pinC);
-	xmlReader->loadTransformation(pinC);
-
-	sceneManager->addObject(pinC);
-
-	/* Platform */
-	Object* platform = new Object(PLATFORM);
-
-	objReader->loadModel("testcube", platform);
-	xmlReader->loadTransformation(platform);
-
-	sceneManager->addObject(platform);
-
-	/* Dragon Head */
-	JointObject* dragonHead = new JointObject(DRAGON_HEAD);
-	dragonHead->setJointPosition(Vector(0.0f,1.25f,0.0f,1.0f));
-	dragonHead->setRotation(Vector(15.0f,0.0f,15.0f,1.0f));
-	dragonHead->setScale(Vector(0.75f,0.75f,0.50f,1.0f));
-
-	objReader->loadModel("testcube", dragonHead);
-
-	sceneManager->addObject(dragonHead);
-
-	JointObject* dragonNose = new JointObject(DRAGON_NOSE);
-	dragonNose->setJointPosition(Vector(0.0f,0.25f,-0.15f,1.0f));
-	dragonNose->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
-	dragonNose->setScale(Vector(0.5f,1.0f,0.35f,1.0f));
-
-	objReader->loadModel("testcube", dragonNose);
-
-	sceneManager->addObject(dragonNose);
-
-	JointObject* dragonLeftHorn = new JointObject(DRAGON_LEFT_HORN);
-	dragonLeftHorn->setJointPosition(Vector(-0.25f,0.25f,0.25f,1.0f));
-	dragonLeftHorn->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
-	dragonLeftHorn->setScale(Vector(0.10f,0.50f,0.10f,1.0f));
-
-	objReader->loadModel("testcube", dragonLeftHorn);
-
-	sceneManager->addObject(dragonLeftHorn);
-
-	JointObject* dragonRightHorn = new JointObject(DRAGON_RIGHT_HORN);
-	dragonRightHorn->setJointPosition(Vector(0.25f,0.25f,0.25f,1.0f));
-	dragonRightHorn->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
-	dragonRightHorn->setScale(Vector(0.10f,0.50f,0.10f,1.0f));
-
-	objReader->loadModel("testcube", dragonRightHorn);
-
-	sceneManager->addObject(dragonHead);
-
-	/* Dragon Body */
-	JointObject* dragonBody = new JointObject(DRAGON_BODY);
-	dragonBody->setPosition(Vector(5.0f,0.0f,5.0f,1.0f));
-	dragonBody->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
-	dragonBody->setScale(Vector(1.0f,2.0f,0.75,1.0f));
-
-	objReader->loadModel("testcube", dragonBody);
-
-	sceneManager->addObject(dragonBody);
-
-	/* Dragon Left Wing */
-	JointObject* dragonLeftWing = new JointObject(DRAGON_LEFT_WING);
-	dragonLeftWing->setJointPosition(Vector(-0.5f,0.0f,0.0f,1.0f));
-	dragonLeftWing->setRotation(Vector(0.0f,7.5f,0.0f,1.0f));
-	dragonLeftWing->setScale(Vector(1.5f,0.75f,0.25f,1.0f));
-
-	objReader->loadModel("testcube", dragonLeftWing);
-
-	sceneManager->addObject(dragonLeftWing);
-
-	/* Dragon Left Wing 2 */
-	JointObject* dragonLeftWing2 = new JointObject(DRAGON_LEFT_WING_2);
-	dragonLeftWing2->setJointPosition(Vector(-1.25f,0.0f,0.0f,1.0f));
-	dragonLeftWing2->setRotation(Vector(0.0f,22.5f,0.0f,1.0f));
-	dragonLeftWing2->setScale(Vector(1.75f,2.0f,0.25f,1.0f));
-
-	objReader->loadModel("testcube", dragonLeftWing2);
-
-	sceneManager->addObject(dragonLeftWing2);
-
-	/* Dragon Right Wing */
-	JointObject* dragonRightWing = new JointObject(DRAGON_RIGHT_WING);
-	dragonRightWing->setJointPosition(Vector(0.5f,0.0f,0.0f,1.0f));
-	dragonRightWing->setRotation(Vector(0.0f,-7.5f,0.0f,1.0f));
-	dragonRightWing->setScale(Vector(1.5f,0.75f,0.25f,1.0f));
-
-	objReader->loadModel("testcube", dragonRightWing);
-
-	sceneManager->addObject(dragonRightWing);
-
-	/* Dragon Right Wing 2 */
-	JointObject* dragonRightWing2 = new JointObject(DRAGON_RIGHT_WING_2);
-	dragonRightWing2->setJointPosition(Vector(1.25f,0.0f,0.0f,1.0f));
-	dragonRightWing2->setRotation(Vector(0.0f,-22.5f,0.0f,1.0f));
-	dragonRightWing2->setScale(Vector(1.75f,2.0f,0.25f,1.0f));
-
-	objReader->loadModel("testcube", dragonRightWing2);
-
-	sceneManager->addObject(dragonRightWing2);
-
-	/* Dragon Tail */
-	JointObject* dragonTail = new JointObject(DRAGON_TAIL);
-	dragonTail->setJointPosition(Vector(0.0f,-1.50f,0.0f,1.0f));
-	dragonTail->setRotation(Vector(7.5f,0.0f,0.0f,1.0f));
-	dragonTail->setScale(Vector(0.75f,1.0f,0.50f,1.0f));
-
-	objReader->loadModel("testcube", dragonTail);
-
-	sceneManager->addObject(dragonTail);
-
-	/* Dragon Tail 2 */
-	JointObject* dragonTail2 = new JointObject(DRAGON_TAIL_2);
-	dragonTail2->setJointPosition(Vector(0.0f,-0.75f,0.0f,1.0f));
-	dragonTail2->setRotation(Vector(7.5f,0.0f,0.0f,1.0f));
-	dragonTail2->setScale(Vector(0.50f,0.75f,0.35f,1.0f));
-
-	objReader->loadModel("testcube", dragonTail2);
-
-	sceneManager->addObject(dragonTail2);
-
-	/* Dragon Tail 3 */
-	JointObject* dragonTail3 = new JointObject(DRAGON_TAIL_3);
-	dragonTail3->setJointPosition(Vector(0.0f,-0.75f,0.0f,1.0f));
-	dragonTail3->setRotation(Vector(7.5f,0.0f,0.0f,1.0f));
-	dragonTail3->setScale(Vector(0.25f,0.75f,0.25f,1.0f));
-
-	objReader->loadModel("testcube", dragonTail3);
-
-	sceneManager->addObject(dragonTail3);
-
 	/* Test Cube */
 	Object* testCube = new Object(TEST_CUBE);
 	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
@@ -589,114 +447,45 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addObject(testCube);
 
-	/* Create Scene Graph Nodes */
+	/* Texture Cube */
+	Object* textureCube = new Object(TEXTURE_CUBE);
+	textureCube->setPosition(Vector(0.0f,0.0f,1.0f,1.0f));
+	textureCube->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	textureCube->setScale(Vector(1.25f,1.25f,1.25f,1.0f));
+	textureCube->activateMixedTexture("textures/stone.tga","textures/fire.tga");
 
-	/* Table */
+	objReader->loadModel("teapot", textureCube);
+
+	sceneManager->addObject(textureCube);
+
+	/* Table Surface */
+	Object* tableSurface = new Object(TABLE_SURFACE);
+	tableSurface->activateBumpTexture("textures/tampo_diffuse.png","textures/tampo_bump.png");
+
+	objReader->loadModel(TABLE_SURFACE, tableSurface);
+	xmlReader->loadTransformation(tableSurface);
+
+	sceneManager->addObject(tableSurface);
+
+	/* Create Scene Graph Nodes */
 	SceneNode* testCubeNode = new SceneNode(TEST_CUBE);
 	testCubeNode->setObject(testCube);
-	testCubeNode->setShaderProgram(realWoodShader);
+	testCubeNode->setShaderProgram(blinnPhongShader);
 
-	SceneNode* tableNode = new SceneNode(TABLE);
-	tableNode->setObject(table);
-	tableNode->setShaderProgram(realWoodShader);
+	SceneNode* textureCubeNode = new SceneNode(TEXTURE_CUBE);
+	textureCubeNode->setObject(textureCube);
+	textureCubeNode->setShaderProgram(mixedTextureShader);
 
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
 	tableSurfaceNode->setShaderProgram(bumpMapShader);
 
-	/* Collision Objects */
-	SceneNode* pinANode = new SceneNode(PIN_A);
-	pinANode->setObject(pinA);
-	pinANode->setShaderProgram(realWoodShader);
-
-	SceneNode* pinBNode = new SceneNode(PIN_B);
-	pinBNode->setObject(pinB);
-	pinBNode->setShaderProgram(realWoodShader);
-
-	SceneNode* pinCNode = new SceneNode(PIN_C);
-	pinCNode->setObject(pinC);
-	pinCNode->setShaderProgram(realWoodShader);
-
-	SceneNode* malletNode = new SceneNode(MALLET);
-	malletNode->setObject(mallet);
-	malletNode->setShaderProgram(bumpMapShader);
-
-	SceneNode* puckNode = new SceneNode(PUCK);
-	puckNode->setObject(puck);
-	puckNode->setShaderProgram(bumpMapShader);
-
-	/* Collision Platform */
-	SceneNode* platformNode = new SceneNode(PLATFORM);
-	platformNode->setObject(platform);
-
-	/* Dragon */
-	SceneNode* dragonHeadNode = new SceneNode(DRAGON_HEAD);
-	dragonHeadNode->setObject(dragonHead);
-
-	SceneNode* dragonNoseNode = new SceneNode(DRAGON_NOSE);
-	dragonNoseNode->setObject(dragonNose);
-
-	SceneNode* dragonLeftHornNode = new SceneNode(DRAGON_LEFT_HORN);
-	dragonLeftHornNode->setObject(dragonLeftHorn);
-
-	SceneNode* dragonRightHornNode = new SceneNode(DRAGON_RIGHT_HORN);
-	dragonRightHornNode->setObject(dragonRightHorn);
-
-	SceneNode* dragonBodyNode = new SceneNode(DRAGON_BODY);
-	dragonBodyNode->setObject(dragonBody);
-
-	SceneNode* dragonLeftWingNode = new SceneNode(DRAGON_LEFT_WING);
-	dragonLeftWingNode->setObject(dragonLeftWing);
-
-	SceneNode* dragonLeftWingNode2 = new SceneNode(DRAGON_LEFT_WING_2);
-	dragonLeftWingNode2->setObject(dragonLeftWing2);
-
-	SceneNode* dragonRightWingNode = new SceneNode(DRAGON_RIGHT_WING);
-	dragonRightWingNode->setObject(dragonRightWing);
-
-	SceneNode* dragonRightWingNode2 = new SceneNode(DRAGON_RIGHT_WING_2);
-	dragonRightWingNode2->setObject(dragonRightWing2);
-
-	SceneNode* dragonTailNode= new SceneNode(DRAGON_TAIL);
-	dragonTailNode->setObject(dragonTail);
-
-	SceneNode* dragonTail2Node= new SceneNode(DRAGON_TAIL_2);
-	dragonTail2Node->setObject(dragonTail2);
-
-	SceneNode* dragonTail3Node= new SceneNode(DRAGON_TAIL_3);
-	dragonTail3Node->setObject(dragonTail3);
-
-	dragonBodyNode->addChildNode(dragonHeadNode);
-		dragonHeadNode->addChildNode(dragonNoseNode);
-		dragonHeadNode->addChildNode(dragonLeftHornNode);
-		dragonHeadNode->addChildNode(dragonRightHornNode);
-
-	dragonBodyNode->addChildNode(dragonRightWingNode);
-		dragonRightWingNode->addChildNode(dragonRightWingNode2);
-
-	dragonBodyNode->addChildNode(dragonLeftWingNode);
-		dragonLeftWingNode->addChildNode(dragonLeftWingNode2);
-
-	dragonBodyNode->addChildNode(dragonTailNode);
-		dragonTailNode->addChildNode(dragonTail2Node);
-			dragonTail2Node->addChildNode(dragonTail3Node);
-
 	/* Add the Root Nodes to the Scene */
-	sceneManager->addSceneNode(testCubeNode);
+	//sceneManager->addSceneNode(testCubeNode);
 
-	sceneManager->addSceneNode(tableNode);
+	sceneManager->addSceneNode(textureCubeNode);
+
 	sceneManager->addSceneNode(tableSurfaceNode);
-
-	sceneManager->addSceneNode(pinANode);
-	sceneManager->addSceneNode(pinBNode);
-	sceneManager->addSceneNode(pinCNode);
-
-	sceneManager->addSceneNode(malletNode);
-	sceneManager->addSceneNode(puckNode);
-
-	sceneManager->addSceneNode(dragonBodyNode);
-
-	sceneManager->addSceneNode(platformNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

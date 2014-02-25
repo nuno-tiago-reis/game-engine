@@ -60,6 +60,8 @@ class SceneManager {
 		/* Singleton Instance */
 		static SceneManager *instance;
 
+		int _rotationAxis;
+
 		/* Picking */
 		bool _malletPicked;
 		GLfloat _malletDepth;

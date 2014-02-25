@@ -120,6 +120,12 @@
     <Filter Include="Source Files\Shader\Textures\NoiseTexture\PerlinNoise">
       <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shader\MixedTexture">
+      <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\MixedTexture\glsl">
+      <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BufferObject.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="source\Sound.cpp">
       <Filter>Source Files\SceneManager\Sounds</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MixedTextureShader.cpp">
+      <Filter>Source Files\Shader\MixedTexture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +313,9 @@
     <ClInclude Include="source\Names.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="source\MixedTextureShader.h">
+      <Filter>Source Files\Shader\MixedTexture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\blinn_phong_fragment_shader.glsl">
@@ -329,6 +341,12 @@
     </None>
     <None Include="shaders\post_processing_fragment_shader.glsl">
       <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
+    </None>
+    <None Include="shaders\mixed_texture_fragment_shader.glsl">
+      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+    </None>
+    <None Include="shaders\mixed_texture_vertex_shader.glsl">
+      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>
