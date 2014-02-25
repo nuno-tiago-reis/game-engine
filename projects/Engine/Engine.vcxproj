@@ -124,8 +124,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)\dependencies\freeglut\lib;$(SolutionDir)\dependencies\glew\lib;$(SolutionDir)\dependencies\tinyxml\lib;$(SolutionDir)\dependencies\soil\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\freeglut\include;$(SolutionDir)\dependencies\tinyxml\include;$(SolutionDir)\dependencies\soil\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dependencies\freeglut\lib;$(SolutionDir)\dependencies\glew\lib;$(SolutionDir)\dependencies\tinyxml\lib;$(SolutionDir)\dependencies\soil\lib;$(SolutionDir)\dependencies\fmodex\lib;$(SolutionDir)\dependencies\bulletphysics\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\freeglut\include;$(SolutionDir)\dependencies\tinyxml\include;$(SolutionDir)\dependencies\soil\include;$(SolutionDir)\dependencies\fmodex\include;$(SolutionDir)\dependencies\bulletphysics\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)output\</OutDir>
     <SourcePath>$(ProjectDir)\source</SourcePath>
   </PropertyGroup>
@@ -148,7 +148,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;freeglut.lib;tinyxml2.lib;soil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;tinyxml2.lib;soil.lib;fmodex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
