@@ -203,7 +203,7 @@ void SceneManager::reshape(GLint width, GLint height) {
 	for(cameraIterator = _cameraMap.begin(); cameraIterator != _cameraMap.end(); cameraIterator++)
 		cameraIterator->second->reshape(width,height);
 
-	_activeCamera->loadUniforms();
+	loadUniforms();
 }
 
 void SceneManager::readKeyboard(GLfloat elapsedTime) {

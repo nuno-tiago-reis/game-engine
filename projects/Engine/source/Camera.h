@@ -25,7 +25,7 @@
 #define ORTHO_FAR 30.0f
 #define ORTHO_NEAR 1.0f
 
-#define PERS_ANGLE 60.0f
+#define PERS_ANGLE 30.0f
 #define PERS_NEAR 1.0f
 #define PERS_FAR 20.0f
 

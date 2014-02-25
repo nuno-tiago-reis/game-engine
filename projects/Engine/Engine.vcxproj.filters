@@ -306,28 +306,28 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\blinn_phong_FragShader.glsl">
+    <None Include="shaders\blinn_phong_fragment_shader.glsl">
       <Filter>Source Files\Shader\BlinnPhong\glsl</Filter>
     </None>
-    <None Include="shaders\blinn_phong_VertexShader.glsl">
+    <None Include="shaders\blinn_phong_vertex_shader.glsl">
       <Filter>Source Files\Shader\BlinnPhong\glsl</Filter>
     </None>
-    <None Include="shaders\bumpMap_VertexShader.glsl">
+    <None Include="shaders\bump_map_fragment_shader.glsl">
       <Filter>Source Files\Shader\BumpMap\glsl</Filter>
     </None>
-    <None Include="shaders\bumpMap_FragShader.glsl">
+    <None Include="shaders\bump_map_vertex_shader.glsl">
       <Filter>Source Files\Shader\BumpMap\glsl</Filter>
     </None>
-    <None Include="shaders\woodFragmentShader.glsl">
+    <None Include="shaders\real_wood_fragment_shader.glsl">
       <Filter>Source Files\Shader\Wood\glsl</Filter>
     </None>
-    <None Include="shaders\woodVertexShader.glsl">
+    <None Include="shaders\real_wood_vertex_shader.glsl">
       <Filter>Source Files\Shader\Wood\glsl</Filter>
     </None>
-    <None Include="shaders\post_proc_VertexShader.glsl">
+    <None Include="shaders\post_processing_vertex_shader.glsl">
       <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
     </None>
-    <None Include="shaders\post_proc_FragmentShader.glsl">
+    <None Include="shaders\post_processing_fragment_shader.glsl">
       <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
     </None>
   </ItemGroup>
