@@ -203,9 +203,6 @@
     <ClCompile Include="source\JointObject.cpp">
       <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
     </ClCompile>
-    <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files\SceneManager\Objects\Object</Filter>
-    </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
       <Filter>Source Files\Shader\Textures\NoiseTexture</Filter>
     </ClCompile>
@@ -217,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="source\MixedTextureShader.cpp">
       <Filter>Source Files\Shader\MixedTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Object.cpp">
+      <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

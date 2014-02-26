@@ -40,5 +40,5 @@ class OBJ_Reader {
 		static OBJ_Reader* getInstance();
 		static void destroyInstance();
 
-		void loadModel(string path, Object* graphicObject);
+		void loadModel(string modelFile, string materialFile, Object* graphicObject);
 };

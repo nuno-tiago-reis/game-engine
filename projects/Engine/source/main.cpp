@@ -323,94 +323,57 @@ void init(int argc, char* argv[]) {
 	sceneManager->setActiveShaderProgram(blinnPhongShader);
 
 	/* Light Source 0 */
-	/*PositionalLight* positionalLight0 = new PositionalLight(POSITIONAL_LIGHT_0);
+	DirectionalLight* directionalLight0 = new DirectionalLight(DIRECTIONAL_LIGHT_0);
 
-	positionalLight0->setIdentifier(LIGHT_SOURCE_0);
+	directionalLight0->setIdentifier(LIGHT_SOURCE_0);
 
-	positionalLight0->setPosition(Vector(0.0f,-10.0f, 0.0f, 1.0f));
-	positionalLight0->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
+	directionalLight0->setDirection(Vector(0.0f, 0.0f, 1.0f, 1.0f));
+	directionalLight0->setColor(Vector(1.0f, 1.0f, 0.0f, 1.0f));
 
-	positionalLight0->setAmbientIntensity(0.2f);
-	positionalLight0->setDiffuseIntensity(0.50f);
-	positionalLight0->setSpecularIntensity(0.50f);
+	directionalLight0->setAmbientIntensity(0.2f);
+	directionalLight0->setDiffuseIntensity(1.00f);
+	directionalLight0->setSpecularIntensity(1.00f);
 
-	positionalLight0->setConstantAttenuation(2.0f);
-	positionalLight0->setLinearAttenuation(0.005f);
-	positionalLight0->setExponentialAttenuation(0.00005f);
-
-	sceneManager->addLight(positionalLight0);*/
+	sceneManager->addLight(directionalLight0);
 
 	/* Light Source 1 */
-	/*PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
+	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
 
 	positionalLight1->setIdentifier(LIGHT_SOURCE_1);
 
-	positionalLight1->setPosition(Vector(0.0f, 10.0f, 0.0f, 1.0f));
-	positionalLight1->setColor(Vector(0.0f, 1.0f, 0.0f, 1.0f));
+	positionalLight1->setPosition(Vector(0.0f, 0.0f, 10.0f, 1.0f));
+	positionalLight1->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	positionalLight1->setAmbientIntensity(0.2f);
+	positionalLight1->setAmbientIntensity(0.00f);
 	positionalLight1->setDiffuseIntensity(0.50f);
 	positionalLight1->setSpecularIntensity(0.50f);
 
-	positionalLight1->setConstantAttenuation(2.0f);
-	positionalLight1->setLinearAttenuation(0.005f);
-	positionalLight1->setExponentialAttenuation(0.00005f);
+	positionalLight1->setConstantAttenuation(1.00f);
+	positionalLight1->setLinearAttenuation(0.125f);
+	positionalLight1->setExponentialAttenuation(0.005f);
 
-	sceneManager->addLight(positionalLight1);*/
+	sceneManager->addLight(positionalLight1);
 
 	/* Light Source 2 */
-	PositionalLight* positionalLight2 = new PositionalLight(POSITIONAL_LIGHT_2);
+	SpotLight* spotLight2 = new SpotLight(SPOT_LIGHT_2);
 
-	positionalLight2->setIdentifier(LIGHT_SOURCE_2);
+	spotLight2->setIdentifier(LIGHT_SOURCE_2);
 
-	positionalLight2->setPosition(Vector(0.0f, 0.0f, 10.0f, 1.0f));
-	positionalLight2->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
+	spotLight2->setPosition(Vector(0.0f, 5.0f, 5.0f, 1.0f));
+	spotLight2->setDirection(Vector(0.0f, 0.0f, -1.0f, 1.0f));
+	spotLight2->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
-	positionalLight2->setAmbientIntensity(0.00f);
-	positionalLight2->setDiffuseIntensity(1.00f);
-	positionalLight2->setSpecularIntensity(1.00f);
+	spotLight2->setCutOff(25.0f);
 
-	positionalLight2->setConstantAttenuation(1.00f);
-	positionalLight2->setLinearAttenuation(0.125f);
-	positionalLight2->setExponentialAttenuation(0.005f);
+	spotLight2->setAmbientIntensity(0.2f);
+	spotLight2->setDiffuseIntensity(1.00f);
+	spotLight2->setSpecularIntensity(1.00f);
 
-	sceneManager->addLight(positionalLight2);
+	spotLight2->setConstantAttenuation(2.0f);
+	spotLight2->setLinearAttenuation(0.005f);
+	spotLight2->setExponentialAttenuation(0.00005f);
 
-	/* Light Source 3 */
-	/*PositionalLight* positionalLight3 = new PositionalLight(POSITIONAL_LIGHT_3);
-
-	positionalLight3->setIdentifier(LIGHT_SOURCE_3);
-
-	positionalLight3->setPosition(Vector(-10.0f, 0.0f, 0.0f, 1.0f));
-	positionalLight3->setColor(Vector(0.0f, 1.0f, 1.0f, 1.0f));
-
-	positionalLight3->setAmbientIntensity(0.2f);
-	positionalLight3->setDiffuseIntensity(0.25f);
-	positionalLight3->setSpecularIntensity(0.25f);
-
-	positionalLight3->setConstantAttenuation(2.0f);
-	positionalLight3->setLinearAttenuation(0.005f);
-	positionalLight3->setExponentialAttenuation(0.00005f);
-
-	sceneManager->addLight(positionalLight3);*/
-
-	/* Light Source 4 */
-	/*PositionalLight* positionalLight4 = new PositionalLight(POSITIONAL_LIGHT_4);
-
-	positionalLight4->setIdentifier(LIGHT_SOURCE_4);
-
-	positionalLight4->setPosition(Vector(10.0f, 0.0f, 0.0f, 1.0f));
-	positionalLight4->setColor(Vector(1.0f, 1.0f, 0.0f, 1.0f));
-
-	positionalLight4->setAmbientIntensity(0.2f);
-	positionalLight4->setDiffuseIntensity(0.25f);
-	positionalLight4->setSpecularIntensity(0.25f);
-
-	positionalLight4->setConstantAttenuation(2.0f);
-	positionalLight4->setLinearAttenuation(0.005f);
-	positionalLight4->setExponentialAttenuation(0.00005f);
-
-	sceneManager->addLight(positionalLight4);*/
+	sceneManager->addLight(spotLight2);
 
 	/* Create Orthogonal Camera */
 	Camera* orthogonalCamera = new Camera(ORTHOGONAL_NAME);
@@ -437,53 +400,99 @@ void init(int argc, char* argv[]) {
 
 	xmlReader->openTransformationFile(TRANSFORMATION_FILE);
 
-	/* Test Cube */
-	Object* testCube = new Object(TEST_CUBE);
-	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
-	testCube->setRotation(Vector(0.0f,0.0f,0.0f,1.0f));
-	testCube->setScale(Vector(1.0f,1.0f,1.0f,1.0f));
-
-	objReader->loadModel("testcube", testCube);
-
-	sceneManager->addObject(testCube);
-
 	/* Texture Cube */
-	Object* textureCube = new Object(TEXTURE_CUBE);
-	textureCube->setPosition(Vector(0.0f,0.0f,1.0f,1.0f));
-	textureCube->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
-	textureCube->setScale(Vector(1.25f,1.25f,1.25f,1.0f));
-	textureCube->activateMixedTexture("textures/stone.tga","textures/fire.tga");
+	Object* goldTeapot = new Object("Gold " TEAPOT);
+	goldTeapot->setPosition(Vector(0.0f,2.5f,1.0f,1.0f));
+	goldTeapot->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	goldTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
+	goldTeapot->activateMixedTexture("textures/stone.tga","textures/fire.tga");
 
-	objReader->loadModel("teapot", textureCube);
+	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", goldTeapot);
 
-	sceneManager->addObject(textureCube);
+	sceneManager->addObject(goldTeapot);
+
+	Object* silverTeapot = new Object("Silver " TEAPOT);
+	silverTeapot->setPosition(Vector(0.0f,-2.5f,1.0f,1.0f));
+	silverTeapot->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	silverTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
+	silverTeapot->activateMixedTexture("textures/stone.tga","textures/fire.tga");
+
+	objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", silverTeapot);
+
+	sceneManager->addObject(silverTeapot);
+
+	Object* rubyTeapot = new Object("Ruby " TEAPOT);
+	rubyTeapot->setPosition(Vector(0.0f,0.0f,1.0f,1.0f));
+	rubyTeapot->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	rubyTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
+	rubyTeapot->activateMixedTexture("textures/stone.tga","textures/fire.tga");
+
+	objReader->loadModel("teapot/teapot2.obj","teapot/RubyTeapot.mtl", rubyTeapot);
+
+	sceneManager->addObject(rubyTeapot);
+
+	Object* emeraldTeapot = new Object("Emerald " TEAPOT);
+	emeraldTeapot->setPosition(Vector(2.5f,0.0f,1.0f,1.0f));
+	emeraldTeapot->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	emeraldTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
+	emeraldTeapot->activateMixedTexture("textures/stone.tga","textures/fire.tga");
+
+	objReader->loadModel("teapot/teapot2.obj","teapot/EmeraldTeapot.mtl", emeraldTeapot);
+
+	sceneManager->addObject(emeraldTeapot);
+
+	Object* saphireTeapot = new Object("Saphire " TEAPOT);
+	saphireTeapot->setPosition(Vector(-2.5f,0.0f,1.0f,1.0f));
+	saphireTeapot->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	saphireTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
+	saphireTeapot->activateMixedTexture("textures/stone.tga","textures/fire.tga");
+
+	objReader->loadModel("teapot/teapot2.obj","teapot/CyanTeapot.mtl", saphireTeapot);
+
+	sceneManager->addObject(saphireTeapot);
 
 	/* Table Surface */
 	Object* tableSurface = new Object(TABLE_SURFACE);
-	tableSurface->activateBumpTexture("textures/tampo_diffuse.png","textures/tampo_bump.png");
+	//tableSurface->activateBumpTexture("textures/tampo_diffuse.png","textures/tampo_bump.png");
+	tableSurface->activateMixedTexture("textures/tampo_diffuse.png","textures/tampo_diffuse.png");
 
-	objReader->loadModel(TABLE_SURFACE, tableSurface);
+	objReader->loadModel("TableSurface.obj","TableSurface.mtl", tableSurface);
 	xmlReader->loadTransformation(tableSurface);
 
 	sceneManager->addObject(tableSurface);
 
 	/* Create Scene Graph Nodes */
-	SceneNode* testCubeNode = new SceneNode(TEST_CUBE);
-	testCubeNode->setObject(testCube);
-	testCubeNode->setShaderProgram(blinnPhongShader);
+	SceneNode* goldTeapotNode = new SceneNode("Gold " TEAPOT);
+	goldTeapotNode->setObject(goldTeapot);
+	goldTeapotNode->setShaderProgram(mixedTextureShader);
 
-	SceneNode* textureCubeNode = new SceneNode(TEXTURE_CUBE);
-	textureCubeNode->setObject(textureCube);
-	textureCubeNode->setShaderProgram(mixedTextureShader);
+	SceneNode* silverTeapotNode = new SceneNode("Silver " TEAPOT);
+	silverTeapotNode->setObject(silverTeapot);
+	silverTeapotNode->setShaderProgram(mixedTextureShader);
+
+	SceneNode* rubyTeapotNode = new SceneNode("Ruby " TEAPOT);
+	rubyTeapotNode->setObject(rubyTeapot);
+	rubyTeapotNode->setShaderProgram(mixedTextureShader);
+
+	SceneNode* emeraldTeapotNode = new SceneNode("Emerald " TEAPOT);
+	emeraldTeapotNode->setObject(emeraldTeapot);
+	emeraldTeapotNode->setShaderProgram(mixedTextureShader);
+
+	SceneNode* saphireTeapotNode = new SceneNode("Saphire " TEAPOT);
+	saphireTeapotNode->setObject(saphireTeapot);
+	saphireTeapotNode->setShaderProgram(mixedTextureShader);
 
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
-	tableSurfaceNode->setShaderProgram(bumpMapShader);
+	//tableSurfaceNode->setShaderProgram(bumpMapShader);
+	tableSurfaceNode->setShaderProgram(mixedTextureShader);
 
 	/* Add the Root Nodes to the Scene */
-	//sceneManager->addSceneNode(testCubeNode);
-
-	sceneManager->addSceneNode(textureCubeNode);
+	sceneManager->addSceneNode(goldTeapotNode);
+	sceneManager->addSceneNode(silverTeapotNode);
+	sceneManager->addSceneNode(rubyTeapotNode);
+	sceneManager->addSceneNode(emeraldTeapotNode);
+	sceneManager->addSceneNode(saphireTeapotNode);
 
 	sceneManager->addSceneNode(tableSurfaceNode);
 

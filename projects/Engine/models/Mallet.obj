@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib mallet.mtl
+mtllib Mallet.mtl
 g default
 v 0.340873 0.182316 0.000572
 v 0.633003 0.182316 0.000572
@@ -1100,7 +1100,7 @@ vn 0.951057 0.000000 -0.309016
 vn 0.809018 0.000000 -0.587784
 s 1
 g mallet:mallet1
-usemtl mallet:phong3SG
+usemtl Mallet:phong3SG
 f 1/1/1 2/2/2 4/4/3
 f 4/4/3 2/2/2 3/3/4
 s 2

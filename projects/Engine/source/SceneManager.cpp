@@ -186,26 +186,26 @@ void SceneManager::update(GLfloat elapsedTime) {
 
 	_objectMap[DRAGON_BODY]->setPosition(dragonPosition);
 	*/
+	
+	/* Scene Update */
+	readMouse(elapsedTime);
+	readKeyboard(elapsedTime);
 
-	Vector cubeRotation = _objectMap[TEST_CUBE]->getRotation();
+	Vector teapotRotation = _objectMap["Ruby " TEAPOT]->getRotation();
 
 	switch(_rotationAxis) {
 	
 		case 0:	break;
 
-		case 1:	cubeRotation[VX] += 0.75f;
+		case 1:	teapotRotation[VX] += 50.00f * elapsedTime;
 				break;
-		case 2:	cubeRotation[VY] += 0.75f;
+		case 2:	teapotRotation[VY] += 50.00f * elapsedTime;
 				break;
-		case 3:	cubeRotation[VZ] += 0.75f;
+		case 3:	teapotRotation[VZ] += 50.00f * elapsedTime;
 				break;
 	}
 
-	_objectMap[TEST_CUBE]->setRotation(cubeRotation);
-	
-	/* Scene Update */
-	readMouse(elapsedTime);
-	readKeyboard(elapsedTime);
+	_objectMap["Ruby " TEAPOT]->setRotation(teapotRotation);
 
 	_fmodSystem->update();
 
@@ -238,12 +238,12 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 		if(handler->wasSpecialKeyPressed(GLUT_KEY_UP) == true) {
 
-			Vector position = _lightMap["Positional Light 2"]->getPosition();
+			Vector position = _lightMap["Positional Light 1"]->getPosition();
 
 			position[VZ] += 0.1f;
 
-			_lightMap["Positional Light 2"]->setPosition(position);
-			_lightMap["Positional Light 2"]->loadUniforms();
+			_lightMap["Positional Light 1"]->setPosition(position);
+			_lightMap["Positional Light 1"]->loadUniforms();
 		}
 	}
 
@@ -251,12 +251,12 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 		if(handler->wasSpecialKeyPressed(GLUT_KEY_DOWN) == true) {
 
-			Vector position = _lightMap["Positional Light 2"]->getPosition();
+			Vector position = _lightMap["Positional Light 1"]->getPosition();
 
 			position[VZ] -= 0.1f;
 
-			_lightMap["Positional Light 2"]->setPosition(position);
-			_lightMap["Positional Light 2"]->loadUniforms();
+			_lightMap["Positional Light 1"]->setPosition(position);
+			_lightMap["Positional Light 1"]->loadUniforms();
 		}
 	}
 

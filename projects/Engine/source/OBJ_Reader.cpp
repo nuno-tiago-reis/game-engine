@@ -26,7 +26,7 @@ void OBJ_Reader::destroyInstance() {
 std::vector<int> &split(const std::string &s, char delim, std::vector<int> &elems);
 std::vector<int> split(const std::string &s, char delim);
 
-void OBJ_Reader::loadModel(string path, Object* graphicObject){
+void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object* graphicObject){
 	
 	string line;
 	string activeMaterial;
@@ -35,10 +35,12 @@ void OBJ_Reader::loadModel(string path, Object* graphicObject){
 
 	bool materials = false;
 
+	cout << modelFilename << " - " << materialFilename << endl;
+
 	//first read all materials
 	map<string,Material> materialsMap;
 
-	std::ifstream materialFile(LOCATION + path + ".mtl");
+	std::ifstream materialFile(LOCATION + materialFilename);
 
 	while(getline(materialFile, line)) {
 
@@ -95,7 +97,7 @@ void OBJ_Reader::loadModel(string path, Object* graphicObject){
 	materialFile.close();
 
 	//first passage, just counting lines
-	std::ifstream infile(LOCATION + path + ".obj");
+	std::ifstream infile(LOCATION + modelFilename);
 
 	while(getline(infile, line)) {
 
@@ -118,7 +120,7 @@ void OBJ_Reader::loadModel(string path, Object* graphicObject){
 
 	vertexCount = facesN * 3;
 
-	std::ifstream infile2(LOCATION + path + ".obj");
+	std::ifstream infile2(LOCATION + modelFilename);
 
 	GLfloat *vertices = new GLfloat[(verticesN+1) * 3 + 1];
 	GLfloat *uvcoord = new GLfloat[(uvcoordsN+1) * 2 + 1];

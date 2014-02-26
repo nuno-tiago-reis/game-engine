@@ -1,7 +1,11 @@
 #version 330 core
 #pragma optionNV(unroll all)
 
-#define lightCount 10
+#define LIGHT_COUNT 10
+
+#define SPOT_LIGHT 1
+#define POSITIONAL_LIGHT 2
+#define DIRECTIONAL_LIGHT 3
 
 in vec4 Position;
 
@@ -45,7 +49,7 @@ struct LightSource {
 
 layout(std140) uniform LightSources {
 
-	LightSource lightSource[10];
+	LightSource lightSource[LIGHT_COUNT];
 };
 
 mat4 ModelViewMatrix = ViewMatrix * ModelMatrix;
@@ -61,7 +65,7 @@ out vec4 out_Ambient;
 out vec4 out_Diffuse;
 out vec4 out_Specular;
 
-out vec4 lightPosition[lightCount];
+out vec4 lightPosition[LIGHT_COUNT];
 
 void main() {
 
@@ -78,7 +82,7 @@ void main() {
 	out_Diffuse = Diffuse;
 	out_Specular = Specular;
 	
-	for(int i=0; i<lightCount; i++) {
+	for(int i=0; i<LIGHT_COUNT; i++) {
 
 		if(lightSource[i].lightType == 0)
 			continue;

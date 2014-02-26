@@ -1,7 +1,7 @@
 /* Object Names */
 #define TEST_CUBE "Test Cube"
 
-#define TEXTURE_CUBE "Texture Cube"
+#define TEAPOT "Texture Cube"
 
 #define PUCK "Puck"
 #define MALLET "Mallet"

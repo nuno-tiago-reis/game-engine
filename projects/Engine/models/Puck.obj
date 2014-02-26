@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib disco.mtl
+mtllib Puck.mtl
 g default
 v 0.474066 0.000198 -0.154033
 v 0.403264 0.000198 -0.292989
@@ -810,7 +810,7 @@ vn -1.000000 0.000000 -0.000001
 vn -0.951057 0.000000 0.309016
 s 1
 g disco:disco1
-usemtl disco:phong4SG
+usemtl Puck:phong4SG
 f 1/1/1 2/2/2 21/4/3
 f 21/4/3 2/2/2 22/3/4
 s 2

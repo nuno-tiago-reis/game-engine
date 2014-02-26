@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib mesa.mtl
+mtllib Table.mtl
 g default
 v -0.840710 1.019996 1.418336
 v -0.820330 0.953396 1.436206

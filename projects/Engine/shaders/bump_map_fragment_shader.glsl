@@ -51,7 +51,7 @@ void main() {
 	
 	for(int i=0; i<lightCount; i++) {
 
-		if(lightSource[i].lightType == 0)
+		if(lightSource[i].lightType == 0 || lightSource[i].lightType == 1 || lightSource[i].lightType == 3)
 			continue;
 
 		vec3 NormalMap = texture2D(NormalTexture, out_TextureUV).rgb;
