@@ -323,7 +323,7 @@ void init(int argc, char* argv[]) {
 	sceneManager->setActiveShaderProgram(blinnPhongShader);
 
 	/* Light Source 0 */
-	DirectionalLight* directionalLight0 = new DirectionalLight(DIRECTIONAL_LIGHT_0);
+	/*DirectionalLight* directionalLight0 = new DirectionalLight(DIRECTIONAL_LIGHT_0);
 
 	directionalLight0->setIdentifier(LIGHT_SOURCE_0);
 
@@ -334,7 +334,7 @@ void init(int argc, char* argv[]) {
 	directionalLight0->setDiffuseIntensity(1.00f);
 	directionalLight0->setSpecularIntensity(1.00f);
 
-	sceneManager->addLight(directionalLight0);
+	sceneManager->addLight(directionalLight0);*/
 
 	/* Light Source 1 */
 	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
@@ -345,8 +345,8 @@ void init(int argc, char* argv[]) {
 	positionalLight1->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
 	positionalLight1->setAmbientIntensity(0.00f);
-	positionalLight1->setDiffuseIntensity(0.50f);
-	positionalLight1->setSpecularIntensity(0.50f);
+	positionalLight1->setDiffuseIntensity(0.75f);
+	positionalLight1->setSpecularIntensity(0.75f);
 
 	positionalLight1->setConstantAttenuation(1.00f);
 	positionalLight1->setLinearAttenuation(0.125f);
@@ -355,15 +355,15 @@ void init(int argc, char* argv[]) {
 	sceneManager->addLight(positionalLight1);
 
 	/* Light Source 2 */
-	SpotLight* spotLight2 = new SpotLight(SPOT_LIGHT_2);
+	/*SpotLight* spotLight2 = new SpotLight(SPOT_LIGHT_2);
 
 	spotLight2->setIdentifier(LIGHT_SOURCE_2);
 
-	spotLight2->setPosition(Vector(0.0f, 5.0f, 5.0f, 1.0f));
+	spotLight2->setPosition(Vector(0.0f, 5.0f, 2.5f, 1.0f));
 	spotLight2->setDirection(Vector(0.0f, 0.0f, -1.0f, 1.0f));
 	spotLight2->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
-	spotLight2->setCutOff(25.0f);
+	spotLight2->setCutOff(15.0f);
 
 	spotLight2->setAmbientIntensity(0.2f);
 	spotLight2->setDiffuseIntensity(1.00f);
@@ -373,7 +373,7 @@ void init(int argc, char* argv[]) {
 	spotLight2->setLinearAttenuation(0.005f);
 	spotLight2->setExponentialAttenuation(0.00005f);
 
-	sceneManager->addLight(spotLight2);
+	sceneManager->addLight(spotLight2);*/
 
 	/* Create Orthogonal Camera */
 	Camera* orthogonalCamera = new Camera(ORTHOGONAL_NAME);
@@ -453,6 +453,7 @@ void init(int argc, char* argv[]) {
 
 	/* Table Surface */
 	Object* tableSurface = new Object(TABLE_SURFACE);
+	tableSurface->setScale(Vector(5.0f,5.0f,1.0f,1.0f));
 	//tableSurface->activateBumpTexture("textures/tampo_diffuse.png","textures/tampo_bump.png");
 	tableSurface->activateMixedTexture("textures/tampo_diffuse.png","textures/tampo_diffuse.png");
 

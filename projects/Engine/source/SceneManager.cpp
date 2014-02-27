@@ -260,6 +260,32 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 		}
 	}
 
+	if(handler->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
+
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_RIGHT) == true) {
+
+			Vector position = _lightMap["Spot Light 2"]->getPosition();
+
+			position[VZ] += 0.1f;
+
+			_lightMap["Spot Light 2"]->setPosition(position);
+			_lightMap["Spot Light 2"]->loadUniforms();
+		}
+	}
+
+	if(handler->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
+
+		if(handler->wasSpecialKeyPressed(GLUT_KEY_LEFT) == true) {
+
+			Vector position = _lightMap["Spot Light 2"]->getPosition();
+
+			position[VZ] -= 0.1f;
+
+			_lightMap["Spot Light 2"]->setPosition(position);
+			_lightMap["Spot Light 2"]->loadUniforms();
+		}
+	}
+
 	/* Sound Buttons */
 	if(handler->isSpecialKeyPressed(GLUT_KEY_F1)) {
 		

@@ -149,7 +149,7 @@ vec4 spotLight(int i) {
 		if (spotEffect < radians(lightSource[i].CutOff))
 			return vec4(0);
 
-		DiffuseColor = (out_Diffuse + TextureColor) * lightSource[i].Color * lightSource[i].DiffuseIntensity * DiffuseFactor;
+		DiffuseColor = (out_Diffuse + TextureColor) * lightSource[i].Color * lightSource[i].DiffuseIntensity * DiffuseFactor * spotEffect;
 
 		vec3 VertexToEye = normalize(vec3(out_CameraPosition - out_Position));
 		vec3 LightReflect = normalize(reflect(vec3(LightDirection), Normal));    
@@ -158,7 +158,7 @@ vec4 spotLight(int i) {
 			                          
 		float SpecularFactor = pow(SpecularAngle, 255);                               
 		if(SpecularFactor > 0.0)
-			SpecularColor = out_Specular * lightSource[i].Color * lightSource[i].SpecularIntensity * SpecularFactor;
+			SpecularColor = out_Specular * lightSource[i].Color * lightSource[i].SpecularIntensity * SpecularFactor * spotEffect;
 	}
 
 	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
