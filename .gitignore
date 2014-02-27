@@ -33,6 +33,7 @@ ipch/
 !output/*.dll
 !dependencies/**/*.lib
 !projects/**/models/*.obj
+!projects/**/models/**/*.obj
 Ankh.NoLoad
 
 #MonoDevelop
