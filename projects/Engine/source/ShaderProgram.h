@@ -23,7 +23,7 @@
 #define MATRICES_STRUCT_SIZE 32
 
 /* Light Source Uniforms */
-#define LIGHT_SOURCES_UNIFORM "LightSources"
+#define LIGHT_SOURCES_UNIFORM "SharedLightSources"
 #define LIGHT_SOURCES_BINDING_POINT 1
 #define LIGHT_SOURCE_STRUCT_SIZE 19
 #define LIGHT_SOURCE_LIMIT 10

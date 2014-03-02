@@ -38,7 +38,7 @@ void DirectionalLight::loadUniforms() {
 
 	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier, 
 										sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, lightSourceArray);
-	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier + sizeof(GLint) * LIGHT_SOURCE_STRUCT_SIZE, 
+	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier + sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, 
 										sizeof(GLint), &lightType);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);

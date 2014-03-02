@@ -283,14 +283,16 @@ void init(int argc, char* argv[]) {
 	setupGLEW();
 	setupOpenGL();
 
+	freopen("output.txt","w",stderr);
+
 	/* Create Bump Map Shader*/
-	BumpMapShader* bumpMapShader = new BumpMapShader(BUMPMAP_SHADER);
+	/*BumpMapShader* bumpMapShader = new BumpMapShader(BUMPMAP_SHADER);
 	bumpMapShader->createShaderProgram();
 	bumpMapShader->bindAttributes();
 	bumpMapShader->linkShaderProgram();
 	bumpMapShader->bindUniforms();
 
-	sceneManager->addShaderProgram(bumpMapShader);
+	sceneManager->addShaderProgram(bumpMapShader);*/
 
 	/* Create Mixed Texture Map Shader*/
 	MixedTextureShader* mixedTextureShader = new MixedTextureShader(MIXED_TEXTURE_SHADER);
@@ -302,39 +304,39 @@ void init(int argc, char* argv[]) {
 	sceneManager->addShaderProgram(mixedTextureShader);
 
 	/* Create Blinn Phong Shader */
-	BlinnPhongShader* blinnPhongShader = new BlinnPhongShader(BLINN_PHONG_SHADER);
+	/*BlinnPhongShader* blinnPhongShader = new BlinnPhongShader(BLINN_PHONG_SHADER);
 	blinnPhongShader->createShaderProgram();
 	blinnPhongShader->bindAttributes();
 	blinnPhongShader->linkShaderProgram();
 	blinnPhongShader->bindUniforms();
 
-	sceneManager->addShaderProgram(blinnPhongShader);
+	sceneManager->addShaderProgram(blinnPhongShader);*/
 	
 	/* Create Real Wood Shader */
-	RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
+	/*RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
 	realWoodShader->createShaderProgram();
 	realWoodShader->bindAttributes();
 	realWoodShader->linkShaderProgram();
 	realWoodShader->bindUniforms();
 
-	sceneManager->addShaderProgram(realWoodShader);
+	sceneManager->addShaderProgram(realWoodShader);*/
 
 	/* Set Active Shader */
-	sceneManager->setActiveShaderProgram(blinnPhongShader);
+	sceneManager->setActiveShaderProgram(mixedTextureShader);
 
 	/* Light Source 0 */
-	/*DirectionalLight* directionalLight0 = new DirectionalLight(DIRECTIONAL_LIGHT_0);
+	DirectionalLight* directionalLight0 = new DirectionalLight(DIRECTIONAL_LIGHT_0);
 
 	directionalLight0->setIdentifier(LIGHT_SOURCE_0);
 
-	directionalLight0->setDirection(Vector(0.0f, 0.0f, 1.0f, 1.0f));
-	directionalLight0->setColor(Vector(1.0f, 1.0f, 0.0f, 1.0f));
+	directionalLight0->setDirection(Vector(0.0f, -1.0f, 0.0f, 1.0f));
+	directionalLight0->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	directionalLight0->setAmbientIntensity(0.2f);
-	directionalLight0->setDiffuseIntensity(1.00f);
-	directionalLight0->setSpecularIntensity(1.00f);
+	directionalLight0->setAmbientIntensity(0.0f);
+	directionalLight0->setDiffuseIntensity(1.0f);
+	directionalLight0->setSpecularIntensity(1.0f);
 
-	sceneManager->addLight(directionalLight0);*/
+	//sceneManager->addLight(directionalLight0);
 
 	/* Light Source 1 */
 	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
@@ -349,31 +351,31 @@ void init(int argc, char* argv[]) {
 	positionalLight1->setSpecularIntensity(0.75f);
 
 	positionalLight1->setConstantAttenuation(1.00f);
-	positionalLight1->setLinearAttenuation(0.125f);
+	positionalLight1->setLinearAttenuation(0.0125f);
 	positionalLight1->setExponentialAttenuation(0.005f);
 
 	sceneManager->addLight(positionalLight1);
 
 	/* Light Source 2 */
-	/*SpotLight* spotLight2 = new SpotLight(SPOT_LIGHT_2);
+	SpotLight* spotLight2 = new SpotLight(SPOT_LIGHT_2);
 
 	spotLight2->setIdentifier(LIGHT_SOURCE_2);
 
-	spotLight2->setPosition(Vector(0.0f, 5.0f, 2.5f, 1.0f));
+	spotLight2->setPosition(Vector(0.0f, 0.0f, 5.0f, 1.0f));
 	spotLight2->setDirection(Vector(0.0f, 0.0f, -1.0f, 1.0f));
 	spotLight2->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
-	spotLight2->setCutOff(15.0f);
+	spotLight2->setCutOff(25.0f);
 
 	spotLight2->setAmbientIntensity(0.2f);
 	spotLight2->setDiffuseIntensity(1.00f);
 	spotLight2->setSpecularIntensity(1.00f);
 
-	spotLight2->setConstantAttenuation(2.0f);
+	spotLight2->setConstantAttenuation(1.0f);
 	spotLight2->setLinearAttenuation(0.005f);
 	spotLight2->setExponentialAttenuation(0.00005f);
 
-	sceneManager->addLight(spotLight2);*/
+	sceneManager->addLight(spotLight2);
 
 	/* Create Orthogonal Camera */
 	Camera* orthogonalCamera = new Camera(ORTHOGONAL_NAME);

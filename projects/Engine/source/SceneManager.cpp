@@ -270,6 +270,10 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();
+
+			_objectMap["Gold " TEAPOT]->setPosition(position);
+
+			cout << "Position Z = " << position[VZ] << endl;
 		}
 	}
 
@@ -283,6 +287,10 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();
+
+			_objectMap["Gold " TEAPOT]->setPosition(position);
+
+			cout << "Position Z = " << position[VZ] << endl;
 		}
 	}
 
@@ -329,32 +337,6 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			channel[1]->stop();
 		}
-	}
-
-	/* Reset Button */
-	if(handler->isKeyPressed('i')) {
-		
-		/* Edit Mode - Increment Up */
-		if(handler->wasKeyPressed('i')) {
-
-			Vector position(0.0f, -2.5f, 0.0f, 1.0f);
-			Vector velocity(0.0f, 0.0f, 0.0f, 1.0f);
-
-			_objectMap[MALLET]->setPosition(position);
-			_objectMap[MALLET]->setVelocity(velocity);
-		}
-	}
-
-	/* Scene Settings */
-	if(handler->wasKeyPressedThisFrame('c')){
-
-		if(_activeCamera->getName().compare(PERSPECTIVE_NAME) == 0)
-			_activeCamera = _cameraMap[ORTHOGONAL_NAME];
-		else
-			_activeCamera = _cameraMap[PERSPECTIVE_NAME];
-
-		_activeCamera->setUniformBufferIndex(_activeShaderProgram->getUniformBufferIndex(MATRICES_UNIFORM));
-		_activeCamera->loadUniforms();
 	}	
 
 	if(handler->isKeyPressed('x'))
