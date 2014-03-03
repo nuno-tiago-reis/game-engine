@@ -31,15 +31,5 @@ void BlinnPhongShader::bindUniforms() {
 	/* Binds Projection, View Matrices and Light Sources */
 	ShaderProgram::bindUniforms();
 
-	/*_uniformLocationMap["pointLight.Position"] = getUniformLocation("pointLight.Position");
-	_uniformLocationMap["pointLight.Color"] = getUniformLocation("pointLight.Color");
-
-	_uniformLocationMap["pointLight.AmbientIntensity"] = getUniformLocation("pointLight.AmbientIntensity");
-	_uniformLocationMap["pointLight.DiffuseIntensity"] = getUniformLocation("pointLight.DiffuseIntensity");
-
-	_uniformLocationMap["pointLight.Attenuation_Constant"] = getUniformLocation("pointLight.Attenuation_Constant");
-	_uniformLocationMap["pointLight.Attenuation_Linear"] = getUniformLocation("pointLight.Attenuation_Linear");
-	_uniformLocationMap["pointLight.Attenuation_Exp"] = getUniformLocation("pointLight.Attenuation_Exp");*/
-
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
 }

@@ -11,7 +11,7 @@ BufferObject::BufferObject(const Vertex* vertices, GLint vertexCount) {
 
 BufferObject::~BufferObject() {
 
-	delete _vertices;
+	delete[] _vertices;
 }
 
 void BufferObject::createBufferObject() {

@@ -32,6 +32,9 @@ void MatrixStack::push(Matrix matrix) {
 
 Matrix MatrixStack::pop() {
 
+	if(_matrixStack.empty() == true)
+		return Matrix();
+
 	Matrix matrix = _matrixStack.back();
 
 	_matrixStack.pop_back();

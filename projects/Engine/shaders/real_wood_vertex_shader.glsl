@@ -1,8 +1,13 @@
 #version 330 core
-
-#define lightCount 10
 #pragma optionNV(unroll all)
 
+#define LIGHT_COUNT 10
+
+#define SPOT_LIGHT 1
+#define POSITIONAL_LIGHT 2
+#define DIRECTIONAL_LIGHT 3
+
+/* Input Variables */
 in vec4 Position;
 
 in vec4 Normal;
@@ -15,10 +20,12 @@ in vec4 Diffuse;
 in vec4 Specular;
 in float SpecularConstant;
 
+
+/* Uniforms */
 uniform mat4 ModelMatrix;
 
-layout(std140) uniform SharedMatrices
-{
+layout(std140) uniform SharedMatrices {
+
 	mat4 ViewMatrix;
 	mat4 ProjectionMatrix;
 };
@@ -40,20 +47,21 @@ struct LightSource {
 	float LinearAttenuation;
 	float ExponentialAttenuation;
 
-	int lightType;
+	int LightType;
 };
 
-layout(std140) uniform LightSources {
+layout(std140) uniform SharedLightSources {
 
-	LightSource lightSource[10];
+	LightSource LightSources[LIGHT_COUNT];
 };
 
-mat4 ModelViewMatrix = ViewMatrix * ModelMatrix;
+uniform sampler3D Noise;
+uniform float NoiseScale;
 
+/* Output Variables */
 out vec4 out_Position;
-out vec4 out_CameraPosition;
 
-out vec2 out_TextureUV;
+out vec4 out_ModelSpacePosition;
 
 out vec3 out_Normal;
 
@@ -61,28 +69,30 @@ out vec4 out_Ambient;
 out vec4 out_Diffuse;
 out vec4 out_Specular;
 
-out vec4 lightPosition[lightCount];
+out float out_SpecularConstant;
+
+out mat3 NormalMatrix;
+out mat3 LightMatrix;
 
 void main() {
 
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
-	
-    out_Position = ModelMatrix * Position;
-	out_CameraPosition = inverse(ViewMatrix) * vec4(0.0, 0.0, 0.0, 1.0);
-	
-	out_TextureUV = TextureUV;
+	/* Normal transformation matrices */
+	NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
+	LightMatrix = inverse(transpose(mat3(ViewMatrix)));
 
-	out_Normal = vec3(ModelMatrix * Normal);
+	/* Vertex Position computing */
+	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
+
+    out_Position = ViewMatrix * ModelMatrix * Position;
+
+	out_ModelSpacePosition = ModelMatrix * Position;
 	
+	/* Normal Space computing */
+	out_Normal = normalize(NormalMatrix * vec3(Normal));
+
+	/* Material Computing */
 	out_Ambient = Ambient;
 	out_Diffuse = Diffuse;
-	out_Specular = Specular;	
-	
-	for(int i=0; i<lightCount; i++) {
-
-		if(lightSource[i].lightType == 0)
-			continue;
-
-		lightPosition[i] = ViewMatrix * lightSource[i].Position;
-	}
+	out_Specular = Specular;
+	out_SpecularConstant = SpecularConstant;
 }

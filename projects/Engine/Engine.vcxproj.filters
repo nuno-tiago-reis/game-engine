@@ -57,12 +57,6 @@
     <Filter Include="Source Files\Shader\BumpMap\glsl">
       <UniqueIdentifier>{7fbae9e1-2139-4870-a0ef-5ef217c6e8dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\Wood">
-      <UniqueIdentifier>{d803a608-2c1c-4f9a-a7e1-17e25c9c71dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\Wood\glsl">
-      <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SceneManager\SceneGraph">
       <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
     </Filter>
@@ -125,6 +119,12 @@
     </Filter>
     <Filter Include="Source Files\Shader\MixedTexture\glsl">
       <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Wood">
+      <UniqueIdentifier>{d803a608-2c1c-4f9a-a7e1-17e25c9c71dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Wood\glsl">
+      <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

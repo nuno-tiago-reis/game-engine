@@ -25,6 +25,23 @@ typedef struct {
 
 } Material;
 
+typedef struct {
+
+	GLfloat x;
+	GLfloat y;
+	GLfloat z;
+
+} Coordinate3D;
+
+typedef struct {
+
+	GLfloat u;
+	GLfloat v;
+
+} Coordinate2D;
+
+using namespace std;
+
 class OBJ_Reader {
 
 	private:

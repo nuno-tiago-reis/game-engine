@@ -56,7 +56,7 @@ class Vector {
 		static GLfloat dotProduct(Vector u, Vector v);		
 
 		/* Getters  */
-		GLfloat* getValue();
+		void getValue(GLfloat* vector);
 
 		/* Setters */
 		void setValue(const GLfloat value[4]);

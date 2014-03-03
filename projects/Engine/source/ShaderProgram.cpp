@@ -165,6 +165,7 @@ void ShaderProgram::bindUniforms() {
 
 		glBindBuffer(GL_UNIFORM_BUFFER,0);
 	}
+
 	bufferCreated=true;
 
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
@@ -217,7 +218,7 @@ GLuint ShaderProgram::getProgramID() {
 
 GLuint ShaderProgram::getUniformLocation(string uniformName) {
 
-	return _uniformLocationMap[uniformName];// = glGetUniformLocation(_programID,uniformName);
+	return _uniformLocationMap[uniformName];
 }
 
 GLuint ShaderProgram::getUniformBlockIndex(string uniformBlockName) {

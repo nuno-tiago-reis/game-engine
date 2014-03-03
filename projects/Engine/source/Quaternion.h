@@ -58,7 +58,7 @@ class Quaternion {
 		GLfloat quadrance();
 
 		/* Getters */
-		GLfloat* getValue();
+		void getValue(GLfloat* quaternion);
 
 		/* Setters */
 		void setValue(const GLfloat value[4]);

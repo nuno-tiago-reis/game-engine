@@ -81,7 +81,6 @@ void SceneManager::init() {
 
 	loadUniforms();
 
-
 	/* Load Sounds */
 	map<string,Sound*>::const_iterator soundIterator;
 	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
@@ -191,21 +190,21 @@ void SceneManager::update(GLfloat elapsedTime) {
 	readMouse(elapsedTime);
 	readKeyboard(elapsedTime);
 
-	Vector teapotRotation = _objectMap["Ruby " TEAPOT]->getRotation();
+	Vector cubeRotation = _objectMap[TEST_CUBE]->getRotation();
 
 	switch(_rotationAxis) {
 	
 		case 0:	break;
 
-		case 1:	teapotRotation[VX] += 50.00f * elapsedTime;
+		case 1:	cubeRotation[VX] += 50.00f * elapsedTime;
 				break;
-		case 2:	teapotRotation[VY] += 50.00f * elapsedTime;
+		case 2:	cubeRotation[VY] += 50.00f * elapsedTime;
 				break;
-		case 3:	teapotRotation[VZ] += 50.00f * elapsedTime;
+		case 3:	cubeRotation[VZ] += 50.00f * elapsedTime;
 				break;
 	}
 
-	_objectMap["Ruby " TEAPOT]->setRotation(teapotRotation);
+	_objectMap[TEST_CUBE]->setRotation(cubeRotation);
 
 	_fmodSystem->update();
 
@@ -270,10 +269,6 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();
-
-			_objectMap["Gold " TEAPOT]->setPosition(position);
-
-			cout << "Position Z = " << position[VZ] << endl;
 		}
 	}
 
@@ -287,10 +282,6 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();
-
-			_objectMap["Gold " TEAPOT]->setPosition(position);
-
-			cout << "Position Z = " << position[VZ] << endl;
 		}
 	}
 
@@ -395,13 +386,12 @@ void SceneManager::readMouse(GLfloat elapsedTime) {
 
 void SceneManager::rayCast(GLint* mousePosition, GLfloat elapsedTime) {
 
-	Matrix invertedProjectionMatrix(_activeCamera->getProjectionMatrix().getValue());
-	Matrix invertedViewMatrix(_activeCamera->getViewMatrix().getValue());
-
+	Matrix invertedProjectionMatrix = _activeCamera->getProjectionMatrix();
 	invertedProjectionMatrix.invert();
-	invertedViewMatrix.invert();
-
 	invertedProjectionMatrix.transpose();
+
+	Matrix invertedViewMatrix = _activeCamera->getViewMatrix();
+	invertedViewMatrix.invert();
 	invertedViewMatrix.transpose();
 
 	Vector rayOrigin;
@@ -452,8 +442,7 @@ void SceneManager::rayCast(GLint* mousePosition, GLfloat elapsedTime) {
 		rayTarget.clean();
 	}
 
-	Vector rayDirection(rayTarget.getValue());
-
+	Vector rayDirection = rayTarget;
 	rayDirection -= rayOrigin;
 	rayDirection.normalize();
 	rayDirection.clean();

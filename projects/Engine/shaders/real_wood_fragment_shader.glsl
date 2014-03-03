@@ -1,10 +1,15 @@
 #version 330 core
-
-#define lightCount 10
 #pragma optionNV(unroll all)
 
+#define LIGHT_COUNT 10
+
+#define SPOT_LIGHT 1
+#define POSITIONAL_LIGHT 2
+#define DIRECTIONAL_LIGHT 3
+
 in vec4 out_Position;
-in vec4 out_CameraPosition;
+
+in vec4 out_ModelSpacePosition;
 
 in vec2 out_TextureUV;
 
@@ -13,8 +18,16 @@ in vec3 out_Normal;
 in vec4 out_Ambient;
 in vec4 out_Diffuse;
 in vec4 out_Specular;
+in float out_SpecularConstant;
 
-in vec4 lightPosition[lightCount];
+in mat3 NormalMatrix;
+in mat3 LightMatrix;
+
+layout(std140) uniform SharedMatrices {
+
+	mat4 ViewMatrix;
+	mat4 ProjectionMatrix;
+};
 
 struct LightSource {
 
@@ -33,91 +46,186 @@ struct LightSource {
 	float LinearAttenuation;
 	float ExponentialAttenuation;
 
-	int lightType;
+	int LightType;
 };
 
-layout(std140) uniform LightSources {
+layout(std140) uniform SharedLightSources {
 
-	LightSource lightSource[10];
+	LightSource LightSources[LIGHT_COUNT];
 };
+
+uniform mat4 ModelMatrix;
 
 uniform sampler3D Noise;
 uniform float NoiseScale;
 
 out vec4 out_Color;
 
+vec4 positionalLight(int i, vec4 NoiseColor) {
+
+	/* Vertex Normal */
+	vec3 Normal = out_Normal;
+	
+	/* Light LightDistance / Direction */
+	vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
+	float LightDistance = length(LightDirection);  
+	LightDirection = normalize(LightDirection);
+
+	/* Light Intensity */
+	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
+
+	/* Ambient Component */
+	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 DiffuseColor = vec4(0, 0, 0, 1);                                            
+	vec4 SpecularColor = vec4(0, 0, 0, 1);
+
+	/* Diffuse Component */
+	float DiffuseFactor = max(dot(Normal, LightDirection), 0.0);
+
+	if (DiffuseFactor > 0.0) {
+
+		DiffuseColor = (out_Diffuse * NoiseColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+
+		/* Specular Component */
+		vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
+			                
+		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+			                          
+		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                
+		if(SpecularFactor > 0.0)
+			SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+	}
+
+	/* Final Calculation */
+	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
+}
+
+vec4 directionalLight(int i, vec4 NoiseColor) {
+
+	/* Vertex Normal */
+	vec3 Normal = out_Normal;
+
+	/* Light LightDistance / Direction */
+	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
+
+	/* Ambient Component */
+	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 DiffuseColor = vec4(0, 0, 0, 1);                                            
+	vec4 SpecularColor = vec4(0, 0, 0, 1);
+
+	/* Diffuse Component */
+	float DiffuseFactor = max(dot(Normal, -LightDirection), 0.0);
+
+	if (DiffuseFactor > 0) {
+
+		DiffuseColor = (out_Diffuse * NoiseColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+
+		/* Specular Component */
+		vec3 HalfwayVector = normalize(LightDirection);
+
+		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+			                          
+		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
+		if(SpecularFactor > 0.0)
+			SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+	}
+
+	/* Final Calculation */
+	return AmbientColor + DiffuseColor + SpecularColor;
+
+	return vec4(LightDirection,1);
+}
+
+vec4 spotLight(int i, vec4 NoiseColor) {
+
+	/* Vertex Normal */
+	vec3 Normal = out_Normal;
+
+	/* Light LightDistance / Direction */
+	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - out_Position);
+	float LightDistance = length(LightToVertex);  
+	LightToVertex = normalize(LightToVertex);
+
+	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
+
+	/* Light Intensity */
+	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
+
+	/* Ambient Component */
+	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 DiffuseColor = vec4(0, 0, 0, 0);                                            
+	vec4 SpecularColor = vec4(0, 0, 0, 0);
+	
+	/* Diffuse Component */
+	float DiffuseFactor = max(dot(Normal, LightToVertex), 0.0);
+
+	if (DiffuseFactor > 0) {
+
+		float spotEffect = dot(LightDirection, -LightToVertex);
+
+		if (spotEffect > cos(radians(LightSources[i].CutOff))) {
+
+			spotEffect = pow(spotEffect,1.5);
+
+			LightIntensity = spotEffect / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
+
+			DiffuseColor = (out_Diffuse * NoiseColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+
+			/* Specular Component */
+			vec3 HalfwayVector = normalize(vec3(-out_Position)) + normalize(vec3(ViewMatrix * LightSources[i].Position - out_Position));
+			HalfwayVector = normalize(HalfwayVector);
+			                
+			float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+			                          
+			float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
+			if(SpecularFactor > 0.0)
+				SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+		}
+	}
+
+	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
+}
+
 void main() {
 
-	vec4 escuro=vec4(0.4, 0.2, 0.07, 1.0);
-	vec4 claro=vec4(0.6, 0.3, 0.1, 1.0);
-	float rfreq=20;
-	float rescala=3.14;
-	float rsharp=4352.0;
+	vec4 DarkShade=vec4(0.4, 0.2, 0.07, 1.0);
+	vec4 LightShade=vec4(0.6, 0.3, 0.1, 1.0);
+	float RepetitionRate=20;
+	float RepetitionScale=3.14;
+	float RepetitionSharpness=4352.0;
+
+	mat4 RotationMatrix;
+	RotationMatrix[0]=vec4(0.75,-0.21651,0.625,0);
+	RotationMatrix[1]=vec4(0.43301,0.875,-0.21651,0);
+	RotationMatrix[2]=vec4(-0.5,0.43301,0.75,0);
+	RotationMatrix[3]=vec4(0,0,0,1);
 	
-	//rotation matrix
-	mat4 mat;
-	mat[0]=vec4(0.75,-0.21651,0.625,0);
-	mat[1]=vec4(0.43301,0.875,-0.21651,0);
-	mat[2]=vec4(-0.5,0.43301,0.75,0);
-	mat[3]=vec4(0,0,0,1);
+	vec3 RotatedPosition =  (RotationMatrix * out_ModelSpacePosition * NoiseScale).xyz;
+	float RotatedNoise = 2.0 * texture(Noise, RotatedPosition).r - 1.0;
+	float r = fract(RepetitionRate * (out_ModelSpacePosition.z * NoiseScale) + RepetitionScale * RotatedNoise);
+	float invMax = pow(RepetitionSharpness, RepetitionSharpness / (RepetitionSharpness - 1.0))/(RepetitionSharpness - 1.0);
+	float ring = invMax * (r - pow(r, RepetitionSharpness));
+	float lerp = ring + RotatedNoise;
 	
-	vec3 scaledPos =  (mat * out_Position * NoiseScale).xyz;
-	float snoise = 2.0 * texture(Noise, scaledPos).r - 1.0;
-	float r = fract(rfreq * (out_Position.z*NoiseScale) + rescala * snoise);
-	float invMax = pow(rsharp, rsharp / (rsharp - 1.0))/(rsharp - 1.0);
-	float ring = invMax * (r - pow(r, rsharp));
-	float lerp = ring + snoise;
-	
-	vec4 noiseColor = mix(escuro, claro, lerp);
+	vec4 NoiseColor = mix(DarkShade, LightShade, lerp);
 
 	out_Color = vec4(0);
+	
+	for(int i=0; i<LIGHT_COUNT; i++) {
 
-	for(int i=0; i<lightCount; i++) {
-
-		if(lightSource[i].lightType == 0)
+		if(LightSources[i].LightType == 0)
 			continue;
 
-		vec3 Normal = normalize(out_Normal);
-
-		vec4 LightDirection = out_Position - lightSource[i].Position;
-		float Distance = length(LightDirection);  
-		LightDirection = normalize(LightDirection);
-
-		float LightIntensity = 1.0 / (lightSource[i].ConstantAttenuation + lightSource[i].LinearAttenuation * Distance + lightSource[i].ExponentialAttenuation * Distance * Distance);
+		switch(LightSources[i].LightType) { 
 		
-		vec4 AmbientColor = noiseColor * lightSource[i].Color * lightSource[i].AmbientIntensity;
-		vec4 DiffuseColor = noiseColor * lightSource[i].Color * lightSource[i].DiffuseIntensity;
-		vec4 SpecularColor = noiseColor * lightSource[i].Color * lightSource[i].SpecularIntensity;
+			case SPOT_LIGHT:		out_Color += spotLight(i,NoiseColor);
+									break;
+			
+			case DIRECTIONAL_LIGHT:	out_Color += directionalLight(i,NoiseColor);
+									break;
 
-		/*float DiffuseFactor = max(dot(Normal,vec3(-LightDirection)), 0.0);
-		DiffuseColor = DiffuseColor * DiffuseFactor;
-		float SpecularFactor = 0.0;
-
-		if(DiffuseFactor > 0.0) {
-
-			vec3 ViewDirection = normalize(vec3(-out_Position));
-			vec3 HalfDirection = normalize(vec3(LightDirection) + ViewDirection);
-
-			float SpecularAngle = max(dot(ViewDirection, Normal), 0.0);
-
-			SpecularFactor = pow(SpecularAngle, 16.0);
-		}*/
-		
-		float DiffuseFactor = dot(Normal, vec3(-LightDirection));
-		DiffuseColor = DiffuseColor * DiffuseFactor;
-
-		if (DiffuseFactor > 0) {
-
-			vec3 VertexToEye = normalize(vec3(out_CameraPosition - out_Position));
-			vec3 LightReflect = normalize(reflect(vec3(LightDirection), Normal));    
-			                
-			float SpecularAngle = dot(VertexToEye, LightReflect);   
-			                          
-			float SpecularFactor = pow(SpecularAngle, 0);                               
-			if(SpecularFactor > 0.0)
-				SpecularColor = SpecularColor * SpecularFactor;
+			case POSITIONAL_LIGHT:	out_Color += positionalLight(i,NoiseColor);
+									break;
 		}
-
-		out_Color += AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
 	}
 }

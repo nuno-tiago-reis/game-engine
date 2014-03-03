@@ -23,83 +23,88 @@ void OBJ_Reader::destroyInstance() {
 	instance = NULL;
 }
 
-std::vector<int> &split(const std::string &s, char delim, std::vector<int> &elems);
-std::vector<int> split(const std::string &s, char delim);
+vector<int> &split(const string &s, char delim, vector<int> &elems);
+vector<int> split(const string &s, char delim);
 
-void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object* graphicObject){
-	
-	string line;
-	string activeMaterial;
-
-	int facesN = 0, verticesN = 0, uvcoordsN = 0, normalsN = 0, vertexCount = 0;
-
-	bool materials = false;
+void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object* graphicObject) {
 
 	cout << modelFilename << " - " << materialFilename << endl;
 
-	//first read all materials
-	map<string,Material> materialsMap;
+	string line;
 
-	std::ifstream materialFile(LOCATION + materialFilename);
+	/* Reading the Materials .mtl */
+	bool hasMaterial = false;
+
+	string activeMaterial;
+	map<string,Material> materialMap;	
+
+	ifstream materialFile(LOCATION + materialFilename);
 
 	while(getline(materialFile, line)) {
 
-		materials = true;
+		hasMaterial = true;
 
 		istringstream iss(line);
 
 		string start;
 		iss >> start;
 		
-		if(start == "Kd") {
-
-			float x,y,z;
-
-			iss >> x >> y >> z;
-
-			materialsMap[activeMaterial].diffuse[0] = x;
-			materialsMap[activeMaterial].diffuse[1] = y;
-			materialsMap[activeMaterial].diffuse[2] = z;
-		}
-		else if(start == "Ka") {
-
-			float x,y,z;
-
-			iss >> x >> y >> z;
-
-			materialsMap[activeMaterial].ambient[0] = x;
-			materialsMap[activeMaterial].ambient[1] = y;
-			materialsMap[activeMaterial].ambient[2] = z;
-		}
-		else if(start == "Ks") {
-
-			float x,y,z;
-
-			iss >> x >> y >> z;
-
-			materialsMap[activeMaterial].specular[0] = x;
-			materialsMap[activeMaterial].specular[1] = y;
-			materialsMap[activeMaterial].specular[2] = z;
-		}
-		else if(start == "Ns") {
-
-			float x;
-
-			iss >> x;
-
-			materialsMap[activeMaterial].specularConstant = x;
-		}
-		else if(start == "newmtl") {
+		/* Reading a new Material */
+		if(start == "newmtl") {
 
 			iss >> activeMaterial;
 		}
+		/* Reading Ambient Component */
+		else if(start == "Ka") {
+
+			float x,y,z;
+			iss >> x >> y >> z;
+
+			materialMap[activeMaterial].ambient[0] = x;
+			materialMap[activeMaterial].ambient[1] = y;
+			materialMap[activeMaterial].ambient[2] = z;
+		}
+		/* Reading Diffuse Component */
+		else if(start == "Kd") {
+
+			float x,y,z;
+			iss >> x >> y >> z;
+
+			materialMap[activeMaterial].diffuse[0] = x;
+			materialMap[activeMaterial].diffuse[1] = y;
+			materialMap[activeMaterial].diffuse[2] = z;
+		}
+		/* Reading Specular Component */
+		else if(start == "Ks") {
+
+			float x,y,z;
+			iss >> x >> y >> z;
+
+			materialMap[activeMaterial].specular[0] = x;
+			materialMap[activeMaterial].specular[1] = y;
+			materialMap[activeMaterial].specular[2] = z;
+		}
+		/* Reading Specular Constant */
+		else if(start == "Ns") {
+
+			float x;
+			iss >> x;
+
+			materialMap[activeMaterial].specularConstant = x;
+		}
 	}
+
 	materialFile.close();
 
-	//first passage, just counting lines
-	std::ifstream infile(LOCATION + modelFilename);
+	/* Reading the Model .obj - First pass */
+	int faceNumber = 0;
+	int vertexNumber = 0;
+	int normalNumber = 0;
+	int textureCoordinateNumber = 0;
 
-	while(getline(infile, line)) {
+	ifstream modelFile(LOCATION + modelFilename);
+
+	while(getline(modelFile, line)) {
 
 		istringstream iss(line);
 
@@ -107,188 +112,263 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 		iss >> start;
 		
 		if(start == "v")
-			verticesN++;
-		else if(start == "vt")
-			uvcoordsN++;
+			vertexNumber++;
 		else if(start == "vn")
-			normalsN++;
+			normalNumber++;
+		else if(start == "vt")
+			textureCoordinateNumber++;
 		else if(start == "f")
-			facesN++;
+			faceNumber++;
 	}
 
-	infile.close();
+	modelFile.close();
 
-	vertexCount = facesN * 3;
+	/* Reading the Model .obj - Second pass */
+	modelFile.open(LOCATION + modelFilename);
 
-	std::ifstream infile2(LOCATION + modelFilename);
+	/* Storage Structuers */
+	Coordinate3D *vertexArray = new Coordinate3D[vertexNumber];
+	Coordinate3D *normalArray = new Coordinate3D[normalNumber];
+	Coordinate2D *textureCoordinateArray = new Coordinate2D[textureCoordinateNumber];
 
-	GLfloat *vertices = new GLfloat[(verticesN+1) * 3 + 1];
-	GLfloat *uvcoord = new GLfloat[(uvcoordsN+1) * 2 + 1];
-	GLfloat *normals = new GLfloat[(normalsN+1) * 3 + 1];
+	/* Calculated after parsing */
+	Vector *sTangentArray = new Vector[vertexNumber];
+	Vector *tTangentArray = new Vector[vertexNumber];
 
-	Vertex *bufferVertices = new Vertex[vertexCount];
+	/* Final GPU-ready Structure */
+	Vertex *bufferVertices = new Vertex[faceNumber * 3];
+	GLint *bufferVerticesID = new GLint[faceNumber * 3];
 
-	verticesN = 0; uvcoordsN = 0; normalsN = 0; facesN = 0;
+	/* Index Trackers */
+	int currentFace = 0;
+	int currentVertex = 0;
+	int currentNormal = 0;
+	int currentTextureCoordinate = 0;
 
 	bool hasNormals = false;
 
-	while(getline(infile2, line)) {
+	while(getline(modelFile, line)) {
 
 		istringstream iss(line);
 
 		string start;
-
 		iss >> start;
 
-		float x,y,z;
-		
-		if(start == "v") {
-
-			verticesN++;
-
-			iss >> x >> y >> z;
-
-			vertices[verticesN*3 + X] = x;
-			vertices[verticesN*3 + Y] = y;
-			vertices[verticesN*3 + Z] = z;			
-		}
-		else if(start == "vt") {
-
-			uvcoordsN++;
-
-			iss >> x >> y;
-
-			uvcoord[uvcoordsN*2 + X] = x;
-			uvcoord[uvcoordsN*2 + Y] = y;
-		}
-		else if(start == "vn") {
-
-			normalsN++;
-
-			iss >> x >> y >> z;
-
-			normals[normalsN*3 + X] = x;
-			normals[normalsN*3 + Y] = y;
-			normals[normalsN*3 + Z] = z;			
-		}
-		else if(start == "usemtl") {
+		if(start == "usemtl") {
 
 			iss >> activeMaterial;
 		}
+		else if(start == "v") {
+
+			float x,y,z;
+			iss >> x >> y >> z;
+
+			vertexArray[currentVertex].x = x;
+			vertexArray[currentVertex].y = y;
+			vertexArray[currentVertex].z = z;			
+
+			currentVertex++;
+		}
+		else if(start == "vn") {
+
+			float x,y,z;
+			iss >> x >> y >> z;
+
+			normalArray[currentNormal].x = x;
+			normalArray[currentNormal].y = y;
+			normalArray[currentNormal].z = z;			
+
+			currentNormal++;
+		} 
+		else if(start == "vt") {
+
+			float u,v;
+			iss >> u >> v;
+
+			textureCoordinateArray[currentTextureCoordinate].u = u;
+			textureCoordinateArray[currentTextureCoordinate].v = v;
+
+			currentTextureCoordinate++;
+		}
 		else if(start == "f") {
 
-			string a,b,c;
-			iss >> a >> b >> c;
+			string faceVertex[3];
+			iss >> faceVertex[0] >> faceVertex[1] >> faceVertex[2];
 
-			vector<int> index;
-			
-			for(int i = 0; i < 3; i++) {
+			for(int i=0; i<3; i++) {
 
-				if(i == 0)
-					index = split(a, '/');
-				if(i == 1)
-					index = split(b, '/');
-				if(i == 2)
-					index = split(c, '/');
-				
-				bufferVertices[facesN * 3 + i].position[0] = vertices[(index[0] * 3) + X];
-				bufferVertices[facesN * 3 + i].position[1] = vertices[(index[0] * 3) + Y];
-				bufferVertices[facesN * 3 + i].position[2] = vertices[(index[0] * 3) + Z];
-				bufferVertices[facesN * 3 + i].position[3] = 1.0f;
+				vector<int> index = split(faceVertex[i], '/');
 
-				if(!materials) {
+				/* Vertex ID */
+				bufferVerticesID[currentFace * 3 + i] = index[0]-1;
 
-					bufferVertices[facesN * 3 + i].ambient[0] = 1.0f;
-					bufferVertices[facesN * 3 + i].ambient[1] = 1.0f;
-					bufferVertices[facesN * 3 + i].ambient[2] = 1.0f;
-					bufferVertices[facesN * 3 + i].ambient[3] = 1.0f;
+				/* Vertex Position */
+				bufferVertices[currentFace * 3 + i].position[0] = vertexArray[index[0]-1].x;
+				bufferVertices[currentFace * 3 + i].position[1] = vertexArray[index[0]-1].y;
+				bufferVertices[currentFace * 3 + i].position[2] = vertexArray[index[0]-1].z;
+				bufferVertices[currentFace * 3 + i].position[3] = 1.0f;
 
-					bufferVertices[facesN * 3 + i].diffuse[0] = 1.0f;
-					bufferVertices[facesN * 3 + i].diffuse[1] = 1.0f;
-					bufferVertices[facesN * 3 + i].diffuse[2] = 1.0f;
-					bufferVertices[facesN * 3 + i].diffuse[3] = 1.0f;
-					
-					bufferVertices[facesN * 3 + i].specular[0] = 0.0f;
-					bufferVertices[facesN * 3 + i].specular[1] = 0.0f;
-					bufferVertices[facesN * 3 + i].specular[2] = 0.0f;
-					bufferVertices[facesN * 3 + i].specular[3] = 1.0f;
-
-					bufferVertices[facesN * 3 + i].specularConstant = 1.0f;
-
-				}
-				else {
-
-					bufferVertices[facesN * 3 + i].ambient[0] = materialsMap[activeMaterial].ambient[0];
-					bufferVertices[facesN * 3 + i].ambient[1] = materialsMap[activeMaterial].ambient[1];
-					bufferVertices[facesN * 3 + i].ambient[2] = materialsMap[activeMaterial].ambient[2];
-					bufferVertices[facesN * 3 + i].ambient[3] = 1.0f;
-
-					bufferVertices[facesN * 3 + i].diffuse[0] = materialsMap[activeMaterial].diffuse[0];
-					bufferVertices[facesN * 3 + i].diffuse[1] = materialsMap[activeMaterial].diffuse[1];
-					bufferVertices[facesN * 3 + i].diffuse[2] = materialsMap[activeMaterial].diffuse[2];
-					bufferVertices[facesN * 3 + i].diffuse[3] = 1.0f;
-					
-					bufferVertices[facesN * 3 + i].specular[0] = materialsMap[activeMaterial].specular[0];
-					bufferVertices[facesN * 3 + i].specular[1] = materialsMap[activeMaterial].specular[1];
-					bufferVertices[facesN * 3 + i].specular[2] = materialsMap[activeMaterial].specular[2];
-					bufferVertices[facesN * 3 + i].specular[3] = 1.0f;
-					
-					bufferVertices[facesN * 3 + i].specularConstant = materialsMap[activeMaterial].specularConstant;
-				}
-
+				/* Vertex Normals */
 				if(index.size() >= 3) {
 
-					bufferVertices[facesN * 3 + i].normal[0] = normals[(index[2] * 3) + X];
-					bufferVertices[facesN * 3 + i].normal[1] = normals[(index[2] * 3) + Y];
-					bufferVertices[facesN * 3 + i].normal[2] = normals[(index[2] * 3) + Z];
-					bufferVertices[facesN * 3 + i].normal[3] = 0.0f;
-				}
-				else {
-
-					bufferVertices[facesN * 3 + i].normal[0] = 0.0f;
-					bufferVertices[facesN * 3 + i].normal[1] = 0.0f;
-					bufferVertices[facesN * 3 + i].normal[2] = 0.0f;
-					bufferVertices[facesN * 3 + i].normal[3] = 0.0f; 				
-				}
-			
-				if(index.size() >= 2) {
-
-					bufferVertices[facesN * 3 + i].textureUV[0] = uvcoord[(index[1] * 2) + X];
-					bufferVertices[facesN * 3 + i].textureUV[1] = uvcoord[(index[1] * 2) + Y];
-				}
-				else {
-
-					bufferVertices[facesN * 3 + i].textureUV[0] = 0.0f;
-					bufferVertices[facesN * 3 + i].textureUV[1] = 0.0f;
-				}
-
-				if(index.size() >= 3)
 					hasNormals = true;
 
-				bufferVertices[facesN * 3 + i].tangent[0] = 0.0f; 
-				bufferVertices[facesN * 3 + i].tangent[1] = 0.0f; 
-				bufferVertices[facesN * 3 + i].tangent[2] = 0.0f; 
-				bufferVertices[facesN * 3 + i].tangent[3] = 1.0f; 
+					bufferVertices[currentFace * 3 + i].normal[0] = normalArray[index[2]-1].x;
+					bufferVertices[currentFace * 3 + i].normal[1] = normalArray[index[2]-1].y;
+					bufferVertices[currentFace * 3 + i].normal[2] = normalArray[index[2]-1].z;
+					bufferVertices[currentFace * 3 + i].normal[3] = 1.0f;
+				}
+				else {
+
+					bufferVertices[currentFace * 3 + i].normal[0] = 0.0f;
+					bufferVertices[currentFace * 3 + i].normal[1] = 0.0f;
+					bufferVertices[currentFace * 3 + i].normal[2] = 0.0f;
+					bufferVertices[currentFace * 3 + i].normal[3] = 1.0f; 				
+				}
+			
+				/* Vertex Texture Coordinates */
+				if(index.size() >= 2) {
+
+					bufferVertices[currentFace * 3 + i].textureUV[0] = textureCoordinateArray[index[1]-1].u;
+					bufferVertices[currentFace * 3 + i].textureUV[1] = textureCoordinateArray[index[1]-1].v;
+				} 
+				else {
+
+					bufferVertices[currentFace * 3 + i].textureUV[0] = 0.0f;
+					bufferVertices[currentFace * 3 + i].textureUV[1] = 0.0f;
+				}
+
+				/* Vertex Material */
+				if(hasMaterial == true) {
+
+					bufferVertices[currentFace * 3 + i].ambient[0] = materialMap[activeMaterial].ambient[0];
+					bufferVertices[currentFace * 3 + i].ambient[1] = materialMap[activeMaterial].ambient[1];
+					bufferVertices[currentFace * 3 + i].ambient[2] = materialMap[activeMaterial].ambient[2];
+					bufferVertices[currentFace * 3 + i].ambient[3] = 1.0f;
+
+					bufferVertices[currentFace * 3 + i].diffuse[0] = materialMap[activeMaterial].diffuse[0];
+					bufferVertices[currentFace * 3 + i].diffuse[1] = materialMap[activeMaterial].diffuse[1];
+					bufferVertices[currentFace * 3 + i].diffuse[2] = materialMap[activeMaterial].diffuse[2];
+					bufferVertices[currentFace * 3 + i].diffuse[3] = 1.0f;
+					
+					bufferVertices[currentFace * 3 + i].specular[0] = materialMap[activeMaterial].specular[0];
+					bufferVertices[currentFace * 3 + i].specular[1] = materialMap[activeMaterial].specular[1];
+					bufferVertices[currentFace * 3 + i].specular[2] = materialMap[activeMaterial].specular[2];
+					bufferVertices[currentFace * 3 + i].specular[3] = 1.0f;
+					
+					bufferVertices[currentFace * 3 + i].specularConstant = materialMap[activeMaterial].specularConstant;					
+				}
+				else {
+
+					bufferVertices[currentFace * 3 + i].ambient[0] = 1.0f;
+					bufferVertices[currentFace * 3 + i].ambient[1] = 1.0f;
+					bufferVertices[currentFace * 3 + i].ambient[2] = 1.0f;
+					bufferVertices[currentFace * 3 + i].ambient[3] = 1.0f;
+
+					bufferVertices[currentFace * 3 + i].diffuse[0] = 1.0f;
+					bufferVertices[currentFace * 3 + i].diffuse[1] = 1.0f;
+					bufferVertices[currentFace * 3 + i].diffuse[2] = 1.0f;
+					bufferVertices[currentFace * 3 + i].diffuse[3] = 1.0f;
+					
+					bufferVertices[currentFace * 3 + i].specular[0] = 0.0f;
+					bufferVertices[currentFace * 3 + i].specular[1] = 0.0f;
+					bufferVertices[currentFace * 3 + i].specular[2] = 0.0f;
+					bufferVertices[currentFace * 3 + i].specular[3] = 1.0f;
+
+					bufferVertices[currentFace * 3 + i].specularConstant = 255.0f;
+				}
 			}
 
-			facesN++;
+			/* Create the Vertex-based Edges */
+			Coordinate3D xyz1;
+			xyz1.x = bufferVertices[currentFace * 3 + 1].position[0] - bufferVertices[currentFace * 3].position[0];
+			xyz1.y = bufferVertices[currentFace * 3 + 1].position[1] - bufferVertices[currentFace * 3].position[1];
+			xyz1.z = bufferVertices[currentFace * 3 + 1].position[2] - bufferVertices[currentFace * 3].position[2];
+
+			Coordinate3D xyz2;
+			xyz2.x = bufferVertices[currentFace * 3 + 2].position[0] - bufferVertices[currentFace * 3].position[0];
+			xyz2.y = bufferVertices[currentFace * 3 + 2].position[1] - bufferVertices[currentFace * 3].position[1];
+			xyz2.z = bufferVertices[currentFace * 3 + 2].position[2] - bufferVertices[currentFace * 3].position[2];
+
+			/* Create the UV-based Edges */
+			Coordinate2D uv1;
+			uv1.u = bufferVertices[currentFace * 3 + 1].textureUV[0] - bufferVertices[currentFace * 3].textureUV[0];
+			uv1.v = bufferVertices[currentFace * 3 + 1].textureUV[1] - bufferVertices[currentFace * 3].textureUV[1];
+
+			Coordinate2D uv2;
+			uv2.u = bufferVertices[currentFace * 3 + 2].textureUV[0] - bufferVertices[currentFace * 3].textureUV[0];
+			uv2.v = bufferVertices[currentFace * 3 + 2].textureUV[1] - bufferVertices[currentFace * 3].textureUV[1];
+
+			float r = 1.0f / (uv1.u * uv2.v - uv2.u * uv1.v);
+
+			Vector s((uv2.v * xyz1.x - uv1.v * xyz2.x) * r, (uv2.v * xyz1.y - uv1.v * xyz2.y) * r,(uv2.v * xyz1.z - uv1.v * xyz2.z) * r, 1.0f);
+			Vector t((uv1.u * xyz2.x - uv2.u * xyz1.x) * r, (uv1.u * xyz2.y - uv2.u * xyz1.y) * r,(uv1.u * xyz2.z - uv2.u * xyz1.z) * r, 1.0f);
+
+			/* Acumulate the new Tangents */
+			sTangentArray[bufferVerticesID[currentFace * 3]] += s;
+			tTangentArray[bufferVerticesID[currentFace * 3]] += t;
+
+			currentFace++;
 		}
 
 		iss.clear();
 	}
 
-	BufferObject* bufferObject = new BufferObject(bufferVertices,vertexCount);
+	/* Average the Tangents */
+	if(hasNormals) {
+
+		for(int i = 0; i < vertexNumber; i++) {
+
+			Vector n = Vector(bufferVertices[i].normal);
+			Vector t = tTangentArray[i];
+			Vector s = sTangentArray[i];
+
+			if(graphicObject->getName().compare("Test Cube") == 0) {
+			
+				cout << "Normal = "; n.dump();
+				cout << "s Tangent = "; t.dump();
+				cout << "t Tangent = "; s.dump();
+			}
+        
+			// Gram-Schmidt orthogonalize
+			Vector averageTangent = (t - n * Vector::dotProduct(n, t));
+			averageTangent.normalize();
+			averageTangent.clean();
+
+			for(int j=0; j<3; j++)
+				bufferVertices[i].tangent[j] = averageTangent[j];
+
+			if(graphicObject->getName().compare("Test Cube") == 0) {
+
+				cout << "Average Tangent = "; averageTangent.dump();
+			}
+
+			if(Vector::dotProduct(n,averageTangent) > Vector::threshold)
+				cout << "FAILED CALCULATING TANGENT" << endl;
+
+			// Calculate handedness
+			bufferVertices[i].tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, t), s) < 0.0f) ? -1.0f : 1.0f;
+		}
+	}
+
+	BufferObject* bufferObject = new BufferObject(bufferVertices,faceNumber * 3);
 	bufferObject->createBufferObject();
 
 	graphicObject->setBufferObject(bufferObject);
 
-	delete vertices;
-	delete uvcoord;
-	delete normals;
-	delete bufferVertices;
+	/* Cleanup */
+	delete[] vertexArray;
+	delete[] normalArray;	
+	delete[] textureCoordinateArray;
+
+	delete[] sTangentArray;
+	delete[] tTangentArray;
+	
+	delete[] bufferVertices;
+	delete[] bufferVerticesID;
 }
 
-std::vector<int> &split(const std::string &s, char delim, std::vector<int> &elems) {
+vector<int> &split(const string &s, char delim, vector<int> &elems) {
 
     std::stringstream ss(s);
     string item;
@@ -302,7 +382,7 @@ std::vector<int> &split(const std::string &s, char delim, std::vector<int> &elem
     return elems;
 }
 
-std::vector<int> split(const std::string &s, char delim) {
+vector<int> split(const string &s, char delim) {
 
     std::vector<int> elems;
     split(s, delim, elems);

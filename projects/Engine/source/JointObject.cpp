@@ -15,13 +15,10 @@ void JointObject::draw(GLuint programID) {
 
 void JointObject::update() {
 
-	/* Update Rotation */
-	Quaternion rotationQuaternion(_rotationQuaternion.getValue());
-
 	/* Update the Model Matrix */
 	_modelMatrix.translate(_position[0],_position[1],_position[2]);
 
-	_modelMatrix.quaternionRotate(rotationQuaternion);
+	_modelMatrix.quaternionRotate(_rotationQuaternion);
 
 	_modelMatrix.translate(_jointPosition[0],_jointPosition[1],_jointPosition[2]);
 }
@@ -32,13 +29,10 @@ void JointObject::update(GLfloat elapsedTime) {
 	for(int i=0; i<3; i++)
 		_position[i] += _velocity[i]*elapsedTime;
 
-	/* Update Rotation */
-	Quaternion rotationQuaternion(_rotationQuaternion.getValue());
-
 	/* Update the Model Matrix */
 	_modelMatrix.translate(_position[0],_position[1],_position[2]);
 		
-	_modelMatrix.quaternionRotate(rotationQuaternion);
+	_modelMatrix.quaternionRotate(_rotationQuaternion);
 
 	_modelMatrix.translate(_jointPosition[0],_jointPosition[1],_jointPosition[2]);
 }

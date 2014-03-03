@@ -31,5 +31,8 @@ void RealWoodShader::bindUniforms() {
 	/* Binds Projection, View Matrices and Light Sources */
 	ShaderProgram::bindUniforms();
 
+	_uniformLocationMap["Noise"] = glGetUniformLocation(_programID, "Noise");
+	_uniformLocationMap["NoiseScale"] = glGetUniformLocation(_programID, "NoiseScale");
+
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
 }

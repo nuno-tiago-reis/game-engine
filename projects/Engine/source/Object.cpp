@@ -9,6 +9,8 @@ Object::Object(string name) {
 
 	_bufferObject = NULL;
 
+	_scale = Vector(1.0f);
+
 	_activeTexture = NO_MAPPING;
 }
 
@@ -20,6 +22,11 @@ Object::~Object() {
 
 		delete _bufferObject;
 	}
+
+	/* Destroy Texturess */
+	map<string,Texture*>::const_iterator textureIterator;
+	for(textureIterator = _textureMap.begin(); textureIterator != _textureMap.end(); textureIterator++)
+		delete textureIterator->second;
 }
 
 void Object::draw(GLuint programID) {
@@ -34,8 +41,13 @@ void Object::draw(GLuint programID) {
 	glBindVertexArray(_bufferObject->getVertexArrayObjectID());
 	glUseProgram(programID);
 
+	/* Get the Model Matrix */
+	GLfloat modelMatrix[16];
+
+	_modelMatrix.getValue(modelMatrix);
+
 	/* Update the Model Matrix Uniform */
-	glUniformMatrix4fv(glGetUniformLocation(programID,MODEL_MATRIX_UNIFORM), 1, GL_TRUE, _modelMatrix.getValue());
+	glUniformMatrix4fv(glGetUniformLocation(programID,MODEL_MATRIX_UNIFORM), 1, GL_TRUE, modelMatrix);
 	Utility::checkOpenGLError("ERROR: Uniform Location \"" MODEL_MATRIX_UNIFORM "\" error.");
 
 	/* Bind the Active Texture */
@@ -80,13 +92,12 @@ void Object::draw(GLuint programID) {
 
 void Object::update() {
 
-	/* Update Rotation */
-	Quaternion rotationQuaternion(_rotationQuaternion.getValue());
-
 	/* Update the Model Matrix */
+	_modelMatrix.loadIdentity();
+
 	_modelMatrix.translate(_position[0],_position[1],_position[2]);
 
-	_modelMatrix.quaternionRotate(rotationQuaternion);
+	_modelMatrix.quaternionRotate(_rotationQuaternion);
 }
 
 void Object::update(GLfloat elapsedTime) {
@@ -95,13 +106,10 @@ void Object::update(GLfloat elapsedTime) {
 	for(int i=0; i<3; i++)
 		_position[i] += _velocity[i]*elapsedTime;
 
-	/* Update Rotation */
-	Quaternion rotationQuaternion(_rotationQuaternion.getValue());
-
 	/* Update the Model Matrix */
 	_modelMatrix.translate(_position[0],_position[1],_position[2]);
 		
-	_modelMatrix.quaternionRotate(rotationQuaternion);
+	_modelMatrix.quaternionRotate(_rotationQuaternion);
 }
 
 GLfloat Object::isIntersecting(Vector origin, Vector direction) {
@@ -120,10 +128,10 @@ GLfloat Object::isIntersecting(Vector origin, Vector direction) {
 		vertex1 = modelMatrix * vertex1;
 		vertex2 = modelMatrix * vertex2;
 
-		Vector edge1(vertex1.getValue());
-		Vector edge2(vertex2.getValue());
-
+		Vector edge1 = vertex1;
 		edge1 -= vertex0;
+
+		Vector edge2 = vertex2;		
 		edge2 -= vertex0;
 
 		Vector p = Vector::crossProduct(direction,edge2);
@@ -135,8 +143,7 @@ GLfloat Object::isIntersecting(Vector origin, Vector direction) {
 
 		GLfloat invertedDeterminant = 1.0f / determinant;
  
-		Vector t(origin.getValue());	
-
+		Vector t = origin;
 		t -= vertex0;
  
 		GLfloat u = Vector::dotProduct(t,p) * invertedDeterminant;
@@ -258,6 +265,11 @@ void Object::unbindMixedTexture() {
 
 void Object::deactivateTexture() {
 
+	/* Destroy Texturess */
+	map<string,Texture*>::const_iterator textureIterator;
+	for(textureIterator = _textureMap.begin(); textureIterator != _textureMap.end(); textureIterator++)
+		delete textureIterator->second;
+
 	_activeTexture = NO_MAPPING;
 }
 
@@ -352,7 +364,7 @@ void Object::setRotation(Vector rotation) {
 	Quaternion yQuaternion(_rotation[1],yAxis);
 	Quaternion zQuaternion(_rotation[2],zAxis);
 
-	_rotationQuaternion.setValue(xQuaternion.getValue());
+	_rotationQuaternion = xQuaternion;
 	_rotationQuaternion *= yQuaternion;
 	_rotationQuaternion *= zQuaternion;
 }

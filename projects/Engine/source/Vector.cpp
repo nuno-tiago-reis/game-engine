@@ -104,14 +104,10 @@ GLfloat Vector::dotProduct(Vector u, Vector v) {
 	return internalProduct; 
 }
 
-GLfloat* Vector::getValue() {
+void Vector::getValue(GLfloat* vector) {
 
-	GLfloat *result = new GLfloat[4];
-	
 	for(int i=0; i<4; i++)
-		result[i] = _vector[i];
-
-	return result;
+		vector[i] = _vector[i];
 }
 
 void Vector::setValue(const GLfloat value[4]) {

@@ -309,8 +309,7 @@ void Matrix::setView(Vector eye, Vector target, Vector userUp) {
 
 	Matrix view;
     
-	Vector lookAt(target.getValue());
-
+	Vector lookAt = target;
 	lookAt -= eye;
 	lookAt.normalize();
 
@@ -370,15 +369,11 @@ void Matrix::setPerspectiveProjection(GLfloat fieldOfView, GLfloat aspectRatio, 
 	(*this) *= perspectiveProjection;
 }
 
-GLfloat* Matrix::getValue() {
-
-	GLfloat *result = new GLfloat[16];
+void Matrix::getValue(GLfloat* matrix) {
 	
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			result[i*4+j] = _matrix[i][j];
-
-	return result;
+			matrix[i*4+j] = _matrix[i][j];
 }
 
 GLfloat Matrix::getValue(int row, int column) {

@@ -9,7 +9,7 @@ XML_Reader::XML_Reader() {
 
 XML_Reader::~XML_Reader() {
 
-	delete _transformationDocument;
+	_transformationDocument->Clear();
 }
 
 XML_Reader* XML_Reader::getInstance() {

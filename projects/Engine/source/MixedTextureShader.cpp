@@ -31,18 +31,8 @@ void MixedTextureShader::bindUniforms() {
 	/* Binds Projection, View Matrices and Light Sources */
 	ShaderProgram::bindUniforms();
 
-	/*_uniformLocationMap["pointLight.Position"] = getUniformLocation("pointLight.Position");
-	_uniformLocationMap["pointLight.Color"] = getUniformLocation("pointLight.Color");
+	_uniformLocationMap["Texture0"] = glGetUniformLocation(_programID, "Texture0");
+	_uniformLocationMap["Texture1"] = glGetUniformLocation(_programID, "Texture1");
 
-	_uniformLocationMap["pointLight.AmbientIntensity"] = getUniformLocation("pointLight.AmbientIntensity");
-	_uniformLocationMap["pointLight.DiffuseIntensity"] = getUniformLocation("pointLight.DiffuseIntensity");
-
-	_uniformLocationMap["pointLight.Attenuation_Constant"] = getUniformLocation("pointLight.Attenuation_Constant");
-	_uniformLocationMap["pointLight.Attenuation_Linear"] = getUniformLocation("pointLight.Attenuation_Linear");
-	_uniformLocationMap["pointLight.Attenuation_Exp"] = getUniformLocation("pointLight.Attenuation_Exp");
-	
-	_uniformLocationMap["diffuse_tex"] = glGetUniformLocation(_programID, "diffuse_tex");
-	_uniformLocationMap["normal_tex"] = glGetUniformLocation(_programID, "normal_tex");
-	*/
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
 }

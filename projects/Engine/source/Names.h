@@ -16,10 +16,6 @@
 
 #define PLATFORM "Platform"
 
-#define PIN_A "Pin A"
-#define PIN_B "Pin B"
-#define PIN_C "Pin C"
-
 /* Joint Object Names */
 #define DRAGON_HEAD "Dragon Head"
 #define DRAGON_NOSE "Dragon Nose"

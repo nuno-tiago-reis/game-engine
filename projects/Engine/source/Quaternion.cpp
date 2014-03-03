@@ -4,7 +4,7 @@ const GLfloat Quaternion::threshold = (GLfloat)1.0e-5;
 
 Quaternion::Quaternion() {
 
-	_quaternion[QT] = 0.0f;
+	_quaternion[QT] = 1.0f;
 	_quaternion[QX] = 0.0f;
 	_quaternion[QY] = 0.0f;
 	_quaternion[QZ] = 0.0f;
@@ -115,14 +115,10 @@ GLfloat Quaternion::quadrance() {
 	return quadrance;
 }
 
-GLfloat* Quaternion::getValue() {
-
-	GLfloat *result = new GLfloat[4];
+void Quaternion::getValue(GLfloat* quaternion) {
 	
 	for(int i=0; i<4; i++)
-		result[i] = _quaternion[i];
-
-	return result;
+		quaternion[i] = _quaternion[i];
 }
 
 void Quaternion::setValue(const GLfloat value[4]) {
@@ -141,7 +137,7 @@ void Quaternion::lerp(Quaternion quaternion, GLfloat k) {
 	GLfloat k0 = 1.0f - k;
 	GLfloat k1 = (angle > 0) ? k : -k;
 
-	Quaternion temporary(quaternion.getValue());
+	Quaternion temporary = quaternion;
 
 	(*this) *= k0;
 	temporary *= k1;
@@ -159,7 +155,7 @@ void Quaternion::slerp(Quaternion quaternion, GLfloat k) {
 	GLfloat k0 = sin((1-k)*angle) / sin(angle);
 	GLfloat k1 = sin(k*angle) / sin(angle);
 
-	Quaternion temporary(quaternion.getValue());
+	Quaternion temporary = quaternion;
 
 	(*this) *= k0;
 	temporary *= k1;
@@ -194,7 +190,7 @@ Quaternion Quaternion::operator * (Quaternion quaternion) {
 
 	Quaternion result;
 
-	Quaternion temporary(getValue());
+	Quaternion temporary = *this;
 
 	result[QT] =	  temporary[QT] * quaternion[QT] 
 					- temporary[QX] * quaternion[QX]
@@ -220,7 +216,7 @@ Quaternion Quaternion::operator * (Quaternion quaternion) {
 
 Quaternion Quaternion::operator *= (Quaternion quaternion) {
 
-	Quaternion temporary(getValue());
+	Quaternion temporary = *this;
 
 	_quaternion[QT] =	  temporary[QT] * quaternion[QT] 
 						- temporary[QX] * quaternion[QX]

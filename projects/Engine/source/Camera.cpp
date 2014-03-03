@@ -70,8 +70,15 @@ void Camera::loadUniforms() {
 
 	glBindBuffer(GL_UNIFORM_BUFFER, _uniformBufferIndex);
 
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(GLfloat[16]), _viewMatrix.getValue());
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(GLfloat[16]), sizeof(GLfloat[16]), _projectionMatrix.getValue());
+	/* Get the View and Projection Matrix */
+	GLfloat viewMatrix[16];
+	_viewMatrix.getValue(viewMatrix);
+
+	GLfloat projectionMatrix[16];
+	_projectionMatrix.getValue(projectionMatrix);
+
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(GLfloat[16]), viewMatrix);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(GLfloat[16]), sizeof(GLfloat[16]), projectionMatrix);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
@@ -210,12 +217,12 @@ void Camera::setName(string name) {
 		
 void Camera::setViewMatrix(Matrix viewMatrix) {
 
-	_viewMatrix.setValue(viewMatrix.getValue());
+	_viewMatrix = viewMatrix;
 }
 
 void Camera::setProjectionMatrix(Matrix projectionMatrix) {
 
-	_projectionMatrix.setValue(projectionMatrix.getValue());
+	_projectionMatrix = projectionMatrix;
 }
 
 void Camera::setProjectionMode(GLint projectionMode) {
@@ -260,17 +267,17 @@ void Camera::setPosition(Vector position) {
 
 void Camera::setTarget(Vector target) {
 
-	_target.setValue(target.getValue());
+	_target = target;
 }
 
 void Camera::setEye(Vector eye) {
 
-	_eye.setValue(eye.getValue());
+	_eye = eye;
 }
 
 void Camera::setUp(Vector up) {
 
-	_up.setValue(up.getValue());
+	_up = up;
 }
 
 void Camera::dump() {

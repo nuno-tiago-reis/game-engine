@@ -106,7 +106,7 @@ class Matrix {
 		void setPerspectiveProjection(GLfloat fieldOfView, GLfloat aspectRatio, GLfloat nearZ, GLfloat farZ);
 
 		/* Getters */
-		GLfloat* getValue();
+		void getValue(GLfloat* matrix);
 		GLfloat getValue(int row, int column);
 
 		/* Setters */

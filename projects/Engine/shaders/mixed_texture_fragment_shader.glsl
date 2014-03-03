@@ -87,7 +87,7 @@ vec4 positionalLight(int i) {
 
 	if (DiffuseFactor > 0.0) {
 
-		DiffuseColor = (out_Diffuse * TextureColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+		DiffuseColor = (out_Diffuse * 0.5 * TextureColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 		/*vec3 VertexToEye = normalize(vec3(out_Position));
 		vec3 LightReflect = normalize(reflect(vec3(-LightDirection), Normal));
@@ -188,7 +188,7 @@ vec4 spotLight(int i) {
 
 			LightIntensity = spotEffect / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
 
-			DiffuseColor = (out_Diffuse + TextureColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+			DiffuseColor = (out_Diffuse * TextureColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 			/* Specular Component */
 			vec3 HalfwayVector = normalize(vec3(-out_Position)) + normalize(vec3(ViewMatrix * LightSources[i].Position - out_Position));
