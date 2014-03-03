@@ -494,6 +494,7 @@ void init(int argc, char* argv[]) {
 	//testCube->setScale(Vector(1.0f,1.00f,1.00f,1.0f));
 	//testCube->setScale(Vector(1.25f,1.25f,1.25f,1.0f));
 	testCube->activateBumpTexture("textures/diffuse_color.png","textures/normal_map.png");
+	//testCube->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_diffuse.jpg");
 
 	objReader->loadModel("testcube.obj","testcube.mtl", testCube);
 

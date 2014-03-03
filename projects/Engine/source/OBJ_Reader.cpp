@@ -308,6 +308,12 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 			sTangentArray[bufferVerticesID[currentFace * 3]] += s;
 			tTangentArray[bufferVerticesID[currentFace * 3]] += t;
 
+			sTangentArray[bufferVerticesID[currentFace * 3 + 1]] += s;
+			tTangentArray[bufferVerticesID[currentFace * 3 + 1]] += t;
+
+			sTangentArray[bufferVerticesID[currentFace * 3 + 2]] += s;
+			tTangentArray[bufferVerticesID[currentFace * 3 + 2]] += t;
+
 			currentFace++;
 		}
 
@@ -323,12 +329,12 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 			Vector t = tTangentArray[i];
 			Vector s = sTangentArray[i];
 
-			if(graphicObject->getName().compare("Test Cube") == 0) {
+			/*if(graphicObject->getName().compare("Test Cube") == 0) {
 			
 				cout << "Normal = "; n.dump();
 				cout << "s Tangent = "; t.dump();
 				cout << "t Tangent = "; s.dump();
-			}
+			}*/
         
 			// Gram-Schmidt orthogonalize
 			Vector averageTangent = (t - n * Vector::dotProduct(n, t));
@@ -337,14 +343,14 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 
 			for(int j=0; j<3; j++)
 				bufferVertices[i].tangent[j] = averageTangent[j];
-
-			if(graphicObject->getName().compare("Test Cube") == 0) {
+			
+			/*if(graphicObject->getName().compare("Test Cube") == 0) {
 
 				cout << "Average Tangent = "; averageTangent.dump();
 			}
 
 			if(Vector::dotProduct(n,averageTangent) > Vector::threshold)
-				cout << "FAILED CALCULATING TANGENT" << endl;
+				cout << "FAILED CALCULATING TANGENT" << endl;*/
 
 			// Calculate handedness
 			bufferVertices[i].tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, t), s) < 0.0f) ? -1.0f : 1.0f;

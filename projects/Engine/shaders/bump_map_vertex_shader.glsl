@@ -99,7 +99,7 @@ void main() {
 	/* Normal Space computing */
     out_Normal = normalize(NormalMatrix * vec3(Normal));
 	out_Tangent = normalize(NormalMatrix * vec3(Tangent));
-	out_Bitangent = cross(out_Normal,out_Tangent);
+	out_Bitangent = cross(out_Normal,out_Tangent); //* Tangent.w;
 
 	/* Texture  Coordinate */
 	out_TextureUV = TextureUV;

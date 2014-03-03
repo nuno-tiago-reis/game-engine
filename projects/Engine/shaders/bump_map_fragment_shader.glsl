@@ -30,8 +30,8 @@ in mat3 LightMatrix;
 /* Uniforms */
 uniform mat4 ModelMatrix;
 
-uniform sampler2D Texture0;
-uniform sampler2D Texture1;
+uniform sampler2D DiffuseTexture;
+uniform sampler2D NormalTexture;
 
 layout(std140) uniform SharedMatrices {
 
@@ -77,8 +77,8 @@ vec4 positionalLight(int i) {
 	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
 
 	/* Texture Component */
-	vec4 BaseTexture = texture2D(Texture0, out_TextureUV);
-	vec3 BumpNormal = normalize(texture2D(Texture1, out_TextureUV).rgb * 2.0 - 1.0);
+	vec4 BaseTexture = texture2D(DiffuseTexture, out_TextureUV);
+	vec3 BumpNormal = normalize(texture2D(NormalTexture, out_TextureUV).rgb * 2.0 - 1.0);
 
 	/* Ambient Component */
 	vec4 AmbientColor = BaseTexture * LightSources[i].Color * LightSources[i].AmbientIntensity;
