@@ -126,6 +126,12 @@
     <Filter Include="Source Files\Shader\Wood\glsl">
       <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shader\SphereWrapping">
+      <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\SphereWrapping\glsl">
+      <UniqueIdentifier>{6e9ea89f-2c06-4ac8-a23a-38fe7e0064e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BufferObject.cpp">
@@ -217,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="source\Object.cpp">
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SphereMapShader.cpp">
+      <Filter>Source Files\Shader\SphereWrapping</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +325,9 @@
     <ClInclude Include="source\MixedTextureShader.h">
       <Filter>Source Files\Shader\MixedTexture</Filter>
     </ClInclude>
+    <ClInclude Include="source\SphereMapShader.h">
+      <Filter>Source Files\Shader\SphereWrapping</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\blinn_phong_fragment_shader.glsl">
@@ -347,6 +359,12 @@
     </None>
     <None Include="shaders\mixed_texture_vertex_shader.glsl">
       <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+    </None>
+    <None Include="shaders\sphere_map_fragment_shader.glsl">
+      <Filter>Source Files\Shader\SphereWrapping\glsl</Filter>
+    </None>
+    <None Include="shaders\sphere_map_vertex_shader.glsl">
+      <Filter>Source Files\Shader\SphereWrapping\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

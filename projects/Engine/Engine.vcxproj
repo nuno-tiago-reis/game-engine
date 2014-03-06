@@ -36,6 +36,7 @@
     <ClCompile Include="source\ShaderProgram.cpp" />
     <ClCompile Include="source\Matrix.cpp" />
     <ClCompile Include="source\Sound.cpp" />
+    <ClCompile Include="source\SphereMapShader.cpp" />
     <ClCompile Include="source\SpotLight.cpp" />
     <ClCompile Include="source\Texture.cpp" />
     <ClCompile Include="source\MixedTextureShader.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="source\RealWoodShader.h" />
     <ClInclude Include="source\SceneNode.h" />
     <ClInclude Include="source\Sound.h" />
+    <ClInclude Include="source\SphereMapShader.h" />
     <ClInclude Include="source\SpotLight.h" />
     <ClInclude Include="source\Texture.h" />
     <ClInclude Include="source\MixedTextureShader.h" />
@@ -87,6 +89,8 @@
     <None Include="shaders\real_wood_vertex_shader.glsl" />
     <None Include="shaders\mixed_texture_fragment_shader.glsl" />
     <None Include="shaders\mixed_texture_vertex_shader.glsl" />
+    <None Include="shaders\sphere_map_fragment_shader.glsl" />
+    <None Include="shaders\sphere_map_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

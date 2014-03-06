@@ -62,6 +62,9 @@ void Object::draw(GLuint programID) {
 		case MIXED_TEXTURE_MAPPING:	bindMixedTexture(programID);
 									break;
 
+		case SPHERE_MAPPING: bindSphereMapTexture(programID);
+									break;
+
 		default:			break;
 	}
 
@@ -78,6 +81,9 @@ void Object::draw(GLuint programID) {
 							break;
 
 		case MIXED_TEXTURE_MAPPING:	unbindMixedTexture();
+									break;
+
+		case SPHERE_MAPPING: unbindSphereMapTexture();
 									break;
 
 		default:			break;
@@ -261,6 +267,30 @@ void Object::unbindMixedTexture() {
 
 	Texture* normalTexture = _textureMap[MIXED_TEXTURE_1];
 	normalTexture->unbind(GL_TEXTURE1);
+}
+
+
+void Object::activateSphereMapTexture(string sphereMapFileName) {
+
+	_activeTexture = SPHERE_MAPPING;
+
+	_textureMap[SPHERE_MAP_TEXTURE] = new Texture(GL_TEXTURE_2D, sphereMapFileName);
+	_textureMap[SPHERE_MAP_TEXTURE]->load();
+}
+
+void Object::bindSphereMapTexture(GLuint programID) {
+
+	Texture* sphereMapTexture = _textureMap[SPHERE_MAP_TEXTURE];
+	sphereMapTexture->bind(GL_TEXTURE0);
+
+	glProgramUniform1i(programID, glGetUniformLocation(programID, SPHERE_MAP_UNIFORM), 0);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" + sphereMapTexture->getFileName() + "\" error.");
+}
+
+void Object::unbindSphereMapTexture() {
+
+	Texture* sphereMapTexture = _textureMap[SPHERE_MAP_TEXTURE];
+	sphereMapTexture->unbind(GL_TEXTURE0);
 }
 
 void Object::deactivateTexture() {

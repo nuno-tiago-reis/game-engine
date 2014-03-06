@@ -28,6 +28,7 @@
 #include "MixedTextureShader.h"
 #include "BumpMapShader.h"
 #include "RealWoodShader.h"
+#include "SphereMapShader.h"
 
 /* Textures */
 #include "Texture.h"
@@ -312,6 +313,15 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(realWoodShader);
 
+	/* Create Sphere Map Shader*/
+	SphereMapShader* sphereMapShader = new SphereMapShader(SPHERE_MAP_SHADER);
+	sphereMapShader->createShaderProgram();
+	sphereMapShader->bindAttributes();
+	sphereMapShader->linkShaderProgram();
+	sphereMapShader->bindUniforms();
+
+	sceneManager->addShaderProgram(sphereMapShader);
+
 	/* Set Active Shader */
 	sceneManager->setActiveShaderProgram(mixedTextureShader);
 }
@@ -384,7 +394,7 @@ void setupCameras() {
 
 	/* Create Perspective Camera */
 	Camera* perspectiveCamera = new Camera(PERSPECTIVE_NAME);
-	perspectiveCamera->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
+	perspectiveCamera->setPosition(Vector(0.0f,-2.0f,5.0f,1.0f));
 	perspectiveCamera->loadPerspectiveProjection();
 	perspectiveCamera->loadView();
 
@@ -490,15 +500,30 @@ void init(int argc, char* argv[]) {
 	/* Bump Cube */
 	Object* testCube = new Object(TEST_CUBE);
 	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
-	//testCube->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
-	//testCube->setScale(Vector(1.0f,1.00f,1.00f,1.0f));
-	//testCube->setScale(Vector(1.25f,1.25f,1.25f,1.0f));
 	testCube->activateBumpTexture("textures/diffuse_color.png","textures/normal_map.png");
 	//testCube->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_diffuse.jpg");
 
 	objReader->loadModel("testcube.obj","testcube.mtl", testCube);
 
 	sceneManager->addObject(testCube);
+
+	/* Esfera */
+	Object* sphere = new Object(SPHERE);
+	sphere->setPosition(Vector(0.0f,-2.0f,5.0f,1.0f));
+	sphere->setScale(Vector(0.5f,0.5f,0.5f,1.0f));
+	sphere->activateSphereMapTexture("textures/SphereMap.jpg");
+
+	objReader->loadModel("sphere.obj", "sphere.mtl", sphere);
+
+	sceneManager->addObject(sphere);
+
+	/* Cubo */
+	Object* cube = new Object("Cube");
+	cube->setPosition(Vector(0.0f,2.0f,5.0f,1.0f));
+	cube->setScale(Vector(0.5f,0.5f,0.5f,1.0f));
+	objReader->loadModel("testcube.obj","testcube.mtl", cube);
+
+	sceneManager->addObject(cube);
 
 	/* Destroy the Readers */
 	OBJ_Reader::destroyInstance();
@@ -537,6 +562,14 @@ void init(int argc, char* argv[]) {
 	testCubeNode->setObject(testCube);
 	testCubeNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
 
+	SceneNode* testSphereNode = new SceneNode(SPHERE);
+	testSphereNode->setObject(sphere);
+	testSphereNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
+
+	SceneNode* CubeNode = new SceneNode("Cube");
+	CubeNode->setObject(cube);
+	CubeNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
+
 	/* Add the Root Nodes to the Scene */
 	sceneManager->addSceneNode(goldTeapotNode);
 	sceneManager->addSceneNode(silverTeapotNode);
@@ -548,6 +581,9 @@ void init(int argc, char* argv[]) {
 	sceneManager->addSceneNode(tableSurfaceNode);
 
 	sceneManager->addSceneNode(testCubeNode);
+
+	sceneManager->addSceneNode(testSphereNode);
+	sceneManager->addSceneNode(CubeNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

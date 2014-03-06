@@ -19,6 +19,7 @@
 
 #include "MixedTextureShader.h"
 #include "RealWoodShader.h"
+#include "SphereMapShader.h"
 #include "ShaderProgram.h"
 
 #include "Texture.h"
@@ -28,13 +29,17 @@
 #define WOOD_MAPPING 1
 #define BUMP_MAPPING 2
 #define MIXED_TEXTURE_MAPPING 3
+#define SPHERE_MAPPING 4
 
 #define WOOD_TEXTURE "Wood Texture"
+
 #define DIFFUSE_TEXTURE "Diffuse Texture"
 #define NORMAL_TEXTURE "Normal Texture"
 
 #define MIXED_TEXTURE_0 "Texture 0"
 #define MIXED_TEXTURE_1 "Texture 1"
+
+#define SPHERE_MAP_TEXTURE "Sphere Map Texture"
 
 using namespace std;
 
@@ -95,6 +100,10 @@ class Object {
 		void activateMixedTexture(string texture0FileName, string texture1FileName);
 		void bindMixedTexture(GLuint programID);
 		void unbindMixedTexture();
+		
+		void activateSphereMapTexture(string sphereMapFileName);
+		void bindSphereMapTexture(GLuint programID);
+		void unbindSphereMapTexture();
 
 		void deactivateTexture();
 

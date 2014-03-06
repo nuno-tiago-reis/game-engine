@@ -3,6 +3,8 @@
 
 #define TEAPOT "Texture Cube"
 
+#define SPHERE "Sphere"
+
 #define PUCK "Puck"
 #define MALLET "Mallet"
 
