@@ -12,6 +12,9 @@ Texture::Texture(GLuint textureFormat) {
 	_textureFormat = textureFormat;
 }
 
+Texture::Texture() {
+}
+
 Texture::~Texture() {
 }
 

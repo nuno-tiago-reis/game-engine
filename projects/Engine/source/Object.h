@@ -21,15 +21,18 @@
 #include "RealWoodShader.h"
 #include "SphereMapShader.h"
 #include "ShaderProgram.h"
+#include "CubeMapShader.h"
 
 #include "Texture.h"
 #include "GeneratedTexture.h"
+#include "CubeTexture.h"
 
 #define NO_MAPPING 0
 #define WOOD_MAPPING 1
 #define BUMP_MAPPING 2
 #define MIXED_TEXTURE_MAPPING 3
 #define SPHERE_MAPPING 4
+#define CUBE_MAPPING 5
 
 #define WOOD_TEXTURE "Wood Texture"
 
@@ -40,6 +43,8 @@
 #define MIXED_TEXTURE_1 "Texture 1"
 
 #define SPHERE_MAP_TEXTURE "Sphere Map Texture"
+
+#define CUBE_MAP_TEXTURE "Cube Map Texture"
 
 using namespace std;
 
@@ -104,6 +109,12 @@ class Object {
 		void activateSphereMapTexture(string sphereMapFileName);
 		void bindSphereMapTexture(GLuint programID);
 		void unbindSphereMapTexture();
+
+		void activateCubeMapTexture(string positiveXFileName, string negativeXFileName, 
+			string positiveYFileName, string negativeYFileName, 
+			string positiveZFileName,string negativeZFileName);
+		void bindCubeMapTexture(GLuint programID);
+		void unbindCubeMapTexture();
 
 		void deactivateTexture();
 

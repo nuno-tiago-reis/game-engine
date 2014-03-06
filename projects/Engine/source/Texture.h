@@ -34,6 +34,7 @@ class Texture {
 		/* Constructors & Destructors */
 		Texture(GLuint textureFormat, string fileName);
 		Texture(GLuint textureFormat);
+		Texture();
 
 		~Texture();
 

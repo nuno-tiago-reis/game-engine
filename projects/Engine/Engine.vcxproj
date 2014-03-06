@@ -14,6 +14,8 @@
     <ClCompile Include="source\BlinnPhongShader.cpp" />
     <ClCompile Include="source\BumpMapShader.cpp" />
     <ClCompile Include="source\Camera.cpp" />
+    <ClCompile Include="source\CubeMapShader.cpp" />
+    <ClCompile Include="source\CubeTexture.cpp" />
     <ClCompile Include="source\DirectionalLight.cpp" />
     <ClCompile Include="source\FrameBuffer.cpp" />
     <ClCompile Include="source\GeneratedTexture.cpp" />
@@ -49,6 +51,8 @@
     <ClInclude Include="source\BufferObject.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\Constants.h" />
+    <ClInclude Include="source\CubeMapShader.h" />
+    <ClInclude Include="source\CubeTexture.h" />
     <ClInclude Include="source\DirectionalLight.h" />
     <ClInclude Include="source\FrameBuffer.h" />
     <ClInclude Include="source\GeneratedTexture.h" />
@@ -83,6 +87,8 @@
     <None Include="shaders\blinn_phong_vertex_shader.glsl" />
     <None Include="shaders\bump_map_fragment_shader.glsl" />
     <None Include="shaders\bump_map_vertex_shader.glsl" />
+    <None Include="shaders\cube_map_fragment_shader.glsl" />
+    <None Include="shaders\cube_map_vertex_shader.glsl" />
     <None Include="shaders\post_processing_fragment_shader.glsl" />
     <None Include="shaders\post_processing_vertex_shader.glsl" />
     <None Include="shaders\real_wood_fragment_shader.glsl" />

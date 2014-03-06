@@ -29,6 +29,7 @@
 #include "BumpMapShader.h"
 #include "RealWoodShader.h"
 #include "SphereMapShader.h"
+#include "CubeMapShader.h"
 
 /* Textures */
 #include "Texture.h"
@@ -322,8 +323,17 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(sphereMapShader);
 
+	/* Create Cube Map Shader*/
+	CubeMapShader* cubeMapShader = new CubeMapShader(CUBE_MAP_SHADER);
+	cubeMapShader->createShaderProgram();
+	cubeMapShader->bindAttributes();
+	cubeMapShader->linkShaderProgram();
+	cubeMapShader->bindUniforms();
+
+	sceneManager->addShaderProgram(cubeMapShader);
+
 	/* Set Active Shader */
-	sceneManager->setActiveShaderProgram(mixedTextureShader);
+	sceneManager->setActiveShaderProgram(blinnPhongShader);
 }
 
 void setupLights() {
@@ -350,7 +360,7 @@ void setupLights() {
 	positionalLight1->setPosition(Vector(0.0f, 0.0f, 10.0f, 1.0f));
 	positionalLight1->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	positionalLight1->setAmbientIntensity(0.25f);
+	positionalLight1->setAmbientIntensity(0.95f);
 	positionalLight1->setDiffuseIntensity(0.95f);
 	positionalLight1->setSpecularIntensity(0.95f);
 
@@ -394,7 +404,7 @@ void setupCameras() {
 
 	/* Create Perspective Camera */
 	Camera* perspectiveCamera = new Camera(PERSPECTIVE_NAME);
-	perspectiveCamera->setPosition(Vector(0.0f,-2.0f,5.0f,1.0f));
+	perspectiveCamera->setPosition(Vector(0.0f,5.0f,5.0f,1.0f));
 	perspectiveCamera->loadPerspectiveProjection();
 	perspectiveCamera->loadView();
 
@@ -410,7 +420,7 @@ void init(int argc, char* argv[]) {
 	setupGLEW();
 	setupOpenGL();
 
-	//freopen("output.txt","w",stderr);
+	freopen("output.txt","w",stderr);
 
 	setupShaders();
 
@@ -501,7 +511,6 @@ void init(int argc, char* argv[]) {
 	Object* testCube = new Object(TEST_CUBE);
 	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
 	testCube->activateBumpTexture("textures/diffuse_color.png","textures/normal_map.png");
-	//testCube->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_diffuse.jpg");
 
 	objReader->loadModel("testcube.obj","testcube.mtl", testCube);
 
@@ -519,8 +528,12 @@ void init(int argc, char* argv[]) {
 
 	/* Cubo */
 	Object* cube = new Object("Cube");
-	cube->setPosition(Vector(0.0f,2.0f,5.0f,1.0f));
-	cube->setScale(Vector(0.5f,0.5f,0.5f,1.0f));
+	cube->setPosition(Vector(0.0f,5.0f,5.0f,1.0f));
+	cube->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+	cube->activateCubeMapTexture("textures/cube/posx.jpg","textures/cube/negx.jpg",
+		"textures/cube/posy.jpg","textures/cube/negy.jpg",
+		"textures/cube/posz.jpg","textures/cube/negz.jpg");
+
 	objReader->loadModel("testcube.obj","testcube.mtl", cube);
 
 	sceneManager->addObject(cube);
@@ -566,9 +579,9 @@ void init(int argc, char* argv[]) {
 	testSphereNode->setObject(sphere);
 	testSphereNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
 
-	SceneNode* CubeNode = new SceneNode("Cube");
-	CubeNode->setObject(cube);
-	CubeNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
+	SceneNode* cubeNode = new SceneNode("Cube");
+	cubeNode->setObject(cube);
+	cubeNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
 
 	/* Add the Root Nodes to the Scene */
 	sceneManager->addSceneNode(goldTeapotNode);
@@ -583,7 +596,7 @@ void init(int argc, char* argv[]) {
 	sceneManager->addSceneNode(testCubeNode);
 
 	sceneManager->addSceneNode(testSphereNode);
-	sceneManager->addSceneNode(CubeNode);
+	sceneManager->addSceneNode(cubeNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

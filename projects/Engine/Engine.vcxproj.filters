@@ -126,11 +126,20 @@
     <Filter Include="Source Files\Shader\Wood\glsl">
       <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\SphereWrapping">
+    <Filter Include="Source Files\Shader\Textures\CubeTexture">
+      <UniqueIdentifier>{5c8e5a32-cd69-42a8-92a7-d2c9d42d7b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\SphereMapping">
       <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\SphereWrapping\glsl">
+    <Filter Include="Source Files\Shader\SphereMapping\glsl">
       <UniqueIdentifier>{6e9ea89f-2c06-4ac8-a23a-38fe7e0064e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\CubeMapping">
+      <UniqueIdentifier>{836c1639-5dfd-40bc-9056-e3a6b8535ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\CubeMapping\glsl">
+      <UniqueIdentifier>{46048f40-f710-45af-9835-7b15231ec60f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +234,13 @@
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\SphereMapShader.cpp">
-      <Filter>Source Files\Shader\SphereWrapping</Filter>
+      <Filter>Source Files\Shader\SphereMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CubeMapShader.cpp">
+      <Filter>Source Files\Shader\CubeMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CubeTexture.cpp">
+      <Filter>Source Files\Shader\Textures\CubeTexture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -326,7 +341,13 @@
       <Filter>Source Files\Shader\MixedTexture</Filter>
     </ClInclude>
     <ClInclude Include="source\SphereMapShader.h">
-      <Filter>Source Files\Shader\SphereWrapping</Filter>
+      <Filter>Source Files\Shader\SphereMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CubeMapShader.h">
+      <Filter>Source Files\Shader\CubeMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CubeTexture.h">
+      <Filter>Source Files\Shader\Textures\CubeTexture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,10 +382,16 @@
       <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
     </None>
     <None Include="shaders\sphere_map_fragment_shader.glsl">
-      <Filter>Source Files\Shader\SphereWrapping\glsl</Filter>
+      <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
     </None>
     <None Include="shaders\sphere_map_vertex_shader.glsl">
-      <Filter>Source Files\Shader\SphereWrapping\glsl</Filter>
+      <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
+    </None>
+    <None Include="shaders\cube_map_vertex_shader.glsl">
+      <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
+    </None>
+    <None Include="shaders\cube_map_fragment_shader.glsl">
+      <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

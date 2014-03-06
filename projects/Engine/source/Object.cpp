@@ -62,8 +62,11 @@ void Object::draw(GLuint programID) {
 		case MIXED_TEXTURE_MAPPING:	bindMixedTexture(programID);
 									break;
 
-		case SPHERE_MAPPING: bindSphereMapTexture(programID);
-									break;
+		case SPHERE_MAPPING:	bindSphereMapTexture(programID);
+								break;
+
+		case CUBE_MAPPING:	bindCubeMapTexture(programID);
+							break;
 
 		default:			break;
 	}
@@ -83,8 +86,11 @@ void Object::draw(GLuint programID) {
 		case MIXED_TEXTURE_MAPPING:	unbindMixedTexture();
 									break;
 
-		case SPHERE_MAPPING: unbindSphereMapTexture();
-									break;
+		case SPHERE_MAPPING:	unbindSphereMapTexture();
+								break;
+
+		case CUBE_MAPPING:	unbindCubeMapTexture();
+							break;
 
 		default:			break;
 	}
@@ -292,6 +298,34 @@ void Object::unbindSphereMapTexture() {
 	Texture* sphereMapTexture = _textureMap[SPHERE_MAP_TEXTURE];
 	sphereMapTexture->unbind(GL_TEXTURE0);
 }
+
+void Object::activateCubeMapTexture(string positiveXFileName, string negativeXFileName, 
+			string positiveYFileName, string negativeYFileName, 
+			string positiveZFileName,string negativeZFileName) {
+
+	_activeTexture = CUBE_MAPPING;
+
+	_textureMap[CUBE_MAP_TEXTURE] = new CubeTexture(positiveXFileName, negativeXFileName, 
+			positiveYFileName, negativeYFileName, 
+			positiveZFileName, negativeZFileName);
+	_textureMap[CUBE_MAP_TEXTURE]->load();
+}
+
+void Object::bindCubeMapTexture(GLuint programID) {
+
+	Texture* cubeMapTexture = _textureMap[CUBE_MAP_TEXTURE];
+	cubeMapTexture->bind(GL_TEXTURE0);
+
+	glProgramUniform1i(programID, glGetUniformLocation(programID, CUBE_MAP_UNIFORM), 0);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" + cubeMapTexture->getFileName() + "\" error.");
+}
+
+void Object::unbindCubeMapTexture() {
+
+	Texture* cubeMapTexture = _textureMap[CUBE_MAP_TEXTURE];
+	cubeMapTexture->unbind(GL_TEXTURE0);
+}
+
 
 void Object::deactivateTexture() {
 
