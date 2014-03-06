@@ -7,13 +7,14 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
+/* Input Attributes */
 in vec4 out_Position;
 
 in vec4 out_ModelSpacePosition;
 
-in vec2 out_TextureUV;
-
 in vec3 out_Normal;
+
+in vec2 out_TextureUV;
 
 in vec4 out_Ambient;
 in vec4 out_Diffuse;
@@ -22,6 +23,9 @@ in float out_SpecularConstant;
 
 in mat3 NormalMatrix;
 in mat3 LightMatrix;
+
+/* Uniforms */
+uniform mat4 ModelMatrix;
 
 layout(std140) uniform SharedMatrices {
 
@@ -54,11 +58,10 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
-uniform mat4 ModelMatrix;
-
 uniform sampler3D Noise;
 uniform float NoiseScale;
 
+/* Output Attributes */
 out vec4 out_Color;
 
 vec4 positionalLight(int i, vec4 NoiseColor) {

@@ -216,14 +216,14 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 					bufferVertices[currentFace * 3 + i].normal[0] = normalArray[index[2]-1].x;
 					bufferVertices[currentFace * 3 + i].normal[1] = normalArray[index[2]-1].y;
 					bufferVertices[currentFace * 3 + i].normal[2] = normalArray[index[2]-1].z;
-					bufferVertices[currentFace * 3 + i].normal[3] = 1.0f;
+					bufferVertices[currentFace * 3 + i].normal[3] = 0.0f;
 				}
 				else {
 
 					bufferVertices[currentFace * 3 + i].normal[0] = 0.0f;
 					bufferVertices[currentFace * 3 + i].normal[1] = 0.0f;
 					bufferVertices[currentFace * 3 + i].normal[2] = 0.0f;
-					bufferVertices[currentFace * 3 + i].normal[3] = 1.0f; 				
+					bufferVertices[currentFace * 3 + i].normal[3] = 0.0f; 				
 				}
 			
 				/* Vertex Texture Coordinates */

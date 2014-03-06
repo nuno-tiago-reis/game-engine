@@ -1,9 +1,10 @@
 /* Object Names */
-#define TEST_CUBE "Test Cube"
+#define BUMP_MAPPING_CUBE "[Bump Mapping] Cube"
 
-#define TEAPOT "Texture Cube"
+#define TEAPOT "Teapot"
 
-#define SPHERE "Sphere"
+#define SPHERE_ENVIRONMENTAL_MAPPING_SPHERE		"[Sphere Environmental Mapping] Sphere"
+#define CUBE_ENVIRONMENTAL_MAPPING_SPHERE		"[Cube Environmental Mapping] Sphere"
 
 #define PUCK "Puck"
 #define MALLET "Mallet"

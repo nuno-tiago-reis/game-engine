@@ -7,11 +7,12 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
+/* Input Attributes */
 in vec4 out_Position;
 
-in vec2 out_TextureUV;
-
 in vec3 out_Normal;
+
+in vec2 out_TextureUV;
 
 in vec4 out_Ambient;
 in vec4 out_Diffuse;
@@ -21,6 +22,7 @@ in float out_SpecularConstant;
 in mat3 NormalMatrix;
 in mat3 LightMatrix;
 
+/* Uniforms */
 uniform mat4 ModelMatrix;
 
 layout(std140) uniform SharedMatrices {
@@ -56,12 +58,13 @@ layout(std140) uniform SharedLightSources {
 
 uniform sampler2D SphereMap;
 
+/* Output Attributes */
 out vec4 out_Color;
 
 vec4 positionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 	
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
@@ -103,7 +106,7 @@ vec4 positionalLight(int i) {
 vec4 directionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
@@ -142,14 +145,13 @@ vec4 directionalLight(int i) {
 vec4 spotLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 
 	/* Light LightDistance / Direction */
 	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - out_Position);
 	float LightDistance = length(LightToVertex);  
 	LightToVertex = normalize(LightToVertex);
 
-	//vec4 LightDirection = normalize(ViewMatrix * LightSources[i].Direction);
 	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
 
 	/* Light Intensity */

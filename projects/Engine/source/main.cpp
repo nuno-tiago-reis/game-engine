@@ -360,7 +360,7 @@ void setupLights() {
 	positionalLight1->setPosition(Vector(0.0f, 0.0f, 10.0f, 1.0f));
 	positionalLight1->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	positionalLight1->setAmbientIntensity(0.95f);
+	positionalLight1->setAmbientIntensity(0.25f);
 	positionalLight1->setDiffuseIntensity(0.95f);
 	positionalLight1->setSpecularIntensity(0.95f);
 
@@ -404,7 +404,7 @@ void setupCameras() {
 
 	/* Create Perspective Camera */
 	Camera* perspectiveCamera = new Camera(PERSPECTIVE_NAME);
-	perspectiveCamera->setPosition(Vector(0.0f,5.0f,5.0f,1.0f));
+	perspectiveCamera->setPosition(Vector(0.0f, 5.0f,5.0f,1.0f));
 	perspectiveCamera->loadPerspectiveProjection();
 	perspectiveCamera->loadView();
 
@@ -507,36 +507,43 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addObject(tableSurface);
 
-	/* Bump Cube */
-	Object* testCube = new Object(TEST_CUBE);
-	testCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
-	testCube->activateBumpTexture("textures/diffuse_color.png","textures/normal_map.png");
+	/* Bump Mapping */
+	Object* bumpMappingCube = new Object(BUMP_MAPPING_CUBE);
+	bumpMappingCube->setPosition(Vector(0.0f,0.0f,5.0f,1.0f));
+	bumpMappingCube->activateBumpTexture("textures/diffuse_color.png","textures/normal_map.png");
 
-	objReader->loadModel("testcube.obj","testcube.mtl", testCube);
+	objReader->loadModel("testcube.obj","testcube.mtl", bumpMappingCube);
 
-	sceneManager->addObject(testCube);
+	sceneManager->addObject(bumpMappingCube);
 
-	/* Esfera */
-	Object* sphere = new Object(SPHERE);
-	sphere->setPosition(Vector(0.0f,-2.0f,5.0f,1.0f));
-	sphere->setScale(Vector(0.5f,0.5f,0.5f,1.0f));
-	sphere->activateSphereMapTexture("textures/SphereMap.jpg");
+	/* Sphere Environmental Mapping */
+	Object* sphereEnvironmentalMappingSphere = new Object(SPHERE_ENVIRONMENTAL_MAPPING_SPHERE);
+	sphereEnvironmentalMappingSphere->setPosition(Vector(0.0f,-5.0f,5.0f,1.0f));
+	sphereEnvironmentalMappingSphere->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+	sphereEnvironmentalMappingSphere->activateSphereMapTexture("textures/SphereMap.jpg");
 
-	objReader->loadModel("sphere.obj", "sphere.mtl", sphere);
+	objReader->loadModel("sphere.obj", "sphere.mtl", sphereEnvironmentalMappingSphere);
 
-	sceneManager->addObject(sphere);
+	sceneManager->addObject(sphereEnvironmentalMappingSphere);
 
-	/* Cubo */
-	Object* cube = new Object("Cube");
-	cube->setPosition(Vector(0.0f,5.0f,5.0f,1.0f));
-	cube->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
-	cube->activateCubeMapTexture("textures/cube/posx.jpg","textures/cube/negx.jpg",
+	/* Cube  Environmental Mapping */
+	Object* cubesEnvironmentalMappingSphere = new Object(CUBE_ENVIRONMENTAL_MAPPING_SPHERE);
+	cubesEnvironmentalMappingSphere->setPosition(Vector(0.0f,5.0f,5.0f,1.0f));
+	cubesEnvironmentalMappingSphere->activateCubeMapTexture(
+		"textures/cube/posx.jpg","textures/cube/negx.jpg",
 		"textures/cube/posy.jpg","textures/cube/negy.jpg",
 		"textures/cube/posz.jpg","textures/cube/negz.jpg");
 
-	objReader->loadModel("testcube.obj","testcube.mtl", cube);
+	cubesEnvironmentalMappingSphere->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
 
-	sceneManager->addObject(cube);
+	objReader->loadModel("testcube.obj","testcube.mtl", cubesEnvironmentalMappingSphere);
+
+	/*cubesEnvironmentalMappingSphere->setRotation(Vector(90.0f,00.0f,0.0f,1.0f));
+	cubesEnvironmentalMappingSphere->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
+
+	objReader->loadModel("teapot/teapot2.obj","sphere.mtl", cubesEnvironmentalMappingSphere);*/
+
+	sceneManager->addObject(cubesEnvironmentalMappingSphere);
 
 	/* Destroy the Readers */
 	OBJ_Reader::destroyInstance();
@@ -571,17 +578,17 @@ void init(int argc, char* argv[]) {
 	tableSurfaceNode->setObject(tableSurface);
 	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(MIXED_TEXTURE_SHADER));	
 
-	SceneNode* testCubeNode = new SceneNode(TEST_CUBE);
-	testCubeNode->setObject(testCube);
-	testCubeNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
+	SceneNode* bumpMappingCubeNode = new SceneNode(BUMP_MAPPING_CUBE);
+	bumpMappingCubeNode->setObject(bumpMappingCube);
+	bumpMappingCubeNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
 
-	SceneNode* testSphereNode = new SceneNode(SPHERE);
-	testSphereNode->setObject(sphere);
-	testSphereNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
+	SceneNode* sphereEnvironmentalMappingSphereNode = new SceneNode(SPHERE_ENVIRONMENTAL_MAPPING_SPHERE);
+	sphereEnvironmentalMappingSphereNode->setObject(sphereEnvironmentalMappingSphere);
+	sphereEnvironmentalMappingSphereNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
 
-	SceneNode* cubeNode = new SceneNode("Cube");
-	cubeNode->setObject(cube);
-	cubeNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
+	SceneNode* cubesEnvironmentalMappingSphereNode = new SceneNode(CUBE_ENVIRONMENTAL_MAPPING_SPHERE);
+	cubesEnvironmentalMappingSphereNode->setObject(cubesEnvironmentalMappingSphere);
+	cubesEnvironmentalMappingSphereNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
 
 	/* Add the Root Nodes to the Scene */
 	sceneManager->addSceneNode(goldTeapotNode);
@@ -593,10 +600,10 @@ void init(int argc, char* argv[]) {
 	sceneManager->addSceneNode(tableNode);
 	sceneManager->addSceneNode(tableSurfaceNode);
 
-	sceneManager->addSceneNode(testCubeNode);
+	sceneManager->addSceneNode(bumpMappingCubeNode);
 
-	sceneManager->addSceneNode(testSphereNode);
-	sceneManager->addSceneNode(cubeNode);
+	sceneManager->addSceneNode(sphereEnvironmentalMappingSphereNode);
+	sceneManager->addSceneNode(cubesEnvironmentalMappingSphereNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

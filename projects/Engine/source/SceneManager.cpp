@@ -190,7 +190,7 @@ void SceneManager::update(GLfloat elapsedTime) {
 	readMouse(elapsedTime);
 	readKeyboard(elapsedTime);
 
-	Vector cubeRotation = _objectMap[TEST_CUBE]->getRotation();
+	Vector cubeRotation = _objectMap[BUMP_MAPPING_CUBE]->getRotation();
 
 	switch(_rotationAxis) {
 	
@@ -204,7 +204,7 @@ void SceneManager::update(GLfloat elapsedTime) {
 				break;
 	}
 
-	_objectMap[TEST_CUBE]->setRotation(cubeRotation);
+	_objectMap[BUMP_MAPPING_CUBE]->setRotation(cubeRotation);
 
 	_fmodSystem->update();
 

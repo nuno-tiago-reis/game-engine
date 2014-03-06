@@ -7,7 +7,7 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
-/* Input Variables */
+/* Input Attributes */
 in vec4 Position;
 
 in vec4 Normal;
@@ -54,7 +54,7 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
-/* Output Variables */
+/* Output Attributes */
 out vec4 out_Position;
 
 out vec3 out_Normal;
@@ -87,21 +87,21 @@ vec3 convertToTangentSpace(vec3 Vector, vec3 Tangent, vec3 Bitangent, vec3 Norma
 
 void main() {
 
+	/* Vertex Position to Clip Space */
+	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
+
 	/* Normal transformation matrices */
 	NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
 	LightMatrix = inverse(transpose(mat3(ViewMatrix)));
 
-	/* Vertex Position computing */
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
-
+	/* Vertex Position, Normal, Tangent and Bitangent to View Space */
     out_Position = ViewMatrix * ModelMatrix * Position;
-	
-	/* Normal Space computing */
+
     out_Normal = normalize(NormalMatrix * vec3(Normal));
 	out_Tangent = normalize(NormalMatrix * vec3(Tangent));
 	out_Bitangent = cross(out_Normal,out_Tangent); //* Tangent.w;
 
-	/* Texture  Coordinate */
+	/* Vertex Texture Coordinate */
 	out_TextureUV = TextureUV;
 
 	/* Temporary Variables */
@@ -148,7 +148,7 @@ void main() {
 		}
 	}
 
-	/* Material Computing */
+	/* Vertex Material */
 	out_Ambient = Ambient;
 	out_Diffuse = Diffuse;
 	out_Specular = Specular;

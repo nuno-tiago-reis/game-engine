@@ -7,6 +7,7 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
+/* Input Attributes */
 in vec4 Position;
 
 in vec4 Normal;
@@ -19,6 +20,7 @@ in vec4 Diffuse;
 in vec4 Specular;
 in float SpecularConstant;
 
+/* Uniforms */
 uniform mat4 ModelMatrix;
 
 layout(std140) uniform SharedMatrices {
@@ -52,16 +54,16 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
+/* Output Attributes */
 out vec4 out_Position;
 
-out vec2 out_TextureUV;
-
 out vec3 out_Normal;
+
+out vec2 out_TextureUV;
 
 out vec4 out_Ambient;
 out vec4 out_Diffuse;
 out vec4 out_Specular;
-
 out float out_SpecularConstant;
 
 out mat3 NormalMatrix;
@@ -69,17 +71,22 @@ out mat3 LightMatrix;
 
 void main() {
 
+	/* Vertex Position to Clip Space */
+	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
+
+	/* Normal transformation matrices */
 	NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
 	LightMatrix = inverse(transpose(mat3(ViewMatrix)));
 
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
-
+	/* Vertex Position and Normal to View Space */
     out_Position = ViewMatrix * ModelMatrix * Position;
-	
+
+    out_Normal = normalize(NormalMatrix * vec3(Normal));
+
+	/* Vertex Texture Coordinate */
 	out_TextureUV = TextureUV;
 
-    out_Normal = NormalMatrix * vec3(Normal);
-
+	/* Vertex Material */
 	out_Ambient = Ambient;
 	out_Diffuse = Diffuse;
 	out_Specular = Specular;

@@ -105,15 +105,6 @@
     <Filter Include="Source Files\SceneManager\SceneGraph\MatrixStack">
       <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\Textures">
-      <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\Textures\NoiseTexture">
-      <UniqueIdentifier>{a1d170dc-e493-4772-966c-3eda42b689b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\Textures\NoiseTexture\PerlinNoise">
-      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader\MixedTexture">
       <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
     </Filter>
@@ -126,9 +117,6 @@
     <Filter Include="Source Files\Shader\Wood\glsl">
       <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\Textures\CubeTexture">
-      <UniqueIdentifier>{5c8e5a32-cd69-42a8-92a7-d2c9d42d7b23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader\SphereMapping">
       <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
     </Filter>
@@ -140,6 +128,18 @@
     </Filter>
     <Filter Include="Source Files\Shader\CubeMapping\glsl">
       <UniqueIdentifier>{46048f40-f710-45af-9835-7b15231ec60f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures">
+      <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures\NoiseTexture">
+      <UniqueIdentifier>{a1d170dc-e493-4772-966c-3eda42b689b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures\NoiseTexture\PerlinNoise">
+      <UniqueIdentifier>{226640cb-7723-40bf-b766-48cd5750c80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures\CubeTexture">
+      <UniqueIdentifier>{5c8e5a32-cd69-42a8-92a7-d2c9d42d7b23}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -207,10 +207,10 @@
       <Filter>Source Files\Shader\BumpMap</Filter>
     </ClCompile>
     <ClCompile Include="source\Texture.cpp">
-      <Filter>Source Files\Shader\Textures</Filter>
+      <Filter>Source Files\Textures</Filter>
     </ClCompile>
     <ClCompile Include="source\PerlinNoise.cpp">
-      <Filter>Source Files\Shader\Textures\NoiseTexture\PerlinNoise</Filter>
+      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClCompile>
     <ClCompile Include="source\RealWoodShader.cpp">
       <Filter>Source Files\Shader\Wood</Filter>
@@ -219,7 +219,7 @@
       <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
     </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
-      <Filter>Source Files\Shader\Textures\NoiseTexture</Filter>
+      <Filter>Source Files\Textures\NoiseTexture</Filter>
     </ClCompile>
     <ClCompile Include="source\XML_Reader.cpp">
       <Filter>Source Files\Utility\XML</Filter>
@@ -240,7 +240,7 @@
       <Filter>Source Files\Shader\CubeMapping</Filter>
     </ClCompile>
     <ClCompile Include="source\CubeTexture.cpp">
-      <Filter>Source Files\Shader\Textures\CubeTexture</Filter>
+      <Filter>Source Files\Textures\CubeTexture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,10 +311,10 @@
       <Filter>Source Files\Shader\BlinnPhong</Filter>
     </ClInclude>
     <ClInclude Include="source\Texture.h">
-      <Filter>Source Files\Shader\Textures</Filter>
+      <Filter>Source Files\Textures</Filter>
     </ClInclude>
     <ClInclude Include="source\PerlinNoise.h">
-      <Filter>Source Files\Shader\Textures\NoiseTexture\PerlinNoise</Filter>
+      <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClInclude>
     <ClInclude Include="source\RealWoodShader.h">
       <Filter>Source Files\Shader\Wood</Filter>
@@ -326,7 +326,7 @@
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\GeneratedTexture.h">
-      <Filter>Source Files\Shader\Textures\NoiseTexture</Filter>
+      <Filter>Source Files\Textures\NoiseTexture</Filter>
     </ClInclude>
     <ClInclude Include="source\XML_Reader.h">
       <Filter>Source Files\Utility\XML</Filter>
@@ -347,7 +347,7 @@
       <Filter>Source Files\Shader\CubeMapping</Filter>
     </ClInclude>
     <ClInclude Include="source\CubeTexture.h">
-      <Filter>Source Files\Shader\Textures\CubeTexture</Filter>
+      <Filter>Source Files\Textures\CubeTexture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,6 @@ in vec4 Diffuse;
 in vec4 Specular;
 in float SpecularConstant;
 
-
 /* Uniforms */
 uniform mat4 ModelMatrix;
 
@@ -68,7 +67,6 @@ out vec3 out_Normal;
 out vec4 out_Ambient;
 out vec4 out_Diffuse;
 out vec4 out_Specular;
-
 out float out_SpecularConstant;
 
 out mat3 NormalMatrix;
@@ -76,21 +74,22 @@ out mat3 LightMatrix;
 
 void main() {
 
+	/* Vertex Position to Clip Space */
+	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
+
 	/* Normal transformation matrices */
 	NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
 	LightMatrix = inverse(transpose(mat3(ViewMatrix)));
 
-	/* Vertex Position computing */
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
-
+	/* Vertex Position and Normal to View Space */
     out_Position = ViewMatrix * ModelMatrix * Position;
-
-	out_ModelSpacePosition = ModelMatrix * Position;
 	
-	/* Normal Space computing */
 	out_Normal = normalize(NormalMatrix * vec3(Normal));
 
-	/* Material Computing */
+	/* TODO */
+	out_ModelSpacePosition = ModelMatrix * Position;
+
+	/* Vertex Material */
 	out_Ambient = Ambient;
 	out_Diffuse = Diffuse;
 	out_Specular = Specular;

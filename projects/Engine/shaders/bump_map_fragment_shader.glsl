@@ -7,7 +7,7 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
-/* Input Variables */
+/* Input Attributes */
 in vec4 out_Position;
 
 in vec3 out_Normal;
@@ -64,7 +64,7 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
-/* Output Variables */
+/* Output Attributes */
 out vec4 out_Color;
 
 vec4 positionalLight(int i) {

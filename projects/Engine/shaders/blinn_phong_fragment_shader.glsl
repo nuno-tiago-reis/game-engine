@@ -7,11 +7,12 @@
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
+/* Input Attributes */
 in vec4 out_Position;
 
-in vec2 out_TextureUV;
-
 in vec3 out_Normal;
+
+in vec2 out_TextureUV;
 
 in vec4 out_Ambient;
 in vec4 out_Diffuse;
@@ -21,6 +22,7 @@ in float out_SpecularConstant;
 in mat3 NormalMatrix;
 in mat3 LightMatrix;
 
+/* Uniforms */
 uniform mat4 ModelMatrix;
 
 layout(std140) uniform SharedMatrices {
@@ -54,15 +56,13 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
-uniform sampler2D Texture0;
-uniform sampler2D Texture1;
-
+/* Output Attributes */
 out vec4 out_Color;
 
 vec4 positionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 	
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
@@ -71,11 +71,6 @@ vec4 positionalLight(int i) {
 
 	/* Light Intensity */
 	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
-
-	/* Texture Component */
-	vec4 TextureColor0 = texture2D(Texture0, out_TextureUV);
-	vec4 TextureColor1 = texture2D(Texture1, out_TextureUV);       
-	vec4 TextureColor = TextureColor0 * 0.5 + TextureColor1 * 0.5;
 
 	/* Ambient Component */
 	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
@@ -111,15 +106,10 @@ vec4 positionalLight(int i) {
 vec4 directionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
-
-	/* Texture Component */
-	vec4 TextureColor0 = texture2D(Texture0, out_TextureUV);
-	vec4 TextureColor1 = texture2D(Texture1, out_TextureUV);       
-	vec4 TextureColor = TextureColor0 * 0.5 + TextureColor1 * 0.5;
 
 	/* Ambient Component */
 	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
@@ -152,7 +142,7 @@ vec4 directionalLight(int i) {
 vec4 spotLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
+	vec3 Normal = out_Normal;
 
 	/* Light LightDistance / Direction */
 	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - out_Position);
