@@ -83,15 +83,14 @@ void main() {
 	
 	out_Normal = normalize(NormalMatrix * vec3(Normal));
 	
-	/***** CUBE MAPPING *****/
-	vec3 VertexToEye = normalize(vec3(out_Position));
+	/************************* CUBE MAPPING ***********************************/
+	vec3 CameraPosition = -ViewMatrix[3].xyz * mat3(ViewMatrix);
 
-	//out_TextureCubeXYZ = reflect(VertexToEye, inverse(transpose(mat3(ModelMatrix))) * vec3(Normal));
+	vec3 E = normalize(vec3(ModelMatrix * Position) - CameraPosition);
+	vec3 N = normalize(inverse(transpose(mat3(ModelMatrix))) * vec3(Normal));
 
-	out_TextureCubeXYZ = reflect(VertexToEye, out_Normal);
-
-	out_TextureCubeXYZ = out_TextureCubeXYZ;
-	/**********/
+	out_TextureCubeXYZ = reflect(E,N);
+	/**************************************************************************/
 
 	/* Vertex Material */
 	out_Ambient = Ambient;

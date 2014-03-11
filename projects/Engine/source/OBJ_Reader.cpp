@@ -28,7 +28,7 @@ vector<int> split(const string &s, char delim);
 
 void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object* graphicObject) {
 
-	cout << modelFilename << " - " << materialFilename << endl;
+	cout << "OBJ_Reader::loadModel(" << modelFilename << "," << materialFilename << "," << graphicObject->getName() << ");" << endl;
 
 	string line;
 

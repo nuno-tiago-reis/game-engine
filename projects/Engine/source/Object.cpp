@@ -311,6 +311,14 @@ void Object::activateCubeMapTexture(string positiveXFileName, string negativeXFi
 	_textureMap[CUBE_MAP_TEXTURE]->load();
 }
 
+void Object::activateCubeMapTexture(string fullTextureFileName) {
+
+	_activeTexture = CUBE_MAPPING;
+
+	_textureMap[CUBE_MAP_TEXTURE] = new CubeTexture(fullTextureFileName);
+	_textureMap[CUBE_MAP_TEXTURE]->load();
+}
+
 void Object::bindCubeMapTexture(GLuint programID) {
 
 	Texture* cubeMapTexture = _textureMap[CUBE_MAP_TEXTURE];

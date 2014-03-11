@@ -21,8 +21,7 @@ Texture::~Texture() {
 void Texture::load() {
 
 	/* Load the Texture */
-	_textureHandler = SOIL_load_OGL_texture(_fileName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+	_textureHandler = SOIL_load_OGL_texture(_fileName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
 
 	/* Check for an error during the load process */
 	if(_textureHandler == 0)

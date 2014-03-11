@@ -239,7 +239,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			Vector position = _lightMap["Positional Light 1"]->getPosition();
 
-			position[VZ] += 0.1f;
+			position[VY] += 5.0f * elapsedTime;
 
 			_lightMap["Positional Light 1"]->setPosition(position);
 			_lightMap["Positional Light 1"]->loadUniforms();
@@ -252,7 +252,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			Vector position = _lightMap["Positional Light 1"]->getPosition();
 
-			position[VZ] -= 0.1f;
+			position[VY] -= 5.0f * elapsedTime;
 
 			_lightMap["Positional Light 1"]->setPosition(position);
 			_lightMap["Positional Light 1"]->loadUniforms();
@@ -265,7 +265,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			Vector position = _lightMap["Spot Light 2"]->getPosition();
 
-			position[VZ] += 0.1f;
+			position[VY] += 5.0f * elapsedTime;
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();
@@ -278,7 +278,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 			Vector position = _lightMap["Spot Light 2"]->getPosition();
 
-			position[VZ] -= 0.1f;
+			position[VY] -= 5.0f * elapsedTime;
 
 			_lightMap["Spot Light 2"]->setPosition(position);
 			_lightMap["Spot Light 2"]->loadUniforms();

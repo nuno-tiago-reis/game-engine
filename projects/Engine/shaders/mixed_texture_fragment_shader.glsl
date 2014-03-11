@@ -93,7 +93,7 @@ vec4 positionalLight(int i) {
 		DiffuseColor = (out_Diffuse * TextureColor) * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 		/* Specular Component */
-		vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
+		vec3 HalfwayVector = normalize(vec3(out_Position) + LightDirection);
 			                
 		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
 			                          
@@ -143,8 +143,6 @@ vec4 directionalLight(int i) {
 
 	/* Final Calculation */
 	return AmbientColor + DiffuseColor + SpecularColor;
-
-	return vec4(LightDirection,1);
 }
 
 vec4 spotLight(int i) {

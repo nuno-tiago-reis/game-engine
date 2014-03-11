@@ -84,15 +84,10 @@ vec4 positionalLight(int i) {
 
 		DiffuseColor = out_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
-		/*vec3 VertexToEye = normalize(vec3(out_Position));
-		vec3 LightReflect = normalize(reflect(vec3(-LightDirection), Normal));
-
-		float SpecularAngle = max(dot(VertexToEye, LightReflect), 0.0);*/
-
 		/* Specular Component */
 		vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
 			                
-		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
 			                          
 		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                
 		if(SpecularFactor > 0.0)
@@ -126,7 +121,7 @@ vec4 directionalLight(int i) {
 		/* Specular Component */
 		vec3 HalfwayVector = normalize(LightDirection);
 
-		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
 			                          
 		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
 		if(SpecularFactor > 0.0)
@@ -135,8 +130,6 @@ vec4 directionalLight(int i) {
 
 	/* Final Calculation */
 	return AmbientColor + DiffuseColor + SpecularColor;
-
-	return vec4(LightDirection,1);
 }
 
 vec4 spotLight(int i) {
@@ -179,7 +172,7 @@ vec4 spotLight(int i) {
 			vec3 HalfwayVector = normalize(vec3(-out_Position)) + normalize(vec3(ViewMatrix * LightSources[i].Position - out_Position));
 			HalfwayVector = normalize(HalfwayVector);
 			                
-			float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+			float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
 			                          
 			float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
 			if(SpecularFactor > 0.0)

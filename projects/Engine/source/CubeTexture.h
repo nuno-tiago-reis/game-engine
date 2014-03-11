@@ -28,6 +28,8 @@
 #define POSITIVE_Z "Positive Z"
 #define NEGATIVE_Z "Negative Z"
 
+#define FULL_TEXTURE "Full Texture"
+
 class CubeTexture : public Texture {
 
 	private:
@@ -40,6 +42,7 @@ class CubeTexture : public Texture {
 		/* Constructors & Destructors */
 		CubeTexture(string positiveXFileName, string negativeXFileName, string positiveYFileName,
 			string negativeYFileName, string positiveZFileName,string negativeZFileName);
+		CubeTexture(string fullTextureFileName);
 
 		~CubeTexture();
 

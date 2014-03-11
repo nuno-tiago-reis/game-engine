@@ -16,7 +16,7 @@ Camera::Camera(string name) {
 
 	_zoom = 1.0f;
 	_longitude = 0.0f;
-	_latitude = 89.0f;
+	_latitude = 0.0f;
 
 	loadView();
 	loadOrthogonalProjection();
@@ -86,8 +86,8 @@ void Camera::loadUniforms() {
 void Camera::loadView() {
 
 	_eye[VX] = _position[VX] + _zoom * CAMERA_RADIUS * sin((_latitude - 90.0f) * DEGREES_TO_RADIANS) * cos(_longitude * DEGREES_TO_RADIANS);
-	_eye[VY] = _position[VY] + _zoom * CAMERA_RADIUS * sin((_latitude - 90.0f) * DEGREES_TO_RADIANS) * sin(_longitude * DEGREES_TO_RADIANS);
-	_eye[VZ] = _position[VZ] + _zoom * CAMERA_RADIUS * cos((_latitude - 90.0f) * DEGREES_TO_RADIANS);
+	_eye[VY] = _position[VY] + _zoom * CAMERA_RADIUS * cos((_latitude - 90.0f) * DEGREES_TO_RADIANS);
+	_eye[VZ] = _position[VZ] + _zoom * -CAMERA_RADIUS * sin((_latitude - 90.0f) * DEGREES_TO_RADIANS) * sin(_longitude * DEGREES_TO_RADIANS);
 	_eye[VW] = 1.0f;
 
 	_target[VX] = _position[VX];
@@ -96,8 +96,8 @@ void Camera::loadView() {
 	_target[VW] = 1.0f;
 
 	_up[VX] = 0.0f;
-	_up[VY] = 0.0f;
-	_up[VZ] = cos(_latitude * DEGREES_TO_RADIANS);
+	_up[VY] = cos(_latitude * DEGREES_TO_RADIANS);
+	_up[VZ] = 0.0f;
 	_up[VW] = 1.0f;
 	
 	_viewMatrix.loadIdentity();

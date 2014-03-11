@@ -15,27 +15,49 @@ CubeTexture::CubeTexture(string positiveXFileName, string negativeXFileName, str
 	_textureFormat = GL_TEXTURE_CUBE_MAP;
 }
 
+CubeTexture::CubeTexture(string fullTextureFileName) {
+
+	_textureFilenameMap[FULL_TEXTURE] = fullTextureFileName;
+
+	_textureFormat = GL_TEXTURE_CUBE_MAP;
+}
+
 CubeTexture::~CubeTexture() {
 }
 
 void CubeTexture::load() {
 
-	/* Load the Texture */
-	_textureHandler = SOIL_load_OGL_cubemap(
-		_textureFilenameMap[POSITIVE_X].c_str(),_textureFilenameMap[NEGATIVE_X].c_str(),
-		_textureFilenameMap[POSITIVE_Y].c_str(), _textureFilenameMap[NEGATIVE_Y].c_str(),
-		_textureFilenameMap[POSITIVE_Z].c_str(), _textureFilenameMap[NEGATIVE_Z].c_str(),
-		SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+	if(_textureFilenameMap[FULL_TEXTURE].empty() == true) {
 
-	/* Check for an error during the load process */
-	if(_textureHandler == 0)
-		cout << "SOIL loading error (\"" << 
-		_textureFilenameMap[POSITIVE_X].c_str() << _textureFilenameMap[NEGATIVE_X].c_str() << 
-		_textureFilenameMap[POSITIVE_Y].c_str() << _textureFilenameMap[NEGATIVE_Y].c_str() <<
-		_textureFilenameMap[POSITIVE_Z].c_str() << _textureFilenameMap[NEGATIVE_Z].c_str() <<
-		"\": " << SOIL_last_result() << endl;
+		/* Load the Texture */
+		_textureHandler = SOIL_load_OGL_cubemap(
+			_textureFilenameMap[POSITIVE_X].c_str(),_textureFilenameMap[NEGATIVE_X].c_str(),
+			_textureFilenameMap[POSITIVE_Y].c_str(), _textureFilenameMap[NEGATIVE_Y].c_str(),
+			_textureFilenameMap[POSITIVE_Z].c_str(), _textureFilenameMap[NEGATIVE_Z].c_str(),
+			SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
 
-	Utility::checkOpenGLError("ERROR: Texture CubeMap loading failed.");
+		/* Check for an error during the load process */
+		if(_textureHandler == 0)
+			cout << "SOIL loading error (\"" << 
+			_textureFilenameMap[POSITIVE_X].c_str() << _textureFilenameMap[NEGATIVE_X].c_str() << 
+			_textureFilenameMap[POSITIVE_Y].c_str() << _textureFilenameMap[NEGATIVE_Y].c_str() <<
+			_textureFilenameMap[POSITIVE_Z].c_str() << _textureFilenameMap[NEGATIVE_Z].c_str() <<
+			"\": " << SOIL_last_result() << endl;
+
+		Utility::checkOpenGLError("ERROR: Texture CubeMap loading failed.");
+	}
+	else {
+	
+		/* Load the Texture */
+		_textureHandler = SOIL_load_OGL_single_cubemap(_textureFilenameMap[FULL_TEXTURE].c_str(),"NSWEUD",
+			SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+
+		/* Check for an error during the load process */
+		if(_textureHandler == 0)
+			cout << "SOIL loading error (\"" << _textureFilenameMap[FULL_TEXTURE].c_str() << "\": " << SOIL_last_result() << endl;
+
+		Utility::checkOpenGLError("ERROR: Texture CubeMap loading failed.");
+	}
 }
 
 void CubeTexture::bind(GLuint textureID) {

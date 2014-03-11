@@ -387,10 +387,10 @@
     <None Include="shaders\sphere_map_vertex_shader.glsl">
       <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
     </None>
-    <None Include="shaders\cube_map_vertex_shader.glsl">
+    <None Include="shaders\cube_map_fragment_shader.glsl">
       <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
     </None>
-    <None Include="shaders\cube_map_fragment_shader.glsl">
+    <None Include="shaders\cube_map_vertex_shader.glsl">
       <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
     </None>
   </ItemGroup>

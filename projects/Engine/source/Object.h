@@ -113,6 +113,7 @@ class Object {
 		void activateCubeMapTexture(string positiveXFileName, string negativeXFileName, 
 			string positiveYFileName, string negativeYFileName, 
 			string positiveZFileName,string negativeZFileName);
+		void activateCubeMapTexture(string fullTextureFileName);
 		void bindCubeMapTexture(GLuint programID);
 		void unbindCubeMapTexture();
 

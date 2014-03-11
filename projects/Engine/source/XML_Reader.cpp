@@ -42,6 +42,8 @@ void XML_Reader::openTransformationFile(string filename) {
 
 void XML_Reader::loadTransformation(Object *graphicObject) {
 
+	cout << "XML_Reader::loadTransformation(" << graphicObject->getName() << ");" << endl;
+
 	for(XMLNode* modelXML = _transformationDocument->FirstChildElement()->FirstChildElement("model"); modelXML != NULL; modelXML = modelXML->NextSibling()) {
 
 		if(graphicObject->getName().compare(modelXML->ToElement()->Attribute("identifier")) != 0)

@@ -92,7 +92,7 @@ vec4 positionalLight(int i) {
 		/* Specular Component */
 		vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
 			                
-		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
 			                          
 		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                
 		if(SpecularFactor > 0.0)
@@ -100,9 +100,7 @@ vec4 positionalLight(int i) {
 	}
 
 	/* Final Calculation */
-	//return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
-
-	return CubeTexture;
+	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
 }
 
 vec4 directionalLight(int i) {
@@ -131,7 +129,7 @@ vec4 directionalLight(int i) {
 		/* Specular Component */
 		vec3 HalfwayVector = normalize(LightDirection);
 
-		float SpecularAngle = max(dot(HalfwayVector, Normal), 0.0);
+		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
 			                          
 		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
 		if(SpecularFactor > 0.0)
@@ -140,8 +138,6 @@ vec4 directionalLight(int i) {
 
 	/* Final Calculation */
 	return AmbientColor + DiffuseColor + SpecularColor;
-
-	return vec4(LightDirection,1);
 }
 
 vec4 spotLight(int i) {

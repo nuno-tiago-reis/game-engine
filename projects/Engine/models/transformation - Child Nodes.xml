@@ -3,21 +3,21 @@
 
     <model identifier="Mallet" parent="None">
 		<boundingVolume type="Bounding Sphere" radius="0.500000"/>
-        <initial px="0.000000" py="-2.500000" pz="0.0000" sx="0.500000" sy="0.500000" sz="0.500000" rx="90.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="-2.500000" pz="0.0000" sx="0.500000" sy="0.500000" sz="0.500000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
 
     <model identifier="Puck" parent="None">
 		<boundingVolume type="Bounding Sphere" radius="0.150000"/>
-        <initial px="0.000000" py="0.000000" pz="0.00000" sx="0.50000" sy="0.50000" sz="0.5000000" rx="90.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="0.000000" pz="0.00000" sx="0.50000" sy="0.50000" sz="0.5000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
  
     <model identifier="Table" parent="None">
 		<boundingVolume type="None"/>
-        <initial px="0.000000" py="0.00000" pz="-3.782600" sx="4.00000" sy="4.000000" sz="4.000000" rx="90.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="-3.782600" pz="0.00000" sx="4.00000" sy="4.000000" sz="4.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
     <model identifier="Table Surface" parent="None">
 		<boundingVolume type="None"/>
-        <initial px="0.000000" py="0.00000" pz="-3.782600" sx="4.00000" sy="4.000000" sz="4.000000" rx="90.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="-3.782600" pz="0.00000" sx="4.00000" sy="4.000000" sz="4.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
 	
 	<model identifier="Platform" parent="None">

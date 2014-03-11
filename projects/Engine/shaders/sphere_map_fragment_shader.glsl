@@ -138,8 +138,6 @@ vec4 directionalLight(int i) {
 
 	/* Final Calculation */
 	return AmbientColor + DiffuseColor + SpecularColor;
-
-	return vec4(LightDirection,1);
 }
 
 vec4 spotLight(int i) {
