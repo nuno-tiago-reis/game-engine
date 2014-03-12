@@ -39,6 +39,9 @@ void Texture::bind(GLuint textureID) {
 	glTexParameteri(_textureFormat, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(_textureFormat, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" binding failed.");
 }
 

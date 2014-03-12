@@ -99,7 +99,7 @@ void main() {
 
     out_Normal = normalize(NormalMatrix * vec3(Normal));
 	out_Tangent = normalize(NormalMatrix * vec3(Tangent));
-	out_Bitangent = cross(out_Normal,out_Tangent); //* Tangent.w;
+	out_Bitangent = cross(out_Normal,out_Tangent) * Tangent.w;
 
 	/* Vertex Texture Coordinate */
 	out_TextureUV = TextureUV;
@@ -112,6 +112,17 @@ void main() {
 	for(int i=0; i<LIGHT_COUNT; i++) {
 
 		switch(LightSources[i].LightType) { 
+
+			case POSITIONAL_LIGHT:	//vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
+									LightDirection = normalize(vec3((ViewMatrix * LightSources[i].Position) - out_Position));
+
+									out_LightDirection[i] = convertToTangentSpace(LightDirection, out_Tangent, out_Bitangent, out_Normal);
+									
+									//vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
+									HalfwayVector = normalize(vec3(-out_Position)) + LightDirection;
+
+									out_HalfwayVector[i] = convertToTangentSpace(HalfwayVector, out_Tangent, out_Bitangent, out_Normal);
+									break;
 		
 			case SPOT_LIGHT:		//vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
 									LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
@@ -119,7 +130,7 @@ void main() {
 									out_LightDirection[i] = convertToTangentSpace(LightDirection, out_Tangent, out_Bitangent, out_Normal);
 									
 									//vec3 HalfwayVector = normalize(vec3(-out_Position)) + normalize(vec3(ViewMatrix * LightSources[i].Position - out_Position));
-									HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
+									HalfwayVector = normalize(vec3(-out_Position)) + LightDirection;
 
 									out_HalfwayVector[i] = convertToTangentSpace(HalfwayVector, out_Tangent, out_Bitangent, out_Normal);
 									break;
@@ -131,17 +142,6 @@ void main() {
 									
 									//vec3 HalfwayVector = normalize(LightDirection);
 									HalfwayVector = LightDirection;
-
-									out_HalfwayVector[i] = convertToTangentSpace(HalfwayVector, out_Tangent, out_Bitangent, out_Normal);
-									break;
-
-			case POSITIONAL_LIGHT:	//vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
-									LightDirection = normalize(vec3((ViewMatrix * LightSources[i].Position) - out_Position));
-
-									out_LightDirection[i] = convertToTangentSpace(LightDirection, out_Tangent, out_Bitangent, out_Normal);
-									
-									//vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
-									HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
 
 									out_HalfwayVector[i] = convertToTangentSpace(HalfwayVector, out_Tangent, out_Bitangent, out_Normal);
 									break;

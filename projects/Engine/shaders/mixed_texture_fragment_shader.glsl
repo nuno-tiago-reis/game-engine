@@ -65,7 +65,7 @@ out vec4 out_Color;
 vec4 positionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = out_Normal;
+	vec3 Normal = normalize(out_Normal);
 	
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
@@ -109,7 +109,7 @@ vec4 positionalLight(int i) {
 vec4 directionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = out_Normal;
+	vec3 Normal = normalize(out_Normal);
 
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
@@ -148,7 +148,7 @@ vec4 directionalLight(int i) {
 vec4 spotLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = out_Normal;
+	vec3 Normal = normalize(out_Normal);
 
 	/* Light LightDistance / Direction */
 	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - out_Position);

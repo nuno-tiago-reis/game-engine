@@ -112,7 +112,7 @@ void Vector::getValue(GLfloat* vector) {
 
 void Vector::setValue(const GLfloat value[4]) {
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		_vector[i] = value[i];
 }
 
@@ -125,7 +125,7 @@ Vector Vector::operator - () {
 
 	Vector result;
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		result[i] = -_vector[i];
 
 	result[VW] =  1.0f;
@@ -137,7 +137,7 @@ Vector Vector::operator + (Vector vector){
 
 	Vector result;
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		result[i] = _vector[i] + vector[i];
 
 	result[VW] =  1.0f;
@@ -147,7 +147,7 @@ Vector Vector::operator + (Vector vector){
 
 Vector Vector::operator += (Vector vector) {
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		_vector[i] +=  vector[i];
 
 	_vector[VW] =  1.0f;
@@ -159,7 +159,7 @@ Vector Vector::operator - (Vector vector) {
 
 	Vector result;
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		result[i] = _vector[i] - vector[i];
 
 	result[VW] =  1.0f;
@@ -169,7 +169,7 @@ Vector Vector::operator - (Vector vector) {
 
 Vector Vector::operator-= (Vector vector) {
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i<3; i++)
 		_vector[i] -=  vector[i];
 
 	_vector[VW] =  1.0f;

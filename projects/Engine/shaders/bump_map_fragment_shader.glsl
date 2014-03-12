@@ -70,7 +70,7 @@ out vec4 out_Color;
 vec4 positionalLight(int i) {
 	
 	/* Light LightDistance / Direction */
-	vec3 LightDirection = out_LightDirection[i];
+	vec3 LightDirection = normalize(out_LightDirection[i]);
 	float LightDistance = length(vec3((ViewMatrix * LightSources[i].Position) - out_Position));
 
 	/* Light Intensity */
@@ -78,10 +78,10 @@ vec4 positionalLight(int i) {
 
 	/* Texture Component */
 	vec4 BaseTexture = texture2D(DiffuseTexture, out_TextureUV);
-	vec3 BumpNormal = normalize(texture2D(NormalTexture, out_TextureUV).rgb * 2.0 - 1.0);
+	vec3 BumpNormal = normalize(texture2D(NormalTexture, out_TextureUV).xyz * 2.0 - 1.0);
 
 	/* Ambient Component */
-	vec4 AmbientColor = BaseTexture * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 AmbientColor = out_Diffuse * LightSources[i].Color * LightSources[i].AmbientIntensity;
 	vec4 DiffuseColor = vec4(0, 0, 0, 1);                                            
 	vec4 SpecularColor = vec4(0, 0, 0, 1);
 
@@ -90,26 +90,36 @@ vec4 positionalLight(int i) {
 
 	if (DiffuseFactor > 0.0) {
 
-		DiffuseColor = BaseTexture * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+		DiffuseColor = out_Diffuse * BaseTexture * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 		/* Specular Component */
-		vec3 HalfwayVector = out_HalfwayVector[i];
+		vec3 HalfwayVector = normalize(out_HalfwayVector[i]);
 		       
-		float SpecularAngle = max(dot(BumpNormal, out_HalfwayVector[i]), 0.0);
-			                          
+		float SpecularAngle = max(dot(BumpNormal, HalfwayVector), 0.0);
+
 		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                
 		if(SpecularFactor > 0.0)
-			SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+			SpecularColor = out_Specular * BaseTexture * LightSources[i].SpecularIntensity * SpecularFactor;
+
+		//return vec4(SpecularFactor,0,0,1);
 	}
 
 	/* Final Calculation */
-	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
+	return AmbientColor + (DiffuseColor + SpecularColor * 500) * LightIntensity;
+
+	//return DiffuseColor * LightIntensity;
+	//return vec4(0,0,0,1);
+
+	//return vec4(DiffuseFactor,0,0,1);
+
+	//return (vec4(out_Tangent,1) + vec4(1,1,1,1)) * 0.5;
+	//return vec4(out_Tangent,1);
 }
 
 vec4 directionalLight(int i) {
 
 	/* Vertex Normal */
-	vec3 Normal = out_Normal;
+	vec3 Normal = normalize(out_Normal);
 
 	/* Light LightDistance / Direction */
 	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));

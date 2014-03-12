@@ -111,12 +111,16 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 		string start;
 		iss >> start;
 		
+		/* Add a Vertex */
 		if(start == "v")
 			vertexNumber++;
+		/* Add a Vertex Normal */
 		else if(start == "vn")
 			normalNumber++;
+		/* Add a Vertex Texture UV */
 		else if(start == "vt")
 			textureCoordinateNumber++;
+		/* Add a Face (Triangle) */
 		else if(start == "f")
 			faceNumber++;
 	}
@@ -154,10 +158,12 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 		string start;
 		iss >> start;
 
+		/* Change Active Material */
 		if(start == "usemtl") {
 
 			iss >> activeMaterial;
 		}
+		/* Add a Vertex */
 		else if(start == "v") {
 
 			float x,y,z;
@@ -169,6 +175,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 
 			currentVertex++;
 		}
+		/* Add a Vertex Normal */
 		else if(start == "vn") {
 
 			float x,y,z;
@@ -180,6 +187,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 
 			currentNormal++;
 		} 
+		/* Add a Vertex Texture UV */
 		else if(start == "vt") {
 
 			float u,v;
@@ -190,6 +198,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 
 			currentTextureCoordinate++;
 		}
+		/* Add a Face (Triangle) */
 		else if(start == "f") {
 
 			string faceVertex[3];
@@ -207,6 +216,18 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 				bufferVertices[currentFace * 3 + i].position[1] = vertexArray[index[0]-1].y;
 				bufferVertices[currentFace * 3 + i].position[2] = vertexArray[index[0]-1].z;
 				bufferVertices[currentFace * 3 + i].position[3] = 1.0f;
+			
+				/* Vertex Texture Coordinates */
+				if(index.size() >= 2) {
+
+					bufferVertices[currentFace * 3 + i].textureUV[0] = textureCoordinateArray[index[1]-1].u;
+					bufferVertices[currentFace * 3 + i].textureUV[1] = textureCoordinateArray[index[1]-1].v;
+				} 
+				else {
+
+					bufferVertices[currentFace * 3 + i].textureUV[0] = 0.0f;
+					bufferVertices[currentFace * 3 + i].textureUV[1] = 0.0f;
+				}
 
 				/* Vertex Normals */
 				if(index.size() >= 3) {
@@ -224,18 +245,6 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 					bufferVertices[currentFace * 3 + i].normal[1] = 0.0f;
 					bufferVertices[currentFace * 3 + i].normal[2] = 0.0f;
 					bufferVertices[currentFace * 3 + i].normal[3] = 0.0f; 				
-				}
-			
-				/* Vertex Texture Coordinates */
-				if(index.size() >= 2) {
-
-					bufferVertices[currentFace * 3 + i].textureUV[0] = textureCoordinateArray[index[1]-1].u;
-					bufferVertices[currentFace * 3 + i].textureUV[1] = textureCoordinateArray[index[1]-1].v;
-				} 
-				else {
-
-					bufferVertices[currentFace * 3 + i].textureUV[0] = 0.0f;
-					bufferVertices[currentFace * 3 + i].textureUV[1] = 0.0f;
 				}
 
 				/* Vertex Material */
@@ -266,13 +275,13 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 					bufferVertices[currentFace * 3 + i].ambient[3] = 1.0f;
 
 					bufferVertices[currentFace * 3 + i].diffuse[0] = 1.0f;
-					bufferVertices[currentFace * 3 + i].diffuse[1] = 1.0f;
-					bufferVertices[currentFace * 3 + i].diffuse[2] = 1.0f;
+					bufferVertices[currentFace * 3 + i].diffuse[1] = 0.0f;
+					bufferVertices[currentFace * 3 + i].diffuse[2] = 0.0f;
 					bufferVertices[currentFace * 3 + i].diffuse[3] = 1.0f;
 					
 					bufferVertices[currentFace * 3 + i].specular[0] = 0.0f;
 					bufferVertices[currentFace * 3 + i].specular[1] = 0.0f;
-					bufferVertices[currentFace * 3 + i].specular[2] = 0.0f;
+					bufferVertices[currentFace * 3 + i].specular[2] = 1.0f;
 					bufferVertices[currentFace * 3 + i].specular[3] = 1.0f;
 
 					bufferVertices[currentFace * 3 + i].specularConstant = 255.0f;
@@ -301,8 +310,8 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 
 			float r = 1.0f / (uv1.u * uv2.v - uv2.u * uv1.v);
 
-			Vector s((uv2.v * xyz1.x - uv1.v * xyz2.x) * r, (uv2.v * xyz1.y - uv1.v * xyz2.y) * r,(uv2.v * xyz1.z - uv1.v * xyz2.z) * r, 1.0f);
-			Vector t((uv1.u * xyz2.x - uv2.u * xyz1.x) * r, (uv1.u * xyz2.y - uv2.u * xyz1.y) * r,(uv1.u * xyz2.z - uv2.u * xyz1.z) * r, 1.0f);
+			Vector s((uv2.v * xyz1.x - uv1.v * xyz2.x) * r, (uv2.v * xyz1.y - uv1.v * xyz2.y) * r,(uv2.v * xyz1.z - uv1.v * xyz2.z) * r, 0.0f);
+			Vector t((uv1.u * xyz2.x - uv2.u * xyz1.x) * r, (uv1.u * xyz2.y - uv2.u * xyz1.y) * r,(uv1.u * xyz2.z - uv2.u * xyz1.z) * r, 0.0f);
 
 			/* Acumulate the new Tangents */
 			sTangentArray[bufferVerticesID[currentFace * 3]] += s;
@@ -323,37 +332,24 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	/* Average the Tangents */
 	if(hasNormals) {
 
-		for(int i = 0; i < vertexNumber; i++) {
+		for(int i=0; i<faceNumber * 3; i++) {
 
 			Vector n = Vector(bufferVertices[i].normal);
-			Vector t = tTangentArray[i];
-			Vector s = sTangentArray[i];
-
-			/*if(graphicObject->getName().compare("Test Cube") == 0) {
-			
-				cout << "Normal = "; n.dump();
-				cout << "s Tangent = "; t.dump();
-				cout << "t Tangent = "; s.dump();
-			}*/
+			Vector t1 = sTangentArray[bufferVerticesID[i]];
+			Vector t2 = tTangentArray[bufferVerticesID[i]];
         
 			// Gram-Schmidt orthogonalize
-			Vector averageTangent = (t - n * Vector::dotProduct(n, t));
-			averageTangent.normalize();
-			averageTangent.clean();
-
-			for(int j=0; j<3; j++)
-				bufferVertices[i].tangent[j] = averageTangent[j];
-			
-			/*if(graphicObject->getName().compare("Test Cube") == 0) {
-
-				cout << "Average Tangent = "; averageTangent.dump();
-			}
-
-			if(Vector::dotProduct(n,averageTangent) > Vector::threshold)
-				cout << "FAILED CALCULATING TANGENT" << endl;*/
+			Vector tangent = (t1 - n * Vector::dotProduct(n, t1));
+			tangent.normalize();
 
 			// Calculate handedness
-			bufferVertices[i].tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, t), s) < 0.0f) ? -1.0f : 1.0f;
+			tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, tangent), t2) < 0.0f) ? -1.0f : 1.0f;
+	
+			for(int j=0; j<4; j++)
+				bufferVertices[i].tangent[j] = tangent[j];
+
+			if(Vector::dotProduct(n,tangent) > Vector::threshold)
+				cerr << "FAILED CALCULATING TANGENT" << endl;
 		}
 	}
 
