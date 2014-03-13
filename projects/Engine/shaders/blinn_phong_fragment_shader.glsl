@@ -1,26 +1,26 @@
 #version 330 core
 #pragma optionNV(unroll all)
 
-#define LIGHT_COUNT 10
+#define LIGHT_COUNT 5
 
 #define SPOT_LIGHT 1
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
-/* Input Attributes */
-in vec4 out_Position;
+#define SPOTLIGHT_OUTER_ANGLE 0.97
 
-in vec3 out_Normal;
+/* Input Attributes (Same as the Blinn-Phong Vertex Shader) */
+in vec4 Fragment_Position;
 
-in vec2 out_TextureUV;
+in vec3 Fragment_Normal;
 
-in vec4 out_Ambient;
-in vec4 out_Diffuse;
-in vec4 out_Specular;
-in float out_SpecularConstant;
+in vec4 Fragment_Ambient;
+in vec4 Fragment_Diffuse;
+in vec4 Fragment_Specular;
+in float Fragment_SpecularConstant;
 
-in mat3 NormalMatrix;
-in mat3 LightMatrix;
+in vec3 LightDirection[LIGHT_COUNT];
+in vec3 HalfwayVector[LIGHT_COUNT];
 
 /* Uniforms */
 uniform mat4 ModelMatrix;
@@ -56,42 +56,37 @@ layout(std140) uniform SharedLightSources {
 	LightSource LightSources[LIGHT_COUNT];
 };
 
-/* Output Attributes */
-out vec4 out_Color;
+/* Output Attributes (Fragment Color) */
+out vec4 Fragment_Color;
+
+vec3 Normal;
 
 vec4 positionalLight(int i) {
-
-	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
 	
 	/* Light LightDistance / Direction */
-	vec3 LightDirection = vec3((ViewMatrix * LightSources[i].Position) - out_Position);
-	float LightDistance = length(LightDirection);  
-	LightDirection = normalize(LightDirection);
+	float LightDistance = length(ViewMatrix * LightSources[i].Position - Fragment_Position);
 
 	/* Light Intensity */
 	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
 
 	/* Ambient Component */
-	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 AmbientColor = Fragment_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
 	vec4 DiffuseColor = vec4(0, 0, 0, 1);                                            
 	vec4 SpecularColor = vec4(0, 0, 0, 1);
 
 	/* Diffuse Component */
-	float DiffuseFactor = max(dot(Normal, LightDirection), 0.0);
+	float DiffuseFactor = max(dot(Normal, normalize(LightDirection[i])), 0.0);
 
 	if (DiffuseFactor > 0.0) {
 
-		DiffuseColor = out_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+		DiffuseColor = Fragment_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 		/* Specular Component */
-		vec3 HalfwayVector = normalize(vec3(-out_Position) + LightDirection);
-			                
-		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
+		float SpecularAngle = max(dot(Normal, normalize(HalfwayVector[i])), 0.0);
 			                          
-		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                
+		float SpecularFactor = pow(SpecularAngle, Fragment_SpecularConstant);                
 		if(SpecularFactor > 0.0)
-			SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+			SpecularColor = Fragment_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
 	}
 
 	/* Final Calculation */
@@ -100,32 +95,24 @@ vec4 positionalLight(int i) {
 
 vec4 directionalLight(int i) {
 
-	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
-
-	/* Light LightDistance / Direction */
-	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
-
 	/* Ambient Component */
-	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 AmbientColor = Fragment_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
 	vec4 DiffuseColor = vec4(0, 0, 0, 1);                                            
 	vec4 SpecularColor = vec4(0, 0, 0, 1);
 
 	/* Diffuse Component */
-	float DiffuseFactor = max(dot(Normal, -LightDirection), 0.0);
+	float DiffuseFactor = max(dot(Normal, -normalize(LightDirection[i])), 0.0);
 
 	if (DiffuseFactor > 0) {
 
-		DiffuseColor = out_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
+		DiffuseColor = Fragment_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
 
 		/* Specular Component */
-		vec3 HalfwayVector = normalize(LightDirection);
-
-		float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
+		float SpecularAngle = max(dot(Normal, normalize(HalfwayVector[i])), 0.0);
 			                          
-		float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
+		float SpecularFactor = pow(SpecularAngle, Fragment_SpecularConstant);                               
 		if(SpecularFactor > 0.0)
-			SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
+			SpecularColor = Fragment_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
 	}
 
 	/* Final Calculation */
@@ -134,73 +121,63 @@ vec4 directionalLight(int i) {
 
 vec4 spotLight(int i) {
 
-	/* Vertex Normal */
-	vec3 Normal = normalize(out_Normal);
-
 	/* Light LightDistance / Direction */
-	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - out_Position);
+	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - Fragment_Position);
 	float LightDistance = length(LightToVertex);  
 	LightToVertex = normalize(LightToVertex);
-
-	//vec4 LightDirection = normalize(ViewMatrix * LightSources[i].Direction);
-	vec3 LightDirection = normalize(LightMatrix * vec3(LightSources[i].Direction));
 
 	/* Light Intensity */
 	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
 
 	/* Ambient Component */
-	vec4 AmbientColor = out_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
+	vec4 AmbientColor = Fragment_Ambient * LightSources[i].Color * LightSources[i].AmbientIntensity;
 	vec4 DiffuseColor = vec4(0, 0, 0, 0);                                            
 	vec4 SpecularColor = vec4(0, 0, 0, 0);
 	
 	/* Diffuse Component */
-	float DiffuseFactor = max(dot(Normal, LightToVertex), 0.0);
+	float DiffuseFactor = max(dot(Fragment_Normal, LightToVertex), 0.0);
 
 	if (DiffuseFactor > 0) {
 
-		float spotEffect = dot(LightDirection, -LightToVertex);
+		/* SpotLight Circular effect fading around the edges */
+		float CosineDifference = SPOTLIGHT_OUTER_ANGLE - LightSources[i].CutOff ;
 
-		if (spotEffect > cos(radians(LightSources[i].CutOff))) {
+		float SpotEffect = clamp((dot(normalize(LightDirection[i]), -LightToVertex) - LightSources[i].CutOff) / CosineDifference, 0.0, 1.0);
 
-			spotEffect = pow(spotEffect,1.5);
+		DiffuseColor = Fragment_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor * SpotEffect;
 
-			LightIntensity = spotEffect / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);
-
-			DiffuseColor = out_Diffuse * LightSources[i].Color * LightSources[i].DiffuseIntensity * DiffuseFactor;
-
-			/* Specular Component */
-			vec3 HalfwayVector = normalize(vec3(-out_Position)) + normalize(vec3(ViewMatrix * LightSources[i].Position - out_Position));
-			HalfwayVector = normalize(HalfwayVector);
-			                
-			float SpecularAngle = max(dot(Normal, HalfwayVector), 0.0);
+		/* Specular Component */			                
+		float SpecularAngle = max(dot(Fragment_Normal, normalize(HalfwayVector[i])), 0.0);
 			                          
-			float SpecularFactor = pow(SpecularAngle, out_SpecularConstant);                               
-			if(SpecularFactor > 0.0)
-				SpecularColor = out_Specular * LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor;
-		}
+		float SpecularFactor = pow(SpecularAngle, Fragment_SpecularConstant);                               
+		if(SpecularFactor > 0.0)
+			SpecularColor = Fragment_Specular *  LightSources[i].Color * LightSources[i].SpecularIntensity * SpecularFactor * SpotEffect;
 	}
 
+	/* Final Calculation */
 	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
 }
 
 void main() {
 
-	out_Color = vec4(0);
+	/* Fragment Normal */
+	Normal = normalize(Fragment_Normal);
+
+	/* Fragment Color */
+	Fragment_Color = vec4(0);
 	
+	/* Light computing */
 	for(int i=0; i<LIGHT_COUNT; i++) {
 
-		if(LightSources[i].LightType == 0)
-			continue;
-
 		switch(LightSources[i].LightType) { 
-		
-			case SPOT_LIGHT:		out_Color += spotLight(i);
-									break;
-			
-			case DIRECTIONAL_LIGHT:	out_Color += directionalLight(i);
+
+			case POSITIONAL_LIGHT:	Fragment_Color += positionalLight(i);
 									break;
 
-			case POSITIONAL_LIGHT:	out_Color += positionalLight(i);
+			case DIRECTIONAL_LIGHT:	Fragment_Color += directionalLight(i);
+									break;
+
+			case SPOT_LIGHT:		Fragment_Color += spotLight(i);
 									break;
 		}
 	}

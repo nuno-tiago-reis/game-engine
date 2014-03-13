@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Shader">
-      <UniqueIdentifier>{23b0ca58-f328-414d-9acd-a26a65e2962a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SceneManager">
       <UniqueIdentifier>{a346a320-cc3c-41ad-bf32-68e6489baa76}</UniqueIdentifier>
     </Filter>
@@ -44,18 +41,6 @@
     </Filter>
     <Filter Include="Source Files\Utility\OBJ">
       <UniqueIdentifier>{9e4b9495-261c-4261-8663-a843b10f6a51}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\BlinnPhong">
-      <UniqueIdentifier>{bc5a4213-15f7-4b6b-9def-7fc103f3fdba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\BumpMap">
-      <UniqueIdentifier>{f26f5eca-1f0a-4ff4-9495-69b51a1def9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\BlinnPhong\glsl">
-      <UniqueIdentifier>{8c84c7e9-a0c1-4155-b1de-fb1069abe064}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\BumpMap\glsl">
-      <UniqueIdentifier>{7fbae9e1-2139-4870-a0ef-5ef217c6e8dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\SceneManager\SceneGraph">
       <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
@@ -105,30 +90,6 @@
     <Filter Include="Source Files\SceneManager\SceneGraph\MatrixStack">
       <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\MixedTexture">
-      <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\MixedTexture\glsl">
-      <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\Wood">
-      <UniqueIdentifier>{d803a608-2c1c-4f9a-a7e1-17e25c9c71dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\Wood\glsl">
-      <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\SphereMapping">
-      <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\SphereMapping\glsl">
-      <UniqueIdentifier>{6e9ea89f-2c06-4ac8-a23a-38fe7e0064e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\CubeMapping">
-      <UniqueIdentifier>{836c1639-5dfd-40bc-9056-e3a6b8535ef3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\CubeMapping\glsl">
-      <UniqueIdentifier>{46048f40-f710-45af-9835-7b15231ec60f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Textures">
       <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
     </Filter>
@@ -140,6 +101,45 @@
     </Filter>
     <Filter Include="Source Files\Textures\CubeTexture">
       <UniqueIdentifier>{5c8e5a32-cd69-42a8-92a7-d2c9d42d7b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO">
+      <UniqueIdentifier>{23b0ca58-f328-414d-9acd-a26a65e2962a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\BlinnPhong">
+      <UniqueIdentifier>{bc5a4213-15f7-4b6b-9def-7fc103f3fdba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\BlinnPhong\glsl">
+      <UniqueIdentifier>{8c84c7e9-a0c1-4155-b1de-fb1069abe064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\BumpMap">
+      <UniqueIdentifier>{f26f5eca-1f0a-4ff4-9495-69b51a1def9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\BumpMap\glsl">
+      <UniqueIdentifier>{7fbae9e1-2139-4870-a0ef-5ef217c6e8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\MixedTexture">
+      <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\MixedTexture\glsl">
+      <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO">
+      <UniqueIdentifier>{d803a608-2c1c-4f9a-a7e1-17e25c9c71dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO\glsl">
+      <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\SphereMapping">
+      <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\SphereMapping\glsl">
+      <UniqueIdentifier>{6e9ea89f-2c06-4ac8-a23a-38fe7e0064e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\CubeMapping">
+      <UniqueIdentifier>{836c1639-5dfd-40bc-9056-e3a6b8535ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader - SPOTLIGHT TODO\CubeMapping\glsl">
+      <UniqueIdentifier>{46048f40-f710-45af-9835-7b15231ec60f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +180,7 @@
       <Filter>Source Files\SceneManager\SceneGraph</Filter>
     </ClCompile>
     <ClCompile Include="source\ShaderProgram.cpp">
-      <Filter>Source Files\Shader</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO</Filter>
     </ClCompile>
     <ClCompile Include="source\PostProcessing.cpp">
       <Filter>Source Files\Motion Blur\PostProcessing</Filter>
@@ -201,10 +201,10 @@
       <Filter>Source Files\SceneManager\Lights\Light</Filter>
     </ClCompile>
     <ClCompile Include="source\BlinnPhongShader.cpp">
-      <Filter>Source Files\Shader\BlinnPhong</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BlinnPhong</Filter>
     </ClCompile>
     <ClCompile Include="source\BumpMapShader.cpp">
-      <Filter>Source Files\Shader\BumpMap</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BumpMap</Filter>
     </ClCompile>
     <ClCompile Include="source\Texture.cpp">
       <Filter>Source Files\Textures</Filter>
@@ -213,7 +213,7 @@
       <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClCompile>
     <ClCompile Include="source\RealWoodShader.cpp">
-      <Filter>Source Files\Shader\Wood</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO</Filter>
     </ClCompile>
     <ClCompile Include="source\JointObject.cpp">
       <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
@@ -228,16 +228,16 @@
       <Filter>Source Files\SceneManager\Sounds</Filter>
     </ClCompile>
     <ClCompile Include="source\MixedTextureShader.cpp">
-      <Filter>Source Files\Shader\MixedTexture</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\MixedTexture</Filter>
     </ClCompile>
     <ClCompile Include="source\Object.cpp">
       <Filter>Source Files\SceneManager\Objects\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\SphereMapShader.cpp">
-      <Filter>Source Files\Shader\SphereMapping</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\SphereMapping</Filter>
     </ClCompile>
     <ClCompile Include="source\CubeMapShader.cpp">
-      <Filter>Source Files\Shader\CubeMapping</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\CubeMapping</Filter>
     </ClCompile>
     <ClCompile Include="source\CubeTexture.cpp">
       <Filter>Source Files\Textures\CubeTexture</Filter>
@@ -284,7 +284,7 @@
       <Filter>Source Files\SceneManager\SceneGraph</Filter>
     </ClInclude>
     <ClInclude Include="source\ShaderProgram.h">
-      <Filter>Source Files\Shader</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO</Filter>
     </ClInclude>
     <ClInclude Include="source\PostProcessing.h">
       <Filter>Source Files\Motion Blur\PostProcessing</Filter>
@@ -305,10 +305,10 @@
       <Filter>Source Files\SceneManager\Lights\Light</Filter>
     </ClInclude>
     <ClInclude Include="source\BumpMapShader.h">
-      <Filter>Source Files\Shader\BumpMap</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BumpMap</Filter>
     </ClInclude>
     <ClInclude Include="source\BlinnPhongShader.h">
-      <Filter>Source Files\Shader\BlinnPhong</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BlinnPhong</Filter>
     </ClInclude>
     <ClInclude Include="source\Texture.h">
       <Filter>Source Files\Textures</Filter>
@@ -317,7 +317,7 @@
       <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClInclude>
     <ClInclude Include="source\RealWoodShader.h">
-      <Filter>Source Files\Shader\Wood</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO</Filter>
     </ClInclude>
     <ClInclude Include="source\JointObject.h">
       <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
@@ -338,13 +338,13 @@
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="source\MixedTextureShader.h">
-      <Filter>Source Files\Shader\MixedTexture</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\MixedTexture</Filter>
     </ClInclude>
     <ClInclude Include="source\SphereMapShader.h">
-      <Filter>Source Files\Shader\SphereMapping</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\SphereMapping</Filter>
     </ClInclude>
     <ClInclude Include="source\CubeMapShader.h">
-      <Filter>Source Files\Shader\CubeMapping</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\CubeMapping</Filter>
     </ClInclude>
     <ClInclude Include="source\CubeTexture.h">
       <Filter>Source Files\Textures\CubeTexture</Filter>
@@ -352,22 +352,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\blinn_phong_fragment_shader.glsl">
-      <Filter>Source Files\Shader\BlinnPhong\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BlinnPhong\glsl</Filter>
     </None>
     <None Include="shaders\blinn_phong_vertex_shader.glsl">
-      <Filter>Source Files\Shader\BlinnPhong\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BlinnPhong\glsl</Filter>
     </None>
     <None Include="shaders\bump_map_fragment_shader.glsl">
-      <Filter>Source Files\Shader\BumpMap\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BumpMap\glsl</Filter>
     </None>
     <None Include="shaders\bump_map_vertex_shader.glsl">
-      <Filter>Source Files\Shader\BumpMap\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\BumpMap\glsl</Filter>
     </None>
     <None Include="shaders\real_wood_fragment_shader.glsl">
-      <Filter>Source Files\Shader\Wood\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO\glsl</Filter>
     </None>
     <None Include="shaders\real_wood_vertex_shader.glsl">
-      <Filter>Source Files\Shader\Wood\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\Wood -  TODO\glsl</Filter>
     </None>
     <None Include="shaders\post_processing_vertex_shader.glsl">
       <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
@@ -376,22 +376,22 @@
       <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
     </None>
     <None Include="shaders\mixed_texture_fragment_shader.glsl">
-      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\MixedTexture\glsl</Filter>
     </None>
     <None Include="shaders\mixed_texture_vertex_shader.glsl">
-      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\MixedTexture\glsl</Filter>
     </None>
     <None Include="shaders\sphere_map_fragment_shader.glsl">
-      <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\SphereMapping\glsl</Filter>
     </None>
     <None Include="shaders\sphere_map_vertex_shader.glsl">
-      <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\SphereMapping\glsl</Filter>
     </None>
     <None Include="shaders\cube_map_fragment_shader.glsl">
-      <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\CubeMapping\glsl</Filter>
     </None>
     <None Include="shaders\cube_map_vertex_shader.glsl">
-      <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
+      <Filter>Source Files\Shader - SPOTLIGHT TODO\CubeMapping\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

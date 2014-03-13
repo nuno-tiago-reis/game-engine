@@ -278,14 +278,14 @@ void setupGLUT(int argc, char* argv[]) {
 
 void setupShaders() {
 
-	/* Create Bump Map Shader*/
-	BumpMapShader* bumpMapShader = new BumpMapShader(BUMPMAP_SHADER);
-	bumpMapShader->createShaderProgram();
-	bumpMapShader->bindAttributes();
-	bumpMapShader->linkShaderProgram();
-	bumpMapShader->bindUniforms();
+	/* Create Blinn Phong Shader */
+	BlinnPhongShader* blinnPhongShader = new BlinnPhongShader(BLINN_PHONG_SHADER);
+	blinnPhongShader->createShaderProgram();
+	blinnPhongShader->bindAttributes();
+	blinnPhongShader->linkShaderProgram();
+	blinnPhongShader->bindUniforms();
 
-	sceneManager->addShaderProgram(bumpMapShader);
+	sceneManager->addShaderProgram(blinnPhongShader);
 
 	/* Create Mixed Texture Map Shader*/
 	MixedTextureShader* mixedTextureShader = new MixedTextureShader(MIXED_TEXTURE_SHADER);
@@ -296,23 +296,14 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(mixedTextureShader);
 
-	/* Create Blinn Phong Shader */
-	BlinnPhongShader* blinnPhongShader = new BlinnPhongShader(BLINN_PHONG_SHADER);
-	blinnPhongShader->createShaderProgram();
-	blinnPhongShader->bindAttributes();
-	blinnPhongShader->linkShaderProgram();
-	blinnPhongShader->bindUniforms();
+	/* Create Bump Map Shader*/
+	BumpMapShader* bumpMapShader = new BumpMapShader(BUMPMAP_SHADER);
+	bumpMapShader->createShaderProgram();
+	bumpMapShader->bindAttributes();
+	bumpMapShader->linkShaderProgram();
+	bumpMapShader->bindUniforms();
 
-	sceneManager->addShaderProgram(blinnPhongShader);
-	
-	/* Create Real Wood Shader */
-	RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
-	realWoodShader->createShaderProgram();
-	realWoodShader->bindAttributes();
-	realWoodShader->linkShaderProgram();
-	realWoodShader->bindUniforms();
-
-	sceneManager->addShaderProgram(realWoodShader);
+	sceneManager->addShaderProgram(bumpMapShader);
 
 	/* Create Sphere Map Shader*/
 	SphereMapShader* sphereMapShader = new SphereMapShader(SPHERE_MAP_SHADER);
@@ -332,6 +323,15 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(cubeMapShader);
 
+	/* Create Real Wood Shader * /
+	RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
+	realWoodShader->createShaderProgram();
+	realWoodShader->bindAttributes();
+	realWoodShader->linkShaderProgram();
+	realWoodShader->bindUniforms();
+
+	sceneManager->addShaderProgram(realWoodShader);*/
+
 	/* Set Active Shader */
 	sceneManager->setActiveShaderProgram(blinnPhongShader);
 }
@@ -350,7 +350,7 @@ void setupLights() {
 	directionalLight0->setDiffuseIntensity(1.0f);
 	directionalLight0->setSpecularIntensity(1.0f);
 
-	//sceneManager->addLight(directionalLight0);
+	sceneManager->addLight(directionalLight0);
 
 	/* Light Source 1 */
 	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
@@ -365,8 +365,8 @@ void setupLights() {
 	positionalLight1->setSpecularIntensity(0.95f);
 
 	positionalLight1->setConstantAttenuation(0.5f);
-	positionalLight1->setLinearAttenuation(0.00675f);
-	positionalLight1->setExponentialAttenuation(0.0025f);
+	positionalLight1->setLinearAttenuation(0.000675f);
+	positionalLight1->setExponentialAttenuation(0.00025f);
 
 	sceneManager->addLight(positionalLight1);
 
@@ -376,18 +376,18 @@ void setupLights() {
 	spotLight2->setIdentifier(LIGHT_SOURCE_2);
 
 	spotLight2->setPosition(Vector(0.0f, 5.0f, 0.0f, 1.0f));
-	spotLight2->setDirection(Vector(0.0f, 0.0f, -1.0f, 1.0f));
+	spotLight2->setDirection(Vector(0.0f, -1.0f, 0.0f, 1.0f));
 	spotLight2->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
-	spotLight2->setCutOff(25.0f);
+	spotLight2->setCutOff(cos(25.0f * (GLfloat)DEGREES_TO_RADIANS));
 
-	spotLight2->setAmbientIntensity(0.2f);
-	spotLight2->setDiffuseIntensity(1.00f);
-	spotLight2->setSpecularIntensity(1.00f);
+	spotLight2->setAmbientIntensity(0.0f);
+	spotLight2->setDiffuseIntensity(0.95f);
+	spotLight2->setSpecularIntensity(0.95f);
 
-	spotLight2->setConstantAttenuation(1.0f);
-	spotLight2->setLinearAttenuation(0.005f);
-	spotLight2->setExponentialAttenuation(0.00005f);
+	spotLight2->setConstantAttenuation(0.5f);
+	spotLight2->setLinearAttenuation(0.00675f);
+	spotLight2->setExponentialAttenuation(0.0025f);
 
 	//sceneManager->addLight(spotLight2);
 }
@@ -404,7 +404,7 @@ void setupCameras() {
 
 	/* Create Perspective Camera */
 	Camera* perspectiveCamera = new Camera(PERSPECTIVE_NAME);
-	perspectiveCamera->setPosition(Vector(5.0f, 2.5f, 0.0f,1.0f));
+	perspectiveCamera->setPosition(Vector(-5.0f, 2.5f, 0.0f,1.0f));
 	perspectiveCamera->loadPerspectiveProjection();
 	perspectiveCamera->loadView();
 
@@ -420,8 +420,8 @@ void init(int argc, char* argv[]) {
 	setupGLEW();
 	setupOpenGL();
 
-	freopen("output.txt","w",stderr);
-	freopen("output.txt","w",stdout);
+	//freopen("output.txt","w",stderr);
+	//freopen("output.txt","w",stdout);
 
 	setupShaders();
 
@@ -434,51 +434,6 @@ void init(int argc, char* argv[]) {
 	XML_Reader* xmlReader = XML_Reader::getInstance();
 
 	xmlReader->openTransformationFile(TRANSFORMATION_FILE);
-
-	/* Gold Teapot */
-	Object* goldTeapot = new Object("Gold " TEAPOT);
-	goldTeapot->setPosition(Vector(2.5f,1.0f,2.5f,1.0f));
-	goldTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
-
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", goldTeapot);
-
-	sceneManager->addObject(goldTeapot);
-
-	/* Silver Teapot */
-	Object* silverTeapot = new Object("Silver " TEAPOT);
-	silverTeapot->setPosition(Vector(2.5f,1.0f,-2.5f,1.0f));
-	silverTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
-
-	objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", silverTeapot);
-
-	sceneManager->addObject(silverTeapot);
-
-	/* Ruby Teapot */
-	Object* rubyTeapot = new Object("Ruby " TEAPOT);
-	rubyTeapot->setPosition(Vector(2.5f,1.0f,0.0f,1.0f));
-	rubyTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
-
-	objReader->loadModel("teapot/teapot2.obj","teapot/RubyTeapot.mtl", rubyTeapot);
-
-	sceneManager->addObject(rubyTeapot);
-
-	/* Emerald Teapot */
-	Object* emeraldTeapot = new Object("Emerald " TEAPOT);
-	emeraldTeapot->setPosition(Vector(2.5f,1.0f,5.0f,1.0f));
-	emeraldTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
-
-	objReader->loadModel("teapot/teapot2.obj","teapot/EmeraldTeapot.mtl", emeraldTeapot);
-
-	sceneManager->addObject(emeraldTeapot);
-
-	/* Saphire Teapot */
-	Object* saphireTeapot = new Object("Saphire " TEAPOT);
-	saphireTeapot->setPosition(Vector(2.5f,1.0f,-5.0f,1.0f));
-	saphireTeapot->setScale(Vector(0.05f,0.05f,0.05f,1.0f));
-
-	objReader->loadModel("teapot/teapot2.obj","teapot/CyanTeapot.mtl", saphireTeapot);
-
-	sceneManager->addObject(saphireTeapot);
 
 	/* Table * /
 	Object* table = new Object(TABLE);
@@ -499,101 +454,92 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addObject(tableSurface);
 
+	/* Blinn-Phong */
+	Object* blinnPhongObject = new Object(BLINN_PHONG_OBJECT);
+	blinnPhongObject->setPosition(Vector(-10.0f,2.5f,0.0f,1.0f));
+	blinnPhongObject->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
+	blinnPhongObject->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_normal.jpg");
+
+	objReader->loadModel("Torus.obj","Torus.mtl", blinnPhongObject);
+
+	sceneManager->addObject(blinnPhongObject);
+
 	/* Bump Mapping */
-	Object* bumpMappingCube = new Object(BUMP_MAPPING);
-	bumpMappingCube->setPosition(Vector(5.0f,2.5f,0.0f,1.0f));
-	bumpMappingCube->setRotation(Vector(0.0f,-90.0f,0.0f,1.0f));
-	bumpMappingCube->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
-	bumpMappingCube->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_normal.jpg");
+	Object* bumpMappingObject = new Object(BUMP_MAPPING_OBJECT);
+	bumpMappingObject->setPosition(Vector(10.0f,2.5f,0.0f,1.0f));
+	bumpMappingObject->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
+	bumpMappingObject->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
+	bumpMappingObject->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_normal.jpg");
 
-	//objReader->loadModel("testcube.obj","testcube.mtl", bumpMappingCube);
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", bumpMappingCube);
-	//objReader->loadModel("sphere.obj","sphere.mtl", bumpMappingCube);
+	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", bumpMappingObject);
 
-	sceneManager->addObject(bumpMappingCube);
+	sceneManager->addObject(bumpMappingObject);
 
 	/* Sphere Environmental Mapping */
-	Object* sphereEnvironmentalMappingSphere = new Object(SPHERE_ENVIRONMENTAL_MAPPING);
-	sphereEnvironmentalMappingSphere->setPosition(Vector(0.0f, 2.5f,-5.0f,1.0f));
-	sphereEnvironmentalMappingSphere->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
-	sphereEnvironmentalMappingSphere->activateSphereMapTexture("textures/SphereMap.jpg");
+	Object* sphereEnvironmentalMappingObject = new Object(SPHERE_MAPPING_OBJECT);
+	sphereEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,-10.0f,1.0f));
+	//sphereEnvironmentalMappingObject->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
+	sphereEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+	sphereEnvironmentalMappingObject->activateSphereMapTexture("textures/SphereMap.jpg");
 
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", sphereEnvironmentalMappingSphere);
+	objReader->loadModel("Sphere.obj","Sphere.mtl", sphereEnvironmentalMappingObject);
+	//objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", sphereEnvironmentalMappingObject);
 
-	sceneManager->addObject(sphereEnvironmentalMappingSphere);
+	sceneManager->addObject(sphereEnvironmentalMappingObject);
 
 	/* Cube  Environmental Mapping */
-	Object* cubesEnvironmentalMappingSphere = new Object(CUBE_ENVIRONMENTAL_MAPPING);
-	cubesEnvironmentalMappingSphere->setPosition(Vector(0.0f, 2.5f,5.0f,1.0f));
-	cubesEnvironmentalMappingSphere->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
-	cubesEnvironmentalMappingSphere->activateCubeMapTexture(
+	Object* cubeEnvironmentalMappingObject = new Object(CUBE_MAPPING_OBJECT);
+	cubeEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,10.0f,1.0f));
+	cubeEnvironmentalMappingObject->setRotation(Vector(0.0f,180.0f,0.0f,1.0f));
+	//cubeEnvironmentalMappingObject->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
+	cubeEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+	cubeEnvironmentalMappingObject->activateCubeMapTexture(
 		"textures/beach/posx.jpg","textures/beach/negx.jpg",
 		"textures/beach/posy.jpg","textures/beach/negy.jpg",
 		"textures/beach/posz.jpg","textures/beach/negz.jpg");	
 
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", cubesEnvironmentalMappingSphere);
+	objReader->loadModel("Sphere.obj","Sphere.mtl", cubeEnvironmentalMappingObject);
+	//objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", cubeEnvironmentalMappingObject);
 
-	sceneManager->addObject(cubesEnvironmentalMappingSphere);
+	sceneManager->addObject(cubeEnvironmentalMappingObject);
 
 	/* Destroy the Readers */
 	OBJ_Reader::destroyInstance();
 	XML_Reader::destroyInstance();
 
 	/* Create Scene Graph Nodes */
-	SceneNode* goldTeapotNode = new SceneNode("Gold " TEAPOT);
-	goldTeapotNode->setObject(goldTeapot);
-	goldTeapotNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
-
-	SceneNode* silverTeapotNode = new SceneNode("Silver " TEAPOT);
-	silverTeapotNode->setObject(silverTeapot);
-	silverTeapotNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
-
-	SceneNode* rubyTeapotNode = new SceneNode("Ruby " TEAPOT);
-	rubyTeapotNode->setObject(rubyTeapot);
-	rubyTeapotNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
-
-	SceneNode* emeraldTeapotNode = new SceneNode("Emerald " TEAPOT);
-	emeraldTeapotNode->setObject(emeraldTeapot);
-	emeraldTeapotNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
-
-	SceneNode* saphireTeapotNode = new SceneNode("Saphire " TEAPOT);
-	saphireTeapotNode->setObject(saphireTeapot);
-	saphireTeapotNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
-
 	/*SceneNode* tableNode = new SceneNode(TABLE);
 	tableNode->setObject(table);
 	tableNode->setShaderProgram(sceneManager->getShaderProgram(REAL_WOOD_SHADER));*/
 
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
-	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(MIXED_TEXTURE_SHADER));	
+	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(MIXED_TEXTURE_SHADER));
 
-	SceneNode* bumpMappingCubeNode = new SceneNode(BUMP_MAPPING);
-	bumpMappingCubeNode->setObject(bumpMappingCube);
-	bumpMappingCubeNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
+	SceneNode* blinnPhongObjectNode = new SceneNode(BLINN_PHONG_OBJECT);
+	blinnPhongObjectNode->setObject(blinnPhongObject);
+	blinnPhongObjectNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
 
-	SceneNode* sphereEnvironmentalMappingSphereNode = new SceneNode(SPHERE_ENVIRONMENTAL_MAPPING);
-	sphereEnvironmentalMappingSphereNode->setObject(sphereEnvironmentalMappingSphere);
-	sphereEnvironmentalMappingSphereNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
+	SceneNode* bumpMappingObjectNode = new SceneNode(BUMP_MAPPING_OBJECT);
+	bumpMappingObjectNode->setObject(bumpMappingObject);
+	bumpMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
 
-	SceneNode* cubesEnvironmentalMappingSphereNode = new SceneNode(CUBE_ENVIRONMENTAL_MAPPING);
-	cubesEnvironmentalMappingSphereNode->setObject(cubesEnvironmentalMappingSphere);
-	cubesEnvironmentalMappingSphereNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
+	SceneNode* sphereEnvironmentalMappingObjectNode = new SceneNode(SPHERE_MAPPING_OBJECT);
+	sphereEnvironmentalMappingObjectNode->setObject(sphereEnvironmentalMappingObject);
+	sphereEnvironmentalMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
+
+	SceneNode* cubeEnvironmentalMappingObjectNode = new SceneNode(CUBE_MAPPING_OBJECT);
+	cubeEnvironmentalMappingObjectNode->setObject(cubeEnvironmentalMappingObject);
+	cubeEnvironmentalMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
 
 	/* Add the Root Nodes to the Scene */
-	sceneManager->addSceneNode(goldTeapotNode);
-	sceneManager->addSceneNode(silverTeapotNode);
-	sceneManager->addSceneNode(rubyTeapotNode);
-	sceneManager->addSceneNode(emeraldTeapotNode);
-	sceneManager->addSceneNode(saphireTeapotNode);
-
 	//sceneManager->addSceneNode(tableNode);
 	sceneManager->addSceneNode(tableSurfaceNode);
 
-	sceneManager->addSceneNode(bumpMappingCubeNode);
-
-	sceneManager->addSceneNode(sphereEnvironmentalMappingSphereNode);
-	sceneManager->addSceneNode(cubesEnvironmentalMappingSphereNode);
+	sceneManager->addSceneNode(blinnPhongObjectNode);
+	sceneManager->addSceneNode(bumpMappingObjectNode);
+	sceneManager->addSceneNode(sphereEnvironmentalMappingObjectNode);
+	sceneManager->addSceneNode(cubeEnvironmentalMappingObjectNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

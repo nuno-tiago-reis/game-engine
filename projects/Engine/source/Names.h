@@ -1,10 +1,9 @@
 /* Object Names */
-#define BUMP_MAPPING "[Bump Mapping] Object"
 
-#define TEAPOT "Teapot"
-
-#define SPHERE_ENVIRONMENTAL_MAPPING		"[Sphere Environmental Mapping] Object"
-#define CUBE_ENVIRONMENTAL_MAPPING		"[Cube Environmental Mapping] Object"
+#define BLINN_PHONG_OBJECT		"[Blinn-Phong] Object"
+#define BUMP_MAPPING_OBJECT		"[Bump Mapping] Object"
+#define SPHERE_MAPPING_OBJECT	"[Sphere Environmental Mapping] Object"
+#define CUBE_MAPPING_OBJECT		"[Cube Environmental Mapping] Object"
 
 #define PUCK "Puck"
 #define MALLET "Mallet"
@@ -18,25 +17,6 @@
 #define WALL_D "Wall D"
 
 #define PLATFORM "Platform"
-
-/* Joint Object Names */
-#define DRAGON_HEAD "Dragon Head"
-#define DRAGON_NOSE "Dragon Nose"
-
-#define DRAGON_LEFT_HORN "Dragon Left Horn"
-#define DRAGON_RIGHT_HORN "Dragon Right Horn"
-
-#define DRAGON_LEFT_WING "Dragon Left Wing"
-#define DRAGON_LEFT_WING_2 "Dragon Left Wing 2"
-
-#define DRAGON_RIGHT_WING "Dragon Right Wing"
-#define DRAGON_RIGHT_WING_2 "Dragon Right Wing 2"
-
-#define DRAGON_BODY "Dragon Body"
-
-#define DRAGON_TAIL "Dragon Tail"
-#define DRAGON_TAIL_2 "Dragon Tail 2"
-#define DRAGON_TAIL_3 "Dragon Tail 3"
 
 /* Sound Names */
 #define ARROW_SOUND_NAME "Arrow Sound"

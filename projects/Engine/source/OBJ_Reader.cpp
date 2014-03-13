@@ -330,27 +330,24 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	}
 
 	/* Average the Tangents */
-	if(hasNormals) {
+	for(int i=0; i<faceNumber * 3; i++) {
 
-		for(int i=0; i<faceNumber * 3; i++) {
-
-			Vector n = Vector(bufferVertices[i].normal);
-			Vector t1 = sTangentArray[bufferVerticesID[i]];
-			Vector t2 = tTangentArray[bufferVerticesID[i]];
+		Vector n = Vector(bufferVertices[i].normal);
+		Vector t1 = sTangentArray[bufferVerticesID[i]];
+		Vector t2 = tTangentArray[bufferVerticesID[i]];
         
-			// Gram-Schmidt orthogonalize
-			Vector tangent = (t1 - n * Vector::dotProduct(n, t1));
-			tangent.normalize();
+		// Gram-Schmidt orthogonalize
+		Vector tangent = (t1 - n * Vector::dotProduct(n, t1));
+		tangent.normalize();
 
-			// Calculate handedness
-			tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, tangent), t2) < 0.0f) ? -1.0f : 1.0f;
+		// Calculate handedness
+		tangent[3] = (Vector::dotProduct(Vector::crossProduct(n, tangent), t2) < 0.0f) ? -1.0f : 1.0f;
 	
-			for(int j=0; j<4; j++)
-				bufferVertices[i].tangent[j] = tangent[j];
+		for(int j=0; j<4; j++)
+			bufferVertices[i].tangent[j] = tangent[j];
 
-			if(Vector::dotProduct(n,tangent) > Vector::threshold)
-				cerr << "FAILED CALCULATING TANGENT" << endl;
-		}
+		if(Vector::dotProduct(n,tangent) > Vector::threshold)
+			cerr << "FAILED CALCULATING TANGENT" << endl;
 	}
 
 	BufferObject* bufferObject = new BufferObject(bufferVertices,faceNumber * 3);

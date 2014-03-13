@@ -5,6 +5,7 @@ SceneManager* SceneManager::instance = NULL;
 SceneManager::SceneManager() {
 
 	_rotationAxis = 0;
+	_currentObject = 0;
 
 	_malletPicked = false;
 	_malletDepth = 0.0f;
@@ -133,80 +134,71 @@ void SceneManager::rotateJoint(Object* object, Vector rotationDelta, GLfloat ela
 }
 
 void SceneManager::update(GLfloat elapsedTime) {
-
-	/* Physics - START */
-
-	/* Physics - END */
-
-	/*_timeCounter += elapsedTime;
-
-	if(_timeCounter > 10.0f)
-		_timeCounter = 7.5f;
-
-	if(_timeCounter > 7.5f && _timeCounter < 8.75f) {
-
-		rotateJoint(_objectMap[DRAGON_HEAD],	Vector(0.0f,0.0f,30.0f,1.0f), -elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_LEFT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), -elapsedTime);
-		rotateJoint(_objectMap[DRAGON_LEFT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), -elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), elapsedTime);
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],Vector(0.0f,45.0f,0.0f,1.0f), elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_TAIL],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
-		rotateJoint(_objectMap[DRAGON_TAIL_2],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
-		rotateJoint(_objectMap[DRAGON_TAIL_3],	Vector(15.0f,0.0f,0.0f,1.0f), -elapsedTime);
-	}
-	else if(_timeCounter > 8.75f && _timeCounter < 10.0f) {
-
-		rotateJoint(_objectMap[DRAGON_HEAD],	Vector(0.0f,0.0f,30.0f,1.0f), elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_LEFT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), elapsedTime);
-		rotateJoint(_objectMap[DRAGON_LEFT_WING_2],	Vector(0.0f,45.0f,0.0f,1.0f), elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING],	Vector(0.0f,15.0f,0.0f,1.0f), -elapsedTime);
-		rotateJoint(_objectMap[DRAGON_RIGHT_WING_2],Vector(0.0f,45.0f,0.0f,1.0f), -elapsedTime);
-
-		rotateJoint(_objectMap[DRAGON_TAIL],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
-		rotateJoint(_objectMap[DRAGON_TAIL_2],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
-		rotateJoint(_objectMap[DRAGON_TAIL_3],	Vector(15.0f,0.0f,0.0f,1.0f), elapsedTime);
-	}*(
-
-	/* Dragon Movement */
-	/*Vector dragonRotation = _objectMap[DRAGON_BODY]->getRotation();
-	dragonRotation[VZ] += 0.75f;
-
-	_objectMap[DRAGON_BODY]->setRotation(dragonRotation);
-
-	Vector dragonPosition = _objectMap[DRAGON_BODY]->getPosition();
-	
-	dragonPosition[VX] += cos((dragonRotation[VZ] + 90) * DEGREES_TO_RADIANS) * 0.075f;
-	dragonPosition[VY] += sin((dragonRotation[VZ] + 90) * DEGREES_TO_RADIANS) * 0.075f;
-
-	_objectMap[DRAGON_BODY]->setPosition(dragonPosition);
-	*/
 	
 	/* Scene Update */
 	readMouse(elapsedTime);
 	readKeyboard(elapsedTime);
 
-	Vector cubeRotation = _objectMap[BUMP_MAPPING]->getRotation();
+	Object* activeTeapot;
 
-	switch(_rotationAxis) {
+	switch(_currentObject) {
 	
-		case 0:	break;
+		case 0:	_activeCamera->setPosition(_objectMap[BLINN_PHONG_OBJECT]->getPosition());
+				_activeCamera->loadPerspectiveProjection();
+				_activeCamera->loadView();
 
-		case 1:	cubeRotation[VX] += 50.00f * elapsedTime;
+				_activeCamera->loadUniforms();
+
+				activeTeapot = _objectMap[BLINN_PHONG_OBJECT];
 				break;
-		case 2:	cubeRotation[VY] += 50.00f * elapsedTime;
+
+		case 1:	_activeCamera->setPosition(_objectMap[BUMP_MAPPING_OBJECT]->getPosition());
+				_activeCamera->loadPerspectiveProjection();
+				_activeCamera->loadView();
+
+				_activeCamera->loadUniforms();
+
+				activeTeapot = _objectMap[BUMP_MAPPING_OBJECT];
 				break;
-		case 3:	cubeRotation[VZ] += 50.00f * elapsedTime;
+
+		case 2:	_activeCamera->setPosition(_objectMap[SPHERE_MAPPING_OBJECT]->getPosition());
+				_activeCamera->loadPerspectiveProjection();
+				_activeCamera->loadView();
+
+				_activeCamera->loadUniforms();
+
+				activeTeapot = _objectMap[SPHERE_MAPPING_OBJECT];
+				break;
+
+		case 3:	_activeCamera->setPosition(_objectMap[CUBE_MAPPING_OBJECT]->getPosition());
+				_activeCamera->loadPerspectiveProjection();
+				_activeCamera->loadView();
+
+				_activeCamera->loadUniforms();
+
+				activeTeapot = _objectMap[CUBE_MAPPING_OBJECT];
 				break;
 	}
 
-	_objectMap[BUMP_MAPPING]->setRotation(cubeRotation);
-	_objectMap[CUBE_ENVIRONMENTAL_MAPPING]->setRotation(cubeRotation);
-	_objectMap[SPHERE_ENVIRONMENTAL_MAPPING]->setRotation(cubeRotation);
+	Vector rotation;
+
+	switch(_rotationAxis) {
+
+		case 1:	rotation = activeTeapot->getRotation();
+				rotation[VX] += 50.00f * elapsedTime;
+				activeTeapot->setRotation(rotation);
+				break;
+
+		case 2:	rotation = activeTeapot->getRotation();
+				rotation[VY] += 50.00f * elapsedTime;
+				activeTeapot->setRotation(rotation);
+				break;
+
+		case 3:	rotation = activeTeapot->getRotation();
+				rotation[VZ] += 50.00f * elapsedTime;
+				activeTeapot->setRotation(rotation);
+				break;
+	}
 
 	_fmodSystem->update();
 
@@ -235,82 +227,59 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 
 	handler->disableKeyboard();
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_UP)) {
+	/* Light Buttons */
+	if(handler->isSpecialKeyPressed(GLUT_KEY_UP) && handler->wasSpecialKeyPressed(GLUT_KEY_UP) == true) {
 
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_UP) == true) {
+		Vector position = _lightMap["Positional Light 1"]->getPosition();
 
-			Vector position = _lightMap["Positional Light 1"]->getPosition();
+		position[VY] += 5.0f * elapsedTime;
 
-			position[VY] += 5.0f * elapsedTime;
-
-			_lightMap["Positional Light 1"]->setPosition(position);
-			_lightMap["Positional Light 1"]->loadUniforms();
-		}
+		_lightMap["Positional Light 1"]->setPosition(position);
+		_lightMap["Positional Light 1"]->loadUniforms();
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_DOWN) && handler->wasSpecialKeyPressed(GLUT_KEY_DOWN) == true) {
 
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_DOWN) == true) {
+		Vector position = _lightMap["Positional Light 1"]->getPosition();
 
-			Vector position = _lightMap["Positional Light 1"]->getPosition();
+		position[VY] -= 5.0f * elapsedTime;
 
-			position[VY] -= 5.0f * elapsedTime;
-
-			_lightMap["Positional Light 1"]->setPosition(position);
-			_lightMap["Positional Light 1"]->loadUniforms();
-		}
+		_lightMap["Positional Light 1"]->setPosition(position);
+		_lightMap["Positional Light 1"]->loadUniforms();
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_RIGHT) && handler->wasSpecialKeyPressed(GLUT_KEY_RIGHT) == true) {
 
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_RIGHT) == true) {
+		Vector position = _lightMap["Spot Light 2"]->getPosition();
 
-			Vector position = _lightMap["Spot Light 2"]->getPosition();
+		position[VY] += 5.0f * elapsedTime;
 
-			position[VY] += 5.0f * elapsedTime;
-
-			_lightMap["Spot Light 2"]->setPosition(position);
-			_lightMap["Spot Light 2"]->loadUniforms();
-		}
+		_lightMap["Spot Light 2"]->setPosition(position);
+		_lightMap["Spot Light 2"]->loadUniforms();
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_LEFT) && handler->wasSpecialKeyPressed(GLUT_KEY_LEFT) == true) {
 
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_LEFT) == true) {
+		Vector position = _lightMap["Spot Light 2"]->getPosition();
 
-			Vector position = _lightMap["Spot Light 2"]->getPosition();
+		position[VY] -= 5.0f * elapsedTime;
 
-			position[VY] -= 5.0f * elapsedTime;
-
-			_lightMap["Spot Light 2"]->setPosition(position);
-			_lightMap["Spot Light 2"]->loadUniforms();
-		}
+		_lightMap["Spot Light 2"]->setPosition(position);
+		_lightMap["Spot Light 2"]->loadUniforms();
 	}
 
 	/* Sound Buttons */
-	if(handler->isSpecialKeyPressed(GLUT_KEY_F1)) {
-		
-		/* Edit Mode - Increment Up */
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_F1) == false) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F1) && handler->wasSpecialKeyPressed(GLUT_KEY_F1) == false) {
 
-			
 			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[RAYQUAZA_SOUND_NAME]->getFmodSound(), false, &channel[0]);
-		}
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_F2)) {
-		
-		/* Edit Mode - Increment Up */
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_F2) == false) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F2) && handler->wasSpecialKeyPressed(GLUT_KEY_F2) == false) {
 
-			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[MUSIC_SOUND_NAME]->getFmodSound(), false, &channel[1]);
-		}
+		_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[MUSIC_SOUND_NAME]->getFmodSound(), false, &channel[1]);
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_F3)) {
-		
-		/* Edit Mode - Increment Up */
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_F3) == false) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F3) && handler->wasSpecialKeyPressed(GLUT_KEY_F3) == false) {
 
 			bool paused;
 
@@ -320,18 +289,19 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 				channel[1]->setPaused(false);
 			else
 				channel[1]->setPaused(true);
-		}
 	}
 
-	if(handler->isSpecialKeyPressed(GLUT_KEY_F4)) {
-		
-		/* Edit Mode - Increment Up */
-		if(handler->wasSpecialKeyPressed(GLUT_KEY_F4) == false) {
+	if(handler->isSpecialKeyPressed(GLUT_KEY_F4) && handler->wasSpecialKeyPressed(GLUT_KEY_F4) == false) {
 
-			channel[1]->stop();
-		}
-	}	
+		channel[1]->stop();
+	}
 
+	/* Teapot Selection Button */
+	if(handler->isKeyPressed('n'))
+		if(!handler->wasKeyPressed('n'))
+			_currentObject = ++_currentObject % 4;
+
+	/* Teapot Rotation Button */
 	if(handler->isKeyPressed('x'))
 		if(!handler->wasKeyPressed('x'))
 			_rotationAxis = 1;

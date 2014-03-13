@@ -31,28 +31,29 @@
 /* Model Matrix Uniforms */
 #define MODEL_MATRIX_UNIFORM "ModelMatrix"
 
-/* Position Attributes */
+/* Position Attribute */
 #define POSITION 0
-#define POSITION_ATTRIBUTE "Position"
-
-#define TEXTURE_UV 1
-#define TEXTURE_UV_ATTRIBUTE "TextureUV"
+#define POSITION_ATTRIBUTE "Vertex_Position"
 
 /* Normal Attributes */
 #define NORMAL 2
-#define NORMAL_ATTRIBUTE "Normal"
+#define NORMAL_ATTRIBUTE "Vertex_Normal"
 #define TANGENT 3
-#define TANGENT_ATTRIBUTE "Tangent"
+#define TANGENT_ATTRIBUTE "Vertex_Tangent"
+
+/* Texture UV Attribute */
+#define TEXTURE_UV 1
+#define TEXTURE_UV_ATTRIBUTE "Vertex_TextureUV"
 
 /* Color Attributes */
 #define AMBIENT 4
-#define AMBIENT_ATTRIBUTE "Ambient"
+#define AMBIENT_ATTRIBUTE "Vertex_Ambient"
 #define DIFFUSE 5
-#define DIFFUSE_ATTRIBUTE "Diffuse"
+#define DIFFUSE_ATTRIBUTE "Vertex_Diffuse"
 #define SPECULAR 6
-#define SPECULAR_ATTRIBUTE "Specular"
+#define SPECULAR_ATTRIBUTE "Vertex_Specular"
 #define SPECULAR_CONSTANTS 7
-#define SPECULAR_CONSTANT_ATTRIBUTE "SpecularConstant"
+#define SPECULAR_CONSTANT_ATTRIBUTE "Vertex_SpecularConstant"
 
 using namespace std;
 

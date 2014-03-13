@@ -61,6 +61,7 @@ class SceneManager {
 		static SceneManager *instance;
 
 		int _rotationAxis;
+		int _currentObject;
 
 		/* Picking */
 		bool _malletPicked;

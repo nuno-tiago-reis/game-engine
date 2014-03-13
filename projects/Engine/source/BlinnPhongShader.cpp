@@ -13,10 +13,10 @@ void BlinnPhongShader::bindAttributes() {
 
 	glBindAttribLocation(_programID, POSITION, POSITION_ATTRIBUTE);
 
-	glBindAttribLocation(_programID, TEXTURE_UV, TEXTURE_UV_ATTRIBUTE);
-
 	glBindAttribLocation(_programID, NORMAL, NORMAL_ATTRIBUTE);
 	glBindAttribLocation(_programID, TANGENT, TANGENT_ATTRIBUTE);
+
+	glBindAttribLocation(_programID, TEXTURE_UV, TEXTURE_UV_ATTRIBUTE);
 
 	glBindAttribLocation(_programID, AMBIENT, AMBIENT_ATTRIBUTE);
 	glBindAttribLocation(_programID, DIFFUSE, DIFFUSE_ATTRIBUTE);
