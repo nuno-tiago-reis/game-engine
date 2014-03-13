@@ -143,13 +143,13 @@ void SceneManager::update(GLfloat elapsedTime) {
 
 	switch(_currentObject) {
 	
-		case 0:	_activeCamera->setPosition(_objectMap[BLINN_PHONG_OBJECT]->getPosition());
+		case 0:	_activeCamera->setPosition(Vector(0.0f,0.0f,0.0f,1.0f));
 				_activeCamera->loadPerspectiveProjection();
 				_activeCamera->loadView();
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[BLINN_PHONG_OBJECT];
+				activeTeapot = _objectMap[TABLE_SURFACE];
 				break;
 
 		case 1:	_activeCamera->setPosition(_objectMap[BUMP_MAPPING_OBJECT]->getPosition());
@@ -177,6 +177,15 @@ void SceneManager::update(GLfloat elapsedTime) {
 				_activeCamera->loadUniforms();
 
 				activeTeapot = _objectMap[CUBE_MAPPING_OBJECT];
+				break;
+
+		case 4:	_activeCamera->setPosition(_objectMap[BLINN_PHONG_OBJECT]->getPosition());
+				_activeCamera->loadPerspectiveProjection();
+				_activeCamera->loadView();
+
+				_activeCamera->loadUniforms();
+
+				activeTeapot = _objectMap[BLINN_PHONG_OBJECT];
 				break;
 	}
 
@@ -299,7 +308,7 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 	/* Teapot Selection Button */
 	if(handler->isKeyPressed('n'))
 		if(!handler->wasKeyPressed('n'))
-			_currentObject = ++_currentObject % 4;
+			_currentObject = ++_currentObject % 5;
 
 	/* Teapot Rotation Button */
 	if(handler->isKeyPressed('x'))

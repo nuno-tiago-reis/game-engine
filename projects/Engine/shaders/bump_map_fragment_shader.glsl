@@ -147,7 +147,7 @@ vec4 spotLight(int i) {
 	vec3 LightToVertex = vec3(ViewMatrix * LightSources[i].Position - Fragment_Position);
 	float LightDistance = length(LightToVertex);  
 
-	LightToVertex = normalize(LightToVertex);
+	LightToVertex = convertToTangentSpace(LightToVertex, Fragment_Tangent, Fragment_Bitangent, Fragment_Normal);
 
 	/* Light Intensity */
 	float LightIntensity = 1.0 / (LightSources[i].ConstantAttenuation + LightSources[i].LinearAttenuation * LightDistance + LightSources[i].ExponentialAttenuation * LightDistance * LightDistance);

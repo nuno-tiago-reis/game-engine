@@ -13,11 +13,11 @@
  
     <model identifier="Table" parent="None">
 		<boundingVolume type="None"/>
-        <initial px="0.000000" py="-3.782600" pz="0.00000" sx="4.00000" sy="4.000000" sz="4.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="-7.500000" pz="0.00000" sx="10.00000" sy="10.000000" sz="10.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
     <model identifier="Table Surface" parent="None">
 		<boundingVolume type="None"/>
-        <initial px="0.000000" py="-3.782600" pz="0.00000" sx="4.00000" sy="4.000000" sz="4.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
+        <initial px="0.000000" py="-7.500000" pz="0.00000" sx="10.00000" sy="1.000000" sz="10.000000" rx="0.000000" ry="0.000000" rz="0.000000"/>
     </model>
 	
 	<model identifier="Platform" parent="None">

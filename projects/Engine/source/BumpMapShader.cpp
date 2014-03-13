@@ -31,8 +31,8 @@ void BumpMapShader::bindUniforms() {
 	/* Binds Projection, View Matrices and Light Sources */
 	ShaderProgram::bindUniforms();
 	
-	_uniformLocationMap["Texture0"] = glGetUniformLocation(_programID, "Texture0");
-	_uniformLocationMap["Texture1"] = glGetUniformLocation(_programID, "Texture1");
+	_uniformLocationMap[DIFFUSE_TEXTURE_UNIFORM] = glGetUniformLocation(_programID, DIFFUSE_TEXTURE_UNIFORM);
+	_uniformLocationMap[NORMAL_TEXTURE_UNIFORM] = glGetUniformLocation(_programID, NORMAL_TEXTURE_UNIFORM);
 
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
 }

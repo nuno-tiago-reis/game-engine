@@ -96,8 +96,8 @@ vec4 positionalLight(int i) {
 	}
 
 	/* Final Calculation */
-	return TextureColor;
-	//return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
+	//return TextureColor;
+	return AmbientColor + (DiffuseColor + SpecularColor) * LightIntensity;
 }
 
 vec4 directionalLight(int i) {

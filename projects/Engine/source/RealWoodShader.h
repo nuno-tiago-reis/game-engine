@@ -16,20 +16,24 @@ using namespace std;
 #define WOOD_TEXTURE_VERTEX_SHADER_FILE		"shaders/real_wood_vertex_shader.glsl"
 #define WOOD_TEXTURE_FRAGMENT_SHADER_FILE	"shaders/real_wood_fragment_shader.glsl"
 
-#define DIFFUSE_TEXTURE_UNIFORM "DiffuseTexture"
-#define NORMAL_TEXTURE_UNIFORM "NormalTexture"
+#define NOISE_UNIFORM "Noise"
+#define NOISE_SCALE_UNIFORM "NoiseScale"
 
 class RealWoodShader : public ShaderProgram {
 
 	protected:
 
 	public:
+
 		RealWoodShader(string name);
-		~RealWoodShader(void);
+		~RealWoodShader();
 
 		/* GPU Creation & Destruction Methods */
 		void bindAttributes();
 		void bindUniforms();
+
+		/* Debug Methods */
+		void dump();
 };
 
 #endif

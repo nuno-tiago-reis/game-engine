@@ -17,15 +17,19 @@
 
 #include "BufferObject.h"
 
+/* Shaders for Texture Loading */
 #include "MixedTextureShader.h"
-#include "RealWoodShader.h"
 #include "SphereMapShader.h"
-#include "ShaderProgram.h"
 #include "CubeMapShader.h"
+#include "RealWoodShader.h"
+#include "BumpMapShader.h"
 
-#include "Texture.h"
+#include "ShaderProgram.h"
+
+/* Texture Handlers */
 #include "GeneratedTexture.h"
 #include "CubeTexture.h"
+#include "Texture.h"
 
 #define NO_MAPPING 0
 #define WOOD_MAPPING 1

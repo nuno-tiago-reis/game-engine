@@ -323,14 +323,14 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(cubeMapShader);
 
-	/* Create Real Wood Shader * /
+	/* Create Real Wood Shader */
 	RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
 	realWoodShader->createShaderProgram();
 	realWoodShader->bindAttributes();
 	realWoodShader->linkShaderProgram();
 	realWoodShader->bindUniforms();
 
-	sceneManager->addShaderProgram(realWoodShader);*/
+	sceneManager->addShaderProgram(realWoodShader);
 
 	/* Set Active Shader */
 	sceneManager->setActiveShaderProgram(blinnPhongShader);
@@ -350,7 +350,7 @@ void setupLights() {
 	directionalLight0->setDiffuseIntensity(1.0f);
 	directionalLight0->setSpecularIntensity(1.0f);
 
-	sceneManager->addLight(directionalLight0);
+	//sceneManager->addLight(directionalLight0);
 
 	/* Light Source 1 */
 	PositionalLight* positionalLight1 = new PositionalLight(POSITIONAL_LIGHT_1);
@@ -375,19 +375,19 @@ void setupLights() {
 
 	spotLight2->setIdentifier(LIGHT_SOURCE_2);
 
-	spotLight2->setPosition(Vector(0.0f, 5.0f, 0.0f, 1.0f));
+	spotLight2->setPosition(Vector(0.0f, 10.0f, 0.0f, 1.0f));
 	spotLight2->setDirection(Vector(0.0f, -1.0f, 0.0f, 1.0f));
 	spotLight2->setColor(Vector(1.0f, 0.0f, 0.0f, 1.0f));
 
 	spotLight2->setCutOff(cos(25.0f * (GLfloat)DEGREES_TO_RADIANS));
 
-	spotLight2->setAmbientIntensity(0.0f);
+	spotLight2->setAmbientIntensity(0.25f);
 	spotLight2->setDiffuseIntensity(0.95f);
 	spotLight2->setSpecularIntensity(0.95f);
 
 	spotLight2->setConstantAttenuation(0.5f);
-	spotLight2->setLinearAttenuation(0.00675f);
-	spotLight2->setExponentialAttenuation(0.0025f);
+	spotLight2->setLinearAttenuation(0.000675f);
+	spotLight2->setExponentialAttenuation(0.00025f);
 
 	//sceneManager->addLight(spotLight2);
 }
@@ -420,8 +420,8 @@ void init(int argc, char* argv[]) {
 	setupGLEW();
 	setupOpenGL();
 
-	//freopen("output.txt","w",stderr);
-	//freopen("output.txt","w",stdout);
+	freopen("output.txt","w",stderr);
+	freopen("output.txt","w",stdout);
 
 	setupShaders();
 
@@ -435,15 +435,14 @@ void init(int argc, char* argv[]) {
 
 	xmlReader->openTransformationFile(TRANSFORMATION_FILE);
 
-	/* Table * /
-	Object* table = new Object(TABLE);
-	table->activateWoodTexture(1.0f,2.0f,4,0.16f);
+	/* Table */
+	/*Object* table = new Object(TABLE);
+	table->activateWoodTexture(0.5f,1.0f,2,0.32f);
 
 	objReader->loadModel("Table.obj","Table.mtl", table);
 	xmlReader->loadTransformation(table);
 
-	sceneManager->addObject(table);
-	*/
+	sceneManager->addObject(table);*/
 
 	/* Table Surface */
 	Object* tableSurface = new Object(TABLE_SURFACE);
@@ -454,11 +453,21 @@ void init(int argc, char* argv[]) {
 
 	sceneManager->addObject(tableSurface);
 
+	/* Test Object */
+	Object* testObject = new Object("Test Object");
+	testObject->setPosition(Vector(0.0f,2.5f,0.0f,1.0f));
+	//testObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+	testObject->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
+	testObject->activateWoodTexture(0.5f,1.0f,2,0.32f);
+
+	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", testObject);
+
+	sceneManager->addObject(testObject);
+
 	/* Blinn-Phong */
 	Object* blinnPhongObject = new Object(BLINN_PHONG_OBJECT);
 	blinnPhongObject->setPosition(Vector(-10.0f,2.5f,0.0f,1.0f));
 	blinnPhongObject->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
-	blinnPhongObject->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_normal.jpg");
 
 	objReader->loadModel("Torus.obj","Torus.mtl", blinnPhongObject);
 
@@ -478,12 +487,10 @@ void init(int argc, char* argv[]) {
 	/* Sphere Environmental Mapping */
 	Object* sphereEnvironmentalMappingObject = new Object(SPHERE_MAPPING_OBJECT);
 	sphereEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,-10.0f,1.0f));
-	//sphereEnvironmentalMappingObject->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
 	sphereEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
 	sphereEnvironmentalMappingObject->activateSphereMapTexture("textures/SphereMap.jpg");
 
 	objReader->loadModel("Sphere.obj","Sphere.mtl", sphereEnvironmentalMappingObject);
-	//objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", sphereEnvironmentalMappingObject);
 
 	sceneManager->addObject(sphereEnvironmentalMappingObject);
 
@@ -491,7 +498,6 @@ void init(int argc, char* argv[]) {
 	Object* cubeEnvironmentalMappingObject = new Object(CUBE_MAPPING_OBJECT);
 	cubeEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,10.0f,1.0f));
 	cubeEnvironmentalMappingObject->setRotation(Vector(0.0f,180.0f,0.0f,1.0f));
-	//cubeEnvironmentalMappingObject->setScale(Vector(0.15f,0.15f,0.15f,1.0f));
 	cubeEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
 	cubeEnvironmentalMappingObject->activateCubeMapTexture(
 		"textures/beach/posx.jpg","textures/beach/negx.jpg",
@@ -499,7 +505,6 @@ void init(int argc, char* argv[]) {
 		"textures/beach/posz.jpg","textures/beach/negz.jpg");	
 
 	objReader->loadModel("Sphere.obj","Sphere.mtl", cubeEnvironmentalMappingObject);
-	//objReader->loadModel("teapot/teapot2.obj","teapot/SilverTeapot.mtl", cubeEnvironmentalMappingObject);
 
 	sceneManager->addObject(cubeEnvironmentalMappingObject);
 
@@ -515,6 +520,10 @@ void init(int argc, char* argv[]) {
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
 	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(MIXED_TEXTURE_SHADER));
+
+	SceneNode* testObjectNode = new SceneNode("Test Object");
+	testObjectNode->setObject(testObject);
+	testObjectNode->setShaderProgram(sceneManager->getShaderProgram(REAL_WOOD_SHADER));
 
 	SceneNode* blinnPhongObjectNode = new SceneNode(BLINN_PHONG_OBJECT);
 	blinnPhongObjectNode->setObject(blinnPhongObject);
@@ -535,6 +544,8 @@ void init(int argc, char* argv[]) {
 	/* Add the Root Nodes to the Scene */
 	//sceneManager->addSceneNode(tableNode);
 	sceneManager->addSceneNode(tableSurfaceNode);
+
+	sceneManager->addSceneNode(testObjectNode);
 
 	sceneManager->addSceneNode(blinnPhongObjectNode);
 	sceneManager->addSceneNode(bumpMappingObjectNode);

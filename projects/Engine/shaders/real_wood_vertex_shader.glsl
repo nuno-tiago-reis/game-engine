@@ -1,24 +1,26 @@
 #version 330 core
 #pragma optionNV(unroll all)
 
-#define LIGHT_COUNT 10
+#define LIGHT_COUNT 5
 
 #define SPOT_LIGHT 1
 #define POSITIONAL_LIGHT 2
 #define DIRECTIONAL_LIGHT 3
 
-/* Input Variables */
-in vec4 Position;
+#define SPOTLIGHT_OUTER_ANGLE 0.97
 
-in vec4 Normal;
-in vec4 Tangent;
+/* Input Attributes (Same as the other Vertex Shaders) */
+in vec4 Vertex_Position;
 
-in vec2 TextureUV;
+in vec4 Vertex_Normal;
+in vec4 Vertex_Tangent;
 
-in vec4 Ambient;
-in vec4 Diffuse;
-in vec4 Specular;
-in float SpecularConstant;
+in vec2 Vertex_TextureUV;
+
+in vec4 Vertex_Ambient;
+in vec4 Vertex_Diffuse;
+in vec4 Vertex_Specular;
+in float Vertex_SpecularConstant;
 
 /* Uniforms */
 uniform mat4 ModelMatrix;
@@ -57,41 +59,82 @@ layout(std140) uniform SharedLightSources {
 uniform sampler3D Noise;
 uniform float NoiseScale;
 
-/* Output Variables */
-out vec4 out_Position;
+/* Output Attributes (Same as the Real-Wood Fragment Shader) */
+out vec4 Fragment_Position;
 
-out vec4 out_ModelSpacePosition;
+out vec3 Fragment_Normal;
 
-out vec3 out_Normal;
+out vec4 Fragment_WoodColor;
+out vec4 Fragment_ModelPosition;
 
-out vec4 out_Ambient;
-out vec4 out_Diffuse;
-out vec4 out_Specular;
-out float out_SpecularConstant;
+out vec4 Fragment_Ambient;
+out vec4 Fragment_Diffuse;
+out vec4 Fragment_Specular;
+out float Fragment_SpecularConstant;
 
-out mat3 NormalMatrix;
-out mat3 LightMatrix;
+out vec3 LightDirection[LIGHT_COUNT];
+out vec3 HalfwayVector[LIGHT_COUNT];
 
 void main() {
 
-	/* Vertex Position to Clip Space */
-	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Position;
-
 	/* Normal transformation matrices */
-	NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
-	LightMatrix = inverse(transpose(mat3(ViewMatrix)));
+	mat3 NormalMatrix = inverse(transpose(mat3(ViewMatrix * ModelMatrix)));
+	mat3 LightMatrix = inverse(transpose(mat3(ViewMatrix)));
+
+	/* Vertex Position to Clip Space */
+	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * Vertex_Position;
 
 	/* Vertex Position and Normal to View Space */
-    out_Position = ViewMatrix * ModelMatrix * Position;
-	
-	out_Normal = normalize(NormalMatrix * vec3(Normal));
+    Fragment_Position = ViewMatrix * ModelMatrix * Vertex_Position;
+    Fragment_Normal = NormalMatrix * vec3(Vertex_Normal);
 
-	/* TODO */
-	out_ModelSpacePosition = ModelMatrix * Position;
+	/******************************************* WOOD MAPPING ********************************************************/
+	/* Wood Color Calculations * /
+	vec4 DarkShade=vec4(0.4, 0.2, 0.07, 1.0);
+	vec4 LightShade=vec4(0.6, 0.3, 0.1, 1.0);
+	float RepetitionRate=20;
+	float RepetitionScale=3.14;
+	float RepetitionSharpness=4352.0;
+
+	mat4 RotationMatrix;
+	RotationMatrix[0]=vec4(0.75,-0.21651,0.625,0);
+	RotationMatrix[1]=vec4(0.43301,0.875,-0.21651,0);
+	RotationMatrix[2]=vec4(-0.5,0.43301,0.75,0);
+	RotationMatrix[3]=vec4(0,0,0,1);
+	
+	vec3 RotatedPosition =  (RotationMatrix * ModelMatrix * Vertex_Position * NoiseScale).xyz;
+	float RotatedNoise = 2.0 * texture(Noise, RotatedPosition).r - 1.0;
+	float r = fract(RepetitionRate * ((ModelMatrix * Vertex_Position).y * NoiseScale) + RepetitionScale * RotatedNoise);
+	float invMax = pow(RepetitionSharpness, RepetitionSharpness / (RepetitionSharpness - 1.0))/(RepetitionSharpness - 1.0);
+	float ring = invMax * (r - pow(r, RepetitionSharpness));
+	float lerp = ring + RotatedNoise;
+	
+	Fragment_WoodColor = mix(DarkShade, LightShade, lerp);
+	/ *****************************************************************************************************************/
+	Fragment_ModelPosition = ModelMatrix * Vertex_Position;
 
 	/* Vertex Material */
-	out_Ambient = Ambient;
-	out_Diffuse = Diffuse;
-	out_Specular = Specular;
-	out_SpecularConstant = SpecularConstant;
+	Fragment_Ambient = Vertex_Ambient;
+	Fragment_Diffuse = Vertex_Diffuse;
+	Fragment_Specular = Vertex_Specular;
+	Fragment_SpecularConstant = Vertex_SpecularConstant;
+
+	/* Light computing */
+	for(int i=0; i<LIGHT_COUNT; i++) {
+
+		switch(LightSources[i].LightType) { 
+
+			case POSITIONAL_LIGHT:	LightDirection[i] = vec3((ViewMatrix * LightSources[i].Position) - Fragment_Position);
+									HalfwayVector[i] = vec3(-Fragment_Position) + LightDirection[i];
+									break;
+			
+			case DIRECTIONAL_LIGHT:	LightDirection[i] = LightMatrix * vec3(LightSources[i].Direction);
+									HalfwayVector[i] = LightDirection[i];
+									break;
+
+			case SPOT_LIGHT:		LightDirection[i] = LightMatrix * vec3(LightSources[i].Direction);
+									HalfwayVector[i] = vec3(-Fragment_Position) + LightDirection[i];
+									break;
+		}
+	}
 }
