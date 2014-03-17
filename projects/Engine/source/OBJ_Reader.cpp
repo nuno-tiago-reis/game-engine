@@ -130,7 +130,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	/* Reading the Model .obj - Second pass */
 	modelFile.open(LOCATION + modelFilename);
 
-	/* Storage Structuers */
+	/* Storage Structures */
 	Coordinate3D *vertexArray = new Coordinate3D[vertexNumber];
 	Coordinate3D *normalArray = new Coordinate3D[normalNumber];
 	Coordinate2D *textureCoordinateArray = new Coordinate2D[textureCoordinateNumber];
