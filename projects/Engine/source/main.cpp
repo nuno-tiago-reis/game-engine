@@ -144,8 +144,8 @@ void reshape(int w, int h) {
 
 	sceneManager->reshape(windowWidth,windowHeight);
 
-	framebuffer->reshape(windowWidth,windowHeight);
-	postProcessing->reshape(framebuffer);
+	//framebuffer->reshape(windowWidth,windowHeight);
+	//postProcessing->reshape(framebuffer);
 }
 
 void timer(int value) {

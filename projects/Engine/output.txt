@@ -1,0 +1,11 @@
+FMOD Sound not initialized.
+FMOD Sound not initialized.
+FMOD Sound not initialized.
+FMOD Sound not initialized.
+FMOD Sound not initialized.
+FMOD Sound not initialized.
+eapot.mtl,Test Object);
+OBJ_Reader::loadModel(Torus.obj,Torus.mtl,[Blinn-Phong] Object);
+OBJ_Reader::loadModel(teapot/teapot2.obj,teapot/GoldTeapot.mtl,[Bump Mapping] Object);
+OBJ_Reader::loadModel(Sphere.obj,Sphere.mtl,[Sphere Environmental Mapping] Object);
+OBJ_Reader::loadModel(Sphere.obj,Sphere.mtl,[Cube Environmental Mapping] Object);
