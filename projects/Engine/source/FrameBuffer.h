@@ -29,14 +29,11 @@ class FrameBuffer {
 
 		GLuint _renderBufferObject;
 
-		FrameBuffer();
-		~FrameBuffer();
-
 	public:
 
-		/* Singleton Methods */
-		static FrameBuffer* getInstance();
-		static void destroyInstance();
+		/* Constructors & Destructors */
+		FrameBuffer();
+		~FrameBuffer();
 
 		/* Scene Methods */
 		void init(GLint width, GLint height);

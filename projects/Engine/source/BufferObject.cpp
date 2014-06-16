@@ -60,8 +60,8 @@ void BufferObject::createBufferObject() {
 
 	offset += sizeof(_vertices[0].specular);
 
-	glEnableVertexAttribArray(SPECULAR_CONSTANTS);
-	glVertexAttribPointer(SPECULAR_CONSTANTS, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offset);
+	glEnableVertexAttribArray(SHININESS);
+	glVertexAttribPointer(SHININESS, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offset);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -76,7 +76,7 @@ void BufferObject::createBufferObject() {
 	glDisableVertexAttribArray(AMBIENT);
 	glDisableVertexAttribArray(DIFFUSE);
 	glDisableVertexAttribArray(SPECULAR);
-	glDisableVertexAttribArray(SPECULAR_CONSTANTS);
+	glDisableVertexAttribArray(SHININESS);
 
 	Utility::checkOpenGLError("ERROR: Buffer Object creation failed.");
 }
@@ -93,7 +93,7 @@ void BufferObject::destroyBufferObject() {
 	glDisableVertexAttribArray(AMBIENT);
 	glDisableVertexAttribArray(DIFFUSE);
 	glDisableVertexAttribArray(SPECULAR);
-	glDisableVertexAttribArray(SPECULAR_CONSTANTS);
+	glDisableVertexAttribArray(SHININESS);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

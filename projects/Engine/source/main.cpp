@@ -14,9 +14,9 @@
 #include "Object.h"
 #include "JointObject.h"
 
-/* Post Processing */
-#include "FrameBuffer.h"
-#include "PostProcessing.h"
+/* Post Processing Effects */
+#include "Bloom.h"
+#include "MotionBlur.h"
 
 /* Lighting */
 #include "SpotLight.h"
@@ -59,8 +59,8 @@ GLfloat elapsedTime = 0;
 /* Scene Manager */
 SceneManager* sceneManager = SceneManager::getInstance();
 
-FrameBuffer* framebuffer;
-PostProcessing* postProcessing;
+Bloom* bloom;
+MotionBlur* motionBlur;
 
 void soilTest() {
 
@@ -97,10 +97,12 @@ void soilTest() {
 
 void cleanup() {
 
-	sceneManager->destroyInstance();
+	/* Destroy the Post Processing Effects */
+	delete bloom;
+	delete motionBlur;
 
-	//framebuffer->destroyInstance();
-	//postProcessing->destroyInstance();
+	/* Destroy the Scene */
+	sceneManager->destroyInstance();
 }
 
 void update(int value) {
@@ -120,32 +122,43 @@ void display() {
 
 	++frameCount;
 
-	/* Draw to the PostProcessing Buffer */
-	//glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->getFrameBufferObject());
+	//for every effect
+
+	/* Draw to the Motion Blur Bufer */
+	glBindFramebuffer(GL_FRAMEBUFFER, motionBlur->getFrameBuffer()->getFrameBufferObject());
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		sceneManager->draw();
 
-	//glBindFramebuffer(GL_FRAMEBUFFER,0);
+	glBindFramebuffer(GL_FRAMEBUFFER,0);
+
+	/* Draw to the Motion Blur Bufer */
+	glBindFramebuffer(GL_FRAMEBUFFER, bloom->getFrameBuffer()->getFrameBufferObject());
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		motionBlur->draw();
+
+	glBindFramebuffer(GL_FRAMEBUFFER,0);
 
 	/* Draw to the Screen */
-	//postProcessing->draw(framebuffer);
+	bloom->draw();
 
 	glutSwapBuffers();
 }
 
-void reshape(int w, int h) {
+void reshape(int weight, int height) {
 
-	windowWidth = w;
-	windowHeight = h;
+	windowWidth = weight;
+	windowHeight = height;
 
 	glViewport(0, 0, windowWidth, windowHeight);
 
-	sceneManager->reshape(windowWidth,windowHeight);
+	bloom->reshape(windowWidth,windowHeight);
+	motionBlur->reshape(windowWidth,windowHeight);
 
-	//framebuffer->reshape(windowWidth,windowHeight);
-	//postProcessing->reshape(framebuffer);
+	sceneManager->reshape(windowWidth,windowHeight);
 }
 
 void timer(int value) {
@@ -233,8 +246,8 @@ void setupOpenGL() {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
-	glDepthRange(0.0,1.0);
-	glClearDepth(1.0);
+	glDepthRange(0.0f,1.0f);
+	glClearDepth(1.0f);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -287,7 +300,7 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(blinnPhongShader);
 
-	/* Create Mixed Texture Map Shader*/
+	/* Create Mixed Texture Map Shader* /
 	MixedTextureShader* mixedTextureShader = new MixedTextureShader(MIXED_TEXTURE_SHADER);
 	mixedTextureShader->createShaderProgram();
 	mixedTextureShader->bindAttributes();
@@ -305,7 +318,7 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(bumpMapShader);
 
-	/* Create Sphere Map Shader*/
+	/* Create Sphere Map Shader */
 	SphereMapShader* sphereMapShader = new SphereMapShader(SPHERE_MAP_SHADER);
 	sphereMapShader->createShaderProgram();
 	sphereMapShader->bindAttributes();
@@ -314,7 +327,7 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(sphereMapShader);
 
-	/* Create Cube Map Shader*/
+	/* Create Cube Map Shader */
 	CubeMapShader* cubeMapShader = new CubeMapShader(CUBE_MAP_SHADER);
 	cubeMapShader->createShaderProgram();
 	cubeMapShader->bindAttributes();
@@ -360,9 +373,9 @@ void setupLights() {
 	positionalLight1->setPosition(Vector(0.0f, 10.0f, 0.0f, 1.0f));
 	positionalLight1->setColor(Vector(1.0f, 1.0f, 1.0f, 1.0f));
 
-	positionalLight1->setAmbientIntensity(0.25f);
-	positionalLight1->setDiffuseIntensity(0.95f);
-	positionalLight1->setSpecularIntensity(0.95f);
+	positionalLight1->setAmbientIntensity(0.05f);
+	positionalLight1->setDiffuseIntensity(0.55f);
+	positionalLight1->setSpecularIntensity(0.55f);
 
 	positionalLight1->setConstantAttenuation(0.5f);
 	positionalLight1->setLinearAttenuation(0.000675f);
@@ -381,7 +394,7 @@ void setupLights() {
 
 	spotLight2->setCutOff(cos(25.0f * (GLfloat)DEGREES_TO_RADIANS));
 
-	spotLight2->setAmbientIntensity(0.25f);
+	spotLight2->setAmbientIntensity(0.05f);
 	spotLight2->setDiffuseIntensity(0.95f);
 	spotLight2->setSpecularIntensity(0.95f);
 
@@ -389,7 +402,7 @@ void setupLights() {
 	spotLight2->setLinearAttenuation(0.000675f);
 	spotLight2->setExponentialAttenuation(0.00025f);
 
-	//sceneManager->addLight(spotLight2);
+	sceneManager->addLight(spotLight2);
 }
 
 void setupCameras() {
@@ -519,7 +532,7 @@ void init(int argc, char* argv[]) {
 
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
-	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(MIXED_TEXTURE_SHADER));
+	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
 
 	SceneNode* testObjectNode = new SceneNode("Test Object");
 	testObjectNode->setObject(testObject);
@@ -586,16 +599,11 @@ void init(int argc, char* argv[]) {
 	/* Init the SceneManager */
 	sceneManager->init();
 
-	/* Init the FrameBuffer */
-	/*framebuffer = FrameBuffer::getInstance();
-	framebuffer->init(windowWidth,windowHeight);*/
+	bloom = new Bloom("Post Processing Effect - Bloom");
+	bloom->init(windowWidth, windowHeight);
 
-	/* Init the PostProcessing Shader */
-	/*postProcessing = PostProcessing::getInstance();
-	postProcessing->createShaderProgram();
-	postProcessing->bindAttributes();
-	postProcessing->linkShaderProgram();
-	postProcessing->bindUniforms();*/
+	motionBlur = new MotionBlur("Post Processing Effect - Motion Blur");
+	motionBlur->init(windowWidth, windowHeight);
 
 	/* Setup GLUT Callbacks */
 	setupCallbacks();

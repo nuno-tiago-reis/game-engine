@@ -1,13 +1,12 @@
 #include "FrameBuffer.h"
 
-FrameBuffer* FrameBuffer::instance = NULL;
-
 FrameBuffer::FrameBuffer() {
 
 	_width = 0;
 	_height = 0;
 
 	_frameBufferObject = 0;
+
 	_frameBufferTexture[0] = 0;
 	_frameBufferTexture[1] = 0;
 
@@ -15,38 +14,15 @@ FrameBuffer::FrameBuffer() {
 }
 
 FrameBuffer::~FrameBuffer() {
-}
 
-FrameBuffer* FrameBuffer::getInstance() {
+	glDeleteRenderbuffers(1, &_renderBufferObject);
 
-	if(instance == NULL) 
-		instance = new FrameBuffer();
+	glDeleteTextures(1, &_frameBufferTexture[0]);
+	glDeleteTextures(1, &_frameBufferTexture[1]);
 
-	return instance;
-}
-
-void FrameBuffer::destroyInstance() {
-
-	if(instance != NULL) {
-
-		GLuint frameBufferObject = instance->getFrameBufferObject();
-		GLuint frameBufferTexture[] = { instance->getFrameBufferTexture(0), instance->getFrameBufferTexture(1) };
-
-		GLuint renderBufferObject = instance->getRenderBufferObject();
-
-		glDeleteRenderbuffers(1, &renderBufferObject);
-
-		glDeleteTextures(1, &frameBufferTexture[0]);
-		glDeleteTextures(1, &frameBufferTexture[1]);
-
-		glDeleteFramebuffers(1, &frameBufferObject);
+	glDeleteFramebuffers(1, &_frameBufferObject);
 		
-		Utility::checkOpenGLError("Failed to destroy FrameBuffer");
-	}
-
-	delete instance;
-
-	instance = NULL;
+	Utility::checkOpenGLError("Failed to destroy FrameBuffer");
 }
 
 void FrameBuffer::init(GLint width, GLint height) {

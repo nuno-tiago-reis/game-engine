@@ -6,5 +6,5 @@
 #define RADIANS_TO_DEGREES 180.0f/PI
 
 /* Viewport Size Constants */
-#define WIDTH 640
-#define HEIGHT 640
+#define WIDTH 1600
+#define HEIGHT 900

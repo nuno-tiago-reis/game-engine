@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\SceneManager">
-      <UniqueIdentifier>{a346a320-cc3c-41ad-bf32-68e6489baa76}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{9c194606-c804-419c-ab6d-217ce70e0f17}</UniqueIdentifier>
     </Filter>
@@ -42,54 +39,6 @@
     <Filter Include="Source Files\Utility\OBJ">
       <UniqueIdentifier>{9e4b9495-261c-4261-8663-a843b10f6a51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SceneManager\SceneGraph">
-      <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Lights">
-      <UniqueIdentifier>{bb8781fb-89ca-4a99-9f01-a99654781bc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Lights\DirectionalLight">
-      <UniqueIdentifier>{a729dcf1-3ec1-4a9f-ad9d-ed8c6671bba1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Lights\Light">
-      <UniqueIdentifier>{d00b9e45-7407-4ed0-a657-60cc1f561f54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Lights\PositionalLight">
-      <UniqueIdentifier>{04b6a256-a01d-4c7e-ac10-7596ecc14bc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Lights\SpotLight">
-      <UniqueIdentifier>{d771b2c8-bb9f-4e61-b9db-32f96589506a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Camera">
-      <UniqueIdentifier>{73afb099-d3ed-4887-949f-b5c23bb2a393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Objects">
-      <UniqueIdentifier>{a200c648-222f-4126-a22c-8d1145317659}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Objects\JointObject">
-      <UniqueIdentifier>{067d7691-c181-4840-bf3d-f0776b0b9182}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Objects\Object">
-      <UniqueIdentifier>{bf0edfff-b0ff-49d7-aea0-c34d68d2aef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Objects\Object\BufferObject">
-      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Motion Blur">
-      <UniqueIdentifier>{501cca1d-17c8-45b2-a604-44bf2cf94f28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Motion Blur\PostProcessing">
-      <UniqueIdentifier>{3716a1d3-fae0-477d-8ce1-7568d4686ac2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Motion Blur\PostProcessing\glsl">
-      <UniqueIdentifier>{16154b9a-5697-4ade-bcb3-96108b3e8022}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\Sounds">
-      <UniqueIdentifier>{a0c6af7b-6ec4-45ce-8f51-0094327b77b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager\SceneGraph\MatrixStack">
-      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Textures">
       <UniqueIdentifier>{78db1ec1-3653-4d41-bd72-b7994428e745}</UniqueIdentifier>
     </Filter>
@@ -117,12 +66,6 @@
     <Filter Include="Source Files\Shader\BumpMap\glsl">
       <UniqueIdentifier>{7fbae9e1-2139-4870-a0ef-5ef217c6e8dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shader\MixedTexture">
-      <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shader\MixedTexture\glsl">
-      <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader\SphereMapping">
       <UniqueIdentifier>{df74ffee-f2aa-4eb3-9735-41a6b3f6e750}</UniqueIdentifier>
     </Filter>
@@ -141,13 +84,82 @@
     <Filter Include="Source Files\Shader\Wood\glsl">
       <UniqueIdentifier>{fa4f6db8-d145-472b-afbc-fbe170ce5ebd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shader\MixedTexture - TODO">
+      <UniqueIdentifier>{2aa229a7-4e48-4d28-a189-56a8bdfa0e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\MixedTexture - TODO\glsl">
+      <UniqueIdentifier>{ed1ca525-2a44-4cc6-a848-c8ac78659364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects">
+      <UniqueIdentifier>{501cca1d-17c8-45b2-a604-44bf2cf94f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager">
+      <UniqueIdentifier>{a346a320-cc3c-41ad-bf32-68e6489baa76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Lights">
+      <UniqueIdentifier>{bb8781fb-89ca-4a99-9f01-a99654781bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Lights\DirectionalLight">
+      <UniqueIdentifier>{a729dcf1-3ec1-4a9f-ad9d-ed8c6671bba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Lights\Light">
+      <UniqueIdentifier>{d00b9e45-7407-4ed0-a657-60cc1f561f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Lights\PositionalLight">
+      <UniqueIdentifier>{04b6a256-a01d-4c7e-ac10-7596ecc14bc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Lights\SpotLight">
+      <UniqueIdentifier>{d771b2c8-bb9f-4e61-b9db-32f96589506a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Camera">
+      <UniqueIdentifier>{73afb099-d3ed-4887-949f-b5c23bb2a393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects">
+      <UniqueIdentifier>{a200c648-222f-4126-a22c-8d1145317659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\JointObject">
+      <UniqueIdentifier>{067d7691-c181-4840-bf3d-f0776b0b9182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\Object">
+      <UniqueIdentifier>{bf0edfff-b0ff-49d7-aea0-c34d68d2aef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\Object\BufferObject">
+      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Sounds">
+      <UniqueIdentifier>{a0c6af7b-6ec4-45ce-8f51-0094327b77b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Scene Graph">
+      <UniqueIdentifier>{18694d95-e68c-49cb-8a2b-af49462951db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Scene Graph\MatrixStack">
+      <UniqueIdentifier>{babe8c29-8b57-459d-8f92-d6dc80e8fdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Bloom">
+      <UniqueIdentifier>{89818b21-daec-4faf-a550-679b518ad7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Motion Blur">
+      <UniqueIdentifier>{3716a1d3-fae0-477d-8ce1-7568d4686ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Motion Blur\Shader">
+      <UniqueIdentifier>{1034e34e-25a7-42de-9cf8-19d2bf9c8729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Motion Blur\Shader\glsl">
+      <UniqueIdentifier>{16154b9a-5697-4ade-bcb3-96108b3e8022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Bloom\Shader">
+      <UniqueIdentifier>{8e8f3c58-2621-4ade-bef7-9cf645b42f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Post Processing Effects\Bloom\Shader\glsl">
+      <UniqueIdentifier>{8a80cacb-ee36-415b-a087-1825ccdb38db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\BufferObject.cpp">
-      <Filter>Source Files\SceneManager\Objects\Object\BufferObject</Filter>
+      <Filter>Source Files\Scene Manager\Objects\Object\BufferObject</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneManager.cpp">
-      <Filter>Source Files\SceneManager</Filter>
+      <Filter>Source Files\Scene Manager</Filter>
     </ClCompile>
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
@@ -168,37 +180,34 @@
       <Filter>Source Files\Algebra\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="source\Camera.cpp">
-      <Filter>Source Files\SceneManager\Camera</Filter>
+      <Filter>Source Files\Scene Manager\Camera</Filter>
     </ClCompile>
     <ClCompile Include="source\MatrixStack.cpp">
-      <Filter>Source Files\SceneManager\SceneGraph\MatrixStack</Filter>
+      <Filter>Source Files\Scene Manager\Scene Graph\MatrixStack</Filter>
     </ClCompile>
     <ClCompile Include="source\OBJ_Reader.cpp">
       <Filter>Source Files\Utility\OBJ</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneNode.cpp">
-      <Filter>Source Files\SceneManager\SceneGraph</Filter>
+      <Filter>Source Files\Scene Manager\Scene Graph</Filter>
     </ClCompile>
     <ClCompile Include="source\ShaderProgram.cpp">
       <Filter>Source Files\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="source\PostProcessing.cpp">
-      <Filter>Source Files\Motion Blur\PostProcessing</Filter>
-    </ClCompile>
     <ClCompile Include="source\FrameBuffer.cpp">
-      <Filter>Source Files\Motion Blur</Filter>
+      <Filter>Source Files\Post Processing Effects</Filter>
     </ClCompile>
     <ClCompile Include="source\DirectionalLight.cpp">
-      <Filter>Source Files\SceneManager\Lights\DirectionalLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\DirectionalLight</Filter>
     </ClCompile>
     <ClCompile Include="source\SpotLight.cpp">
-      <Filter>Source Files\SceneManager\Lights\SpotLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\SpotLight</Filter>
     </ClCompile>
     <ClCompile Include="source\PositionalLight.cpp">
-      <Filter>Source Files\SceneManager\Lights\PositionalLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\PositionalLight</Filter>
     </ClCompile>
     <ClCompile Include="source\Light.cpp">
-      <Filter>Source Files\SceneManager\Lights\Light</Filter>
+      <Filter>Source Files\Scene Manager\Lights\Light</Filter>
     </ClCompile>
     <ClCompile Include="source\BlinnPhongShader.cpp">
       <Filter>Source Files\Shader\BlinnPhong</Filter>
@@ -216,7 +225,7 @@
       <Filter>Source Files\Shader\Wood</Filter>
     </ClCompile>
     <ClCompile Include="source\JointObject.cpp">
-      <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
+      <Filter>Source Files\Scene Manager\Objects\JointObject</Filter>
     </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
       <Filter>Source Files\Textures\NoiseTexture</Filter>
@@ -225,13 +234,13 @@
       <Filter>Source Files\Utility\XML</Filter>
     </ClCompile>
     <ClCompile Include="source\Sound.cpp">
-      <Filter>Source Files\SceneManager\Sounds</Filter>
+      <Filter>Source Files\Scene Manager\Sounds</Filter>
     </ClCompile>
     <ClCompile Include="source\MixedTextureShader.cpp">
-      <Filter>Source Files\Shader\MixedTexture</Filter>
+      <Filter>Source Files\Shader\MixedTexture - TODO</Filter>
     </ClCompile>
     <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files\SceneManager\Objects\Object</Filter>
+      <Filter>Source Files\Scene Manager\Objects\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\SphereMapShader.cpp">
       <Filter>Source Files\Shader\SphereMapping</Filter>
@@ -242,13 +251,28 @@
     <ClCompile Include="source\CubeTexture.cpp">
       <Filter>Source Files\Textures\CubeTexture</Filter>
     </ClCompile>
+    <ClCompile Include="source\MotionBlur.cpp">
+      <Filter>Source Files\Post Processing Effects\Motion Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PostProcessingEffect.cpp">
+      <Filter>Source Files\Post Processing Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MotionBlurShader.cpp">
+      <Filter>Source Files\Post Processing Effects\Motion Blur\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Bloom.cpp">
+      <Filter>Source Files\Post Processing Effects\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BloomShader.cpp">
+      <Filter>Source Files\Post Processing Effects\Bloom\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SceneManager.h">
-      <Filter>Source Files\SceneManager</Filter>
+      <Filter>Source Files\Scene Manager</Filter>
     </ClInclude>
     <ClInclude Include="source\BufferObject.h">
-      <Filter>Source Files\SceneManager\Objects\Object\BufferObject</Filter>
+      <Filter>Source Files\Scene Manager\Objects\Object\BufferObject</Filter>
     </ClInclude>
     <ClInclude Include="source\Utility.h">
       <Filter>Source Files\Utility</Filter>
@@ -272,37 +296,34 @@
       <Filter>Source Files\Algebra\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="source\Camera.h">
-      <Filter>Source Files\SceneManager\Camera</Filter>
+      <Filter>Source Files\Scene Manager\Camera</Filter>
     </ClInclude>
     <ClInclude Include="source\MatrixStack.h">
-      <Filter>Source Files\SceneManager\SceneGraph\MatrixStack</Filter>
+      <Filter>Source Files\Scene Manager\Scene Graph\MatrixStack</Filter>
     </ClInclude>
     <ClInclude Include="source\OBJ_Reader.h">
       <Filter>Source Files\Utility\OBJ</Filter>
     </ClInclude>
     <ClInclude Include="source\SceneNode.h">
-      <Filter>Source Files\SceneManager\SceneGraph</Filter>
+      <Filter>Source Files\Scene Manager\Scene Graph</Filter>
     </ClInclude>
     <ClInclude Include="source\ShaderProgram.h">
       <Filter>Source Files\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="source\PostProcessing.h">
-      <Filter>Source Files\Motion Blur\PostProcessing</Filter>
-    </ClInclude>
     <ClInclude Include="source\FrameBuffer.h">
-      <Filter>Source Files\Motion Blur</Filter>
+      <Filter>Source Files\Post Processing Effects</Filter>
     </ClInclude>
     <ClInclude Include="source\DirectionalLight.h">
-      <Filter>Source Files\SceneManager\Lights\DirectionalLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\DirectionalLight</Filter>
     </ClInclude>
     <ClInclude Include="source\SpotLight.h">
-      <Filter>Source Files\SceneManager\Lights\SpotLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\SpotLight</Filter>
     </ClInclude>
     <ClInclude Include="source\PositionalLight.h">
-      <Filter>Source Files\SceneManager\Lights\PositionalLight</Filter>
+      <Filter>Source Files\Scene Manager\Lights\PositionalLight</Filter>
     </ClInclude>
     <ClInclude Include="source\Light.h">
-      <Filter>Source Files\SceneManager\Lights\Light</Filter>
+      <Filter>Source Files\Scene Manager\Lights\Light</Filter>
     </ClInclude>
     <ClInclude Include="source\BumpMapShader.h">
       <Filter>Source Files\Shader\BumpMap</Filter>
@@ -320,10 +341,10 @@
       <Filter>Source Files\Shader\Wood</Filter>
     </ClInclude>
     <ClInclude Include="source\JointObject.h">
-      <Filter>Source Files\SceneManager\Objects\JointObject</Filter>
+      <Filter>Source Files\Scene Manager\Objects\JointObject</Filter>
     </ClInclude>
     <ClInclude Include="source\Object.h">
-      <Filter>Source Files\SceneManager\Objects\Object</Filter>
+      <Filter>Source Files\Scene Manager\Objects\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\GeneratedTexture.h">
       <Filter>Source Files\Textures\NoiseTexture</Filter>
@@ -332,13 +353,13 @@
       <Filter>Source Files\Utility\XML</Filter>
     </ClInclude>
     <ClInclude Include="source\Sound.h">
-      <Filter>Source Files\SceneManager\Sounds</Filter>
+      <Filter>Source Files\Scene Manager\Sounds</Filter>
     </ClInclude>
     <ClInclude Include="source\Names.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="source\MixedTextureShader.h">
-      <Filter>Source Files\Shader\MixedTexture</Filter>
+      <Filter>Source Files\Shader\MixedTexture - TODO</Filter>
     </ClInclude>
     <ClInclude Include="source\SphereMapShader.h">
       <Filter>Source Files\Shader\SphereMapping</Filter>
@@ -348,6 +369,21 @@
     </ClInclude>
     <ClInclude Include="source\CubeTexture.h">
       <Filter>Source Files\Textures\CubeTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MotionBlur.h">
+      <Filter>Source Files\Post Processing Effects\Motion Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PostProcessingEffect.h">
+      <Filter>Source Files\Post Processing Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MotionBlurShader.h">
+      <Filter>Source Files\Post Processing Effects\Motion Blur\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Bloom.h">
+      <Filter>Source Files\Post Processing Effects\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="source\BloomShader.h">
+      <Filter>Source Files\Post Processing Effects\Bloom\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -369,17 +405,11 @@
     <None Include="shaders\real_wood_vertex_shader.glsl">
       <Filter>Source Files\Shader\Wood\glsl</Filter>
     </None>
-    <None Include="shaders\post_processing_vertex_shader.glsl">
-      <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
-    </None>
-    <None Include="shaders\post_processing_fragment_shader.glsl">
-      <Filter>Source Files\Motion Blur\PostProcessing\glsl</Filter>
-    </None>
     <None Include="shaders\mixed_texture_fragment_shader.glsl">
-      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+      <Filter>Source Files\Shader\MixedTexture - TODO\glsl</Filter>
     </None>
     <None Include="shaders\mixed_texture_vertex_shader.glsl">
-      <Filter>Source Files\Shader\MixedTexture\glsl</Filter>
+      <Filter>Source Files\Shader\MixedTexture - TODO\glsl</Filter>
     </None>
     <None Include="shaders\sphere_map_fragment_shader.glsl">
       <Filter>Source Files\Shader\SphereMapping\glsl</Filter>
@@ -392,6 +422,18 @@
     </None>
     <None Include="shaders\cube_map_vertex_shader.glsl">
       <Filter>Source Files\Shader\CubeMapping\glsl</Filter>
+    </None>
+    <None Include="shaders\motion_blur_fragment_shader.glsl">
+      <Filter>Source Files\Post Processing Effects\Motion Blur\Shader\glsl</Filter>
+    </None>
+    <None Include="shaders\motion_blur_vertex_shader.glsl">
+      <Filter>Source Files\Post Processing Effects\Motion Blur\Shader\glsl</Filter>
+    </None>
+    <None Include="shaders\bloom_fragment_shader.glsl">
+      <Filter>Source Files\Post Processing Effects\Bloom\Shader\glsl</Filter>
+    </None>
+    <None Include="shaders\bloom_vertex_shader.glsl">
+      <Filter>Source Files\Post Processing Effects\Bloom\Shader\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

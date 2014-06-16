@@ -17,6 +17,9 @@
 
 #include "Utility.h"
 
+/* Model Matrix Uniforms */
+#define MODEL_MATRIX_UNIFORM "ModelMatrix"
+
 /* Shared Matrices Uniforms */
 #define MATRICES_UNIFORM "SharedMatrices"
 #define MATRICES_BINDING_POINT 0
@@ -28,32 +31,29 @@
 #define LIGHT_SOURCE_STRUCT_SIZE 19
 #define LIGHT_SOURCE_LIMIT 10
 
-/* Model Matrix Uniforms */
-#define MODEL_MATRIX_UNIFORM "ModelMatrix"
-
 /* Position Attribute */
 #define POSITION 0
-#define POSITION_ATTRIBUTE "Vertex_Position"
+#define POSITION_ATTRIBUTE "VertexPosition"
 
 /* Normal Attributes */
-#define NORMAL 2
-#define NORMAL_ATTRIBUTE "Vertex_Normal"
-#define TANGENT 3
-#define TANGENT_ATTRIBUTE "Vertex_Tangent"
+#define NORMAL 1
+#define NORMAL_ATTRIBUTE "VertexNormal"
+#define TANGENT 2
+#define TANGENT_ATTRIBUTE "VertexTangent"
 
 /* Texture UV Attribute */
-#define TEXTURE_UV 1
-#define TEXTURE_UV_ATTRIBUTE "Vertex_TextureUV"
+#define TEXTURE_UV 3
+#define TEXTURE_UV_ATTRIBUTE "VertexTextureUV"
 
 /* Color Attributes */
 #define AMBIENT 4
-#define AMBIENT_ATTRIBUTE "Vertex_Ambient"
+#define AMBIENT_ATTRIBUTE "VertexAmbient"
 #define DIFFUSE 5
-#define DIFFUSE_ATTRIBUTE "Vertex_Diffuse"
+#define DIFFUSE_ATTRIBUTE "VertexDiffuse"
 #define SPECULAR 6
-#define SPECULAR_ATTRIBUTE "Vertex_Specular"
-#define SPECULAR_CONSTANTS 7
-#define SPECULAR_CONSTANT_ATTRIBUTE "Vertex_SpecularConstant"
+#define SPECULAR_ATTRIBUTE "VertexSpecular"
+#define SHININESS 7
+#define SHININESS_ATTRIBUTE "VertexShininess"
 
 using namespace std;
 
