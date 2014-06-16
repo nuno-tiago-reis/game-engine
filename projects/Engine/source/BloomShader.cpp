@@ -5,8 +5,6 @@ BloomShader::BloomShader(string name) :
 }
 
 BloomShader::~BloomShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void BloomShader::bindAttributes() {
@@ -20,8 +18,6 @@ void BloomShader::bindAttributes() {
 void BloomShader::bindUniforms() {
 
 	/* Binds Projection, View Matrices and Light Sources */
-	//ShaderProgram::bindUniforms();
-
 	_uniformLocationMap[TEXTURE_0_UNIFORM] = glGetUniformLocation(_programID, TEXTURE_0_UNIFORM);
 	_uniformLocationMap[TEXTURE_1_UNIFORM] = glGetUniformLocation(_programID, TEXTURE_1_UNIFORM);
 

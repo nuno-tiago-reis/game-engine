@@ -5,8 +5,6 @@ BlinnPhongShader::BlinnPhongShader(string name) :
 }
 
 BlinnPhongShader::~BlinnPhongShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void BlinnPhongShader::bindAttributes() {

@@ -5,8 +5,6 @@ SphereMapShader::SphereMapShader(string name) :
 }
 
 SphereMapShader::~SphereMapShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void SphereMapShader::bindAttributes() {

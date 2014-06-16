@@ -433,8 +433,8 @@ void init(int argc, char* argv[]) {
 	setupGLEW();
 	setupOpenGL();
 
-	freopen("output.txt","w",stderr);
-	freopen("output.txt","w",stdout);
+	//freopen("output.txt","w",stderr);
+	//freopen("output.txt","w",stdout);
 
 	setupShaders();
 

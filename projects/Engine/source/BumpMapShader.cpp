@@ -5,8 +5,6 @@ BumpMapShader::BumpMapShader(string name) :
 }
 
 BumpMapShader::~BumpMapShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void BumpMapShader::bindAttributes() {
@@ -36,7 +34,4 @@ void BumpMapShader::bindUniforms() {
 	_uniformLocationMap[NORMAL_TEXTURE_UNIFORM] = glGetUniformLocation(_programID, NORMAL_TEXTURE_UNIFORM);
 
 	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
-
-	cout << "Diffuse Texture Uniform" << _uniformLocationMap[DIFFUSE_TEXTURE_UNIFORM] << endl;
-	cout << "Normal Texture Uniform" << _uniformLocationMap[NORMAL_TEXTURE_UNIFORM] << endl;
 }

@@ -5,8 +5,6 @@ MixedTextureShader::MixedTextureShader(string name) :
 }
 
 MixedTextureShader::~MixedTextureShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void MixedTextureShader::bindAttributes() {

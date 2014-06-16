@@ -13,8 +13,6 @@ Bloom::Bloom(string name) : PostProcessingEffect(name) {
 Bloom::~Bloom() {
 
 	delete _bloomShader;
-
-	PostProcessingEffect::~PostProcessingEffect();
 }
 
 void Bloom::draw() {

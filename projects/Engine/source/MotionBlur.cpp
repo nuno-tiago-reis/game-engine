@@ -13,8 +13,6 @@ MotionBlur::MotionBlur(string name) : PostProcessingEffect(name) {
 MotionBlur::~MotionBlur() {
 
 	delete _motionBlurShader;
-
-	PostProcessingEffect::~PostProcessingEffect();
 }
 
 void MotionBlur::draw() {

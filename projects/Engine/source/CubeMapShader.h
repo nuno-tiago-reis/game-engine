@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define CUBE_MAP_SHADER "Cube Map Shader"
+#define CUBE_MAP_SHADER "Cube Mapping"
 
 #define CUBE_MAP_VERTEX_SHADER_FILE		"shaders/cube_map_vertex_shader.glsl"
 #define CUBE_MAP_FRAGMENT_SHADER_FILE	"shaders/cube_map_fragment_shader.glsl"

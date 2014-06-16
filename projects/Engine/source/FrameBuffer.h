@@ -16,9 +16,6 @@ class FrameBuffer {
 
 	private:
 
-		/* Singleton Instance */
-		static FrameBuffer* instance;
-
 		/* Buffer Dimensions */
 		GLint _width;
 		GLint _height;

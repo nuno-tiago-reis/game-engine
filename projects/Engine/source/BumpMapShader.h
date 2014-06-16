@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define BUMPMAP_SHADER "Bump Mapping Shader"
+#define BUMPMAP_SHADER "Bump Mapping"
 
 #define BUMPMAP_VERTEX_SHADER_FILE		"shaders/bump_map_vertex_shader.glsl"
 #define BUMPMAP_FRAGMENT_SHADER_FILE	"shaders/bump_map_fragment_shader.glsl"

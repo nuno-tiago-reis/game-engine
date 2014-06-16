@@ -185,8 +185,13 @@ void ShaderProgram::bindUniforms() {
 }
 
 void ShaderProgram::destroyShaderProgram() {
-
+	
+	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" destruction error 11.");
 	glUseProgram(0);
+
+	cout << "[" << _name << "]" << " ProgramID = " << _programID << endl;
+	cout << "[" << _name << "]" << " VertexProgramID = " << _vertexShaderID << endl;
+	cout << "[" << _name << "]" << " FragmentProgramID = " << _fragmentShaderID << endl;
 
 	glDetachShader(_programID, _vertexShaderID);
 	glDetachShader(_programID, _fragmentShaderID);
@@ -196,7 +201,7 @@ void ShaderProgram::destroyShaderProgram() {
 
 	glDeleteProgram(_programID);
 
-	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" destruction error.");
+	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" destruction error 22.");
 }
 
 string ShaderProgram::getName() {

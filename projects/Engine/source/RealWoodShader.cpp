@@ -5,8 +5,6 @@ RealWoodShader::RealWoodShader(string name) :
 }
 
 RealWoodShader::~RealWoodShader(){
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void RealWoodShader::bindAttributes() {

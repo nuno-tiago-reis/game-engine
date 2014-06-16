@@ -4,8 +4,6 @@ JointObject::JointObject(string name) : Object(name) {
 }
 
 JointObject::~JointObject() {
-
-	Object::~Object();
 }
 
 void JointObject::draw(GLuint programID) {

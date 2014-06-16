@@ -5,8 +5,6 @@ CubeMapShader::CubeMapShader(string name) :
 }
 
 CubeMapShader::~CubeMapShader() {
-
-	ShaderProgram::~ShaderProgram();
 }
 
 void CubeMapShader::bindAttributes() {
