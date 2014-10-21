@@ -1,83 +1,135 @@
 #include "Texture.h"
 
-Texture::Texture(GLuint textureFormat, string fileName) {
+Texture::Texture(string name, GLuint format, string uniform, string filename) {
 
-	_fileName = fileName;
+	/* Initialize the Textures Name */
+	_name = name;
 
-	_textureFormat = textureFormat;
+	/* Initialize the Texture Format (eg. GL_TEXTURE_2D) */
+	_format = format;
+	/* Initialize the Texture Uniform (specified by the Shader Program) */
+	_uniform = uniform;
+
+	/* Initialize the Textures Filname */
+	_filename = filename;
 }
 
-Texture::Texture(GLuint textureFormat) {
+Texture::Texture(string name, GLuint format, string uniform) {
 
-	_textureFormat = textureFormat;
-}
+	/* Initialize the Textures Name */
+	_name = name;
 
-Texture::Texture() {
+	/* Texture Format (eg. GL_TEXTURE_2D) */
+	_format = format;
+	/* Texture Uniform - Specified by the Shader Program */
+	_uniform = uniform;
 }
 
 Texture::~Texture() {
 }
 
-void Texture::load() {
+void Texture::loadTexture() {
 
 	/* Load the Texture */
-	_textureHandler = SOIL_load_OGL_texture(_fileName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
+	_handler = SOIL_load_OGL_texture(_filename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y);
 
 	/* Check for an error during the load process */
-	if(_textureHandler == 0)
-		cout << "SOIL loading error (\"" << _fileName.c_str() << "\": " << SOIL_last_result() << std::endl;
+	if(_handler == 0)
+		cout << "SOIL loading error (\"" << _filename.c_str() << "\": " << SOIL_last_result() << std::endl;
 
-	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" loading failed.");
+	Utility::checkOpenGLError("ERROR: Texture \"" + _name + "\" loading failed.");
+}
+
+void Texture::loadUniforms(GLuint programID, GLuint textureID) {
+
+	/* Load the Texture to the corresponding Uniform */
+	glProgramUniform1i(programID, glGetUniformLocation(programID, _uniform.c_str()), textureID);
+
+	Utility::checkOpenGLError("ERROR: Texture \"" + _name + "\" loading failed.");
 }
 
 void Texture::bind(GLuint textureID) {
 
 	glActiveTexture(textureID);
 
-    glBindTexture(_textureFormat, _textureHandler);
+    glBindTexture(_format, _handler);
 
-	glTexParameteri(_textureFormat, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(_textureFormat, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(_format, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(_format, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(_format, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(_format, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" binding failed.");
+	Utility::checkOpenGLError("ERROR: Texture \"" + _name + "\" binding failed.");
 }
 
 void Texture::unbind(GLuint textureID) {
 
-	glBindTexture(_textureFormat, 0);
+	glBindTexture(_format, 0);
 
-	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" unbinding failed.");
+	Utility::checkOpenGLError("ERROR: Texture \"" + _name + "\" unbinding failed.");
 }
 
-string Texture::getFileName() {
+string Texture::getName() {
 
-	return _fileName;
+	return _name;
 }
 
-GLuint Texture::getTextureHandler() {
+string Texture::getFilename() {
 
-	return _textureHandler;
+	return _filename;
 }
 
-GLenum Texture::getTextureFormat() {
+GLuint Texture::getHandler() {
 
-	return _textureFormat;
+	return _handler;
 }
 
-void Texture::setFileName(string fileName) {
+GLenum Texture::getFormat() {
 
-	_fileName = fileName;
+	return _format;
 }
 
-void Texture::setTextureHandler(GLuint textureHandler) {
+string Texture::getUniform() {
 
-	_textureHandler = textureHandler;
+	return _uniform;
 }
 
-void Texture::setTextureFormat(GLenum textureFormat) {
+void Texture::setName(string name) {
 
-	_textureFormat = textureFormat;
+	_name = name;
+}
+
+void Texture::setFilename(string filename) {
+
+	_filename = filename;
+}
+
+void Texture::setHandler(GLuint handler) {
+
+	_handler = handler;
+}
+
+void Texture::setFormat(GLenum format) {
+
+	_format = format;
+}
+
+void Texture::setUniform(string uniform) {
+
+	_uniform = uniform;
+}
+
+void Texture::dump() {
+
+	cout << "<Texture \"" << _name << "\" Dump>" << endl;
+
+	/* Texture Filename */
+	cout << "<Texture Filename> = " << _filename << endl;
+	/* Texture Handler */
+	cout << "<Texture Handler> = " << _handler << endl;
+	/* Texture Format */
+	cout << "<Texture Format> = " << _format << endl;
+	/* Texture Uniform */
+	cout << "<Texture Uniform> = " << _uniform << endl;
 }

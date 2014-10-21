@@ -1,22 +1,15 @@
 /* Object Names */
 
 #define BLINN_PHONG_OBJECT		"[Blinn-Phong] Object"
+#define WOOD_OBJECT		"[Wood-Texture] Object"
 #define BUMP_MAPPING_OBJECT		"[Bump Mapping] Object"
 #define SPHERE_MAPPING_OBJECT	"[Sphere Environmental Mapping] Object"
 #define CUBE_MAPPING_OBJECT		"[Cube Environmental Mapping] Object"
 
-#define PUCK "Puck"
-#define MALLET "Mallet"
-
 #define TABLE "Table"
 #define TABLE_SURFACE "Table Surface"
 
-#define WALL_A "Wall A"
-#define WALL_B "Wall B"
-#define WALL_C "Wall C"
-#define WALL_D "Wall D"
-
-#define PLATFORM "Platform"
+#define TEST_PARTICLE_SYSTEM "Test Particle System"
 
 /* Sound Names */
 #define ARROW_SOUND_NAME "Arrow Sound"

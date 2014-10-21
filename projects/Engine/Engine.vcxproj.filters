@@ -117,15 +117,6 @@
     <Filter Include="Source Files\Scene Manager\Objects">
       <UniqueIdentifier>{a200c648-222f-4126-a22c-8d1145317659}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene Manager\Objects\JointObject">
-      <UniqueIdentifier>{067d7691-c181-4840-bf3d-f0776b0b9182}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene Manager\Objects\Object">
-      <UniqueIdentifier>{bf0edfff-b0ff-49d7-aea0-c34d68d2aef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene Manager\Objects\Object\BufferObject">
-      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scene Manager\Sounds">
       <UniqueIdentifier>{a0c6af7b-6ec4-45ce-8f51-0094327b77b9}</UniqueIdentifier>
     </Filter>
@@ -153,11 +144,26 @@
     <Filter Include="Source Files\Post Processing Effects\Bloom\Shader\glsl">
       <UniqueIdentifier>{8a80cacb-ee36-415b-a087-1825ccdb38db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Particle System">
+      <UniqueIdentifier>{904af4d6-d6cb-4a37-9217-053fe991c25f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\Material">
+      <UniqueIdentifier>{42e1872d-2118-4d03-a394-decca63d42be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\Mesh">
+      <UniqueIdentifier>{cd44c009-036d-4395-b535-cab631cc72e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Manager\Objects\Transform">
+      <UniqueIdentifier>{3165f95f-d425-407a-aaf4-68714c976806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Fire">
+      <UniqueIdentifier>{38591870-c4b2-4b52-bcf3-0afb26350fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader\Fire\glsl">
+      <UniqueIdentifier>{94c20915-53cc-4769-82c9-ebc604a4c3da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\BufferObject.cpp">
-      <Filter>Source Files\Scene Manager\Objects\Object\BufferObject</Filter>
-    </ClCompile>
     <ClCompile Include="source\SceneManager.cpp">
       <Filter>Source Files\Scene Manager</Filter>
     </ClCompile>
@@ -212,20 +218,11 @@
     <ClCompile Include="source\BlinnPhongShader.cpp">
       <Filter>Source Files\Shader\BlinnPhong</Filter>
     </ClCompile>
-    <ClCompile Include="source\BumpMapShader.cpp">
-      <Filter>Source Files\Shader\BumpMap</Filter>
-    </ClCompile>
     <ClCompile Include="source\Texture.cpp">
       <Filter>Source Files\Textures</Filter>
     </ClCompile>
     <ClCompile Include="source\PerlinNoise.cpp">
       <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
-    </ClCompile>
-    <ClCompile Include="source\RealWoodShader.cpp">
-      <Filter>Source Files\Shader\Wood</Filter>
-    </ClCompile>
-    <ClCompile Include="source\JointObject.cpp">
-      <Filter>Source Files\Scene Manager\Objects\JointObject</Filter>
     </ClCompile>
     <ClCompile Include="source\GeneratedTexture.cpp">
       <Filter>Source Files\Textures\NoiseTexture</Filter>
@@ -238,15 +235,6 @@
     </ClCompile>
     <ClCompile Include="source\MixedTextureShader.cpp">
       <Filter>Source Files\Shader\MixedTexture - TODO</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Object.cpp">
-      <Filter>Source Files\Scene Manager\Objects\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SphereMapShader.cpp">
-      <Filter>Source Files\Shader\SphereMapping</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CubeMapShader.cpp">
-      <Filter>Source Files\Shader\CubeMapping</Filter>
     </ClCompile>
     <ClCompile Include="source\CubeTexture.cpp">
       <Filter>Source Files\Textures\CubeTexture</Filter>
@@ -266,13 +254,43 @@
     <ClCompile Include="source\BloomShader.cpp">
       <Filter>Source Files\Post Processing Effects\Bloom\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="source\Mesh.cpp">
+      <Filter>Source Files\Scene Manager\Objects\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Transform.cpp">
+      <Filter>Source Files\Scene Manager\Objects\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Material.cpp">
+      <Filter>Source Files\Scene Manager\Objects\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WoodShader.cpp">
+      <Filter>Source Files\Shader\Wood</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BumpMappingShader.cpp">
+      <Filter>Source Files\Shader\BumpMap</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CubeMappingShader.cpp">
+      <Filter>Source Files\Shader\CubeMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SphereMappingShader.cpp">
+      <Filter>Source Files\Shader\SphereMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ParticleSystem.cpp">
+      <Filter>Source Files\Particle System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Particle.cpp">
+      <Filter>Source Files\Particle System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Object.cpp">
+      <Filter>Source Files\Scene Manager\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FireShader.cpp">
+      <Filter>Source Files\Shader\Fire</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SceneManager.h">
       <Filter>Source Files\Scene Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="source\BufferObject.h">
-      <Filter>Source Files\Scene Manager\Objects\Object\BufferObject</Filter>
     </ClInclude>
     <ClInclude Include="source\Utility.h">
       <Filter>Source Files\Utility</Filter>
@@ -325,9 +343,6 @@
     <ClInclude Include="source\Light.h">
       <Filter>Source Files\Scene Manager\Lights\Light</Filter>
     </ClInclude>
-    <ClInclude Include="source\BumpMapShader.h">
-      <Filter>Source Files\Shader\BumpMap</Filter>
-    </ClInclude>
     <ClInclude Include="source\BlinnPhongShader.h">
       <Filter>Source Files\Shader\BlinnPhong</Filter>
     </ClInclude>
@@ -337,18 +352,6 @@
     <ClInclude Include="source\PerlinNoise.h">
       <Filter>Source Files\Textures\NoiseTexture\PerlinNoise</Filter>
     </ClInclude>
-    <ClInclude Include="source\RealWoodShader.h">
-      <Filter>Source Files\Shader\Wood</Filter>
-    </ClInclude>
-    <ClInclude Include="source\JointObject.h">
-      <Filter>Source Files\Scene Manager\Objects\JointObject</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Object.h">
-      <Filter>Source Files\Scene Manager\Objects\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source\GeneratedTexture.h">
-      <Filter>Source Files\Textures\NoiseTexture</Filter>
-    </ClInclude>
     <ClInclude Include="source\XML_Reader.h">
       <Filter>Source Files\Utility\XML</Filter>
     </ClInclude>
@@ -357,15 +360,6 @@
     </ClInclude>
     <ClInclude Include="source\Names.h">
       <Filter>Source Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="source\MixedTextureShader.h">
-      <Filter>Source Files\Shader\MixedTexture - TODO</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SphereMapShader.h">
-      <Filter>Source Files\Shader\SphereMapping</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CubeMapShader.h">
-      <Filter>Source Files\Shader\CubeMapping</Filter>
     </ClInclude>
     <ClInclude Include="source\CubeTexture.h">
       <Filter>Source Files\Textures\CubeTexture</Filter>
@@ -384,6 +378,48 @@
     </ClInclude>
     <ClInclude Include="source\BloomShader.h">
       <Filter>Source Files\Post Processing Effects\Bloom\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Mesh.h">
+      <Filter>Source Files\Scene Manager\Objects\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Material.h">
+      <Filter>Source Files\Scene Manager\Objects\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Transform.h">
+      <Filter>Source Files\Scene Manager\Objects\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Material.h">
+      <Filter>Source Files\Scene Manager\Objects\Object\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WoodShader.h">
+      <Filter>Source Files\Shader\Wood</Filter>
+    </ClInclude>
+    <ClInclude Include="source\BumpMappingShader.h">
+      <Filter>Source Files\Shader\BumpMap</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CubeMappingShader.h">
+      <Filter>Source Files\Shader\CubeMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SphereMappingShader.h">
+      <Filter>Source Files\Shader\SphereMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GeneratedTexture.h">
+      <Filter>Source Files\Textures\NoiseTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MixedTextureShader.h">
+      <Filter>Source Files\Shader\MixedTexture - TODO</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ParticleSystem.h">
+      <Filter>Source Files\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Particle.h">
+      <Filter>Source Files\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Object.h">
+      <Filter>Source Files\Scene Manager\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\FireShader.h">
+      <Filter>Source Files\Shader\Fire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,6 +470,12 @@
     </None>
     <None Include="shaders\bloom_vertex_shader.glsl">
       <Filter>Source Files\Post Processing Effects\Bloom\Shader\glsl</Filter>
+    </None>
+    <None Include="shaders\fire_fragment_shader.glsl">
+      <Filter>Source Files\Shader\Fire\glsl</Filter>
+    </None>
+    <None Include="shaders\fire_vertex_shader.glsl">
+      <Filter>Source Files\Shader\Fire\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

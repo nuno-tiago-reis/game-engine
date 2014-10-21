@@ -7,19 +7,20 @@
 	#include <crtdbg.h>
 #endif
 
+/* Perlin Noise Generator */
 #include "PerlinNoise.h"
 
-#include "FrameBuffer.h"
-
+/* Generic Texture */
 #include "Texture.h"
 
+/* Wood Shader */
+#include "WoodShader.h"
+
+/* Generated Texture Definitions */
 #define H 512
 #define W 512
 #define D 4
 #define S H*W*D
-
-#define NOISE_TEXTURE_UNIFORM "Noise"
-#define NOISE_SCALE_UNIFORM "NoiseScale"
 
 class GeneratedTexture : public Texture {
 
@@ -38,11 +39,12 @@ class GeneratedTexture : public Texture {
 
 	public:
 
-		GeneratedTexture(GLenum textureFormat, GLfloat noiseAlpha, GLfloat noiseBeta, GLint noiseOctaves, GLfloat noiseScale);
+		GeneratedTexture(string name, GLenum textureFormat, GLfloat noiseAlpha, GLfloat noiseBeta, GLint noiseOctaves, GLfloat noiseScale, string uniform);
 		~GeneratedTexture();
 
-		/* Noise Generation Method */
-		void load();
+		/* Loading Methods */
+		void loadTexture();
+		void loadUniforms(GLuint programID, GLuint textureID);
 
 		/* Bind & Unbind to OpenGL Methods */
 		void bind(GLuint textureID);

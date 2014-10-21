@@ -7,16 +7,19 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+/* C++ Includes */
+#include <string>
+
+/* Math Library */
 #include "Matrix.h"
 
+/* Orthogonal Camera */
 #define ORTHOGONAL_NAME "ORTHOGONAL"
-#define PERSPECTIVE_NAME "PERSPECTIVE"
-
 #define ORTHOGONAL 0
-#define PERSPECTIVE 1
 
 #define ORTHO_LEFT -10.0f
 #define ORTHO_RIGHT 10.0f
@@ -25,10 +28,15 @@
 #define ORTHO_FAR 30.0f
 #define ORTHO_NEAR 1.0f
 
+/* Perspective Camera */
+#define PERSPECTIVE_NAME "PERSPECTIVE"
+#define PERSPECTIVE 1
+
 #define PERS_ANGLE 30.0f
 #define PERS_NEAR 1.0f
-#define PERS_FAR 20.0f
+#define PERS_FAR 100.0f
 
+/* Camera Radius */
 #define CAMERA_RADIUS 22.5f
 
 class Camera {
@@ -36,36 +44,36 @@ class Camera {
 	private:
 
 		/* Camera Name */
-		string _name;
+		string name;
 
 		/* Scene View and Projection Matrix */
-		Matrix _viewMatrix;
-		Matrix _projectionMatrix;
+		Matrix viewMatrix;
+		Matrix projectionMatrix;
 
 		/* Scene Projection Mode (Perspective or Orthogonal) */
-		GLint _projectionMode;
+		GLint projectionMode;
 
 		/* Shader Buffer Index for View & Projection Matrix */
-		GLuint _uniformBufferIndex;
+		GLuint uniformBufferIndex;
 
 		/* Viewport Width & Height */
-		GLint _width;
-		GLint _height;
+		GLint width;
+		GLint height;
 
 		/* Camera Zoom */
-		GLfloat _zoom;
+		GLfloat zoom;
 
 		/* Camera Spherical Coordinates */
-		GLfloat _longitude;
-		GLfloat _latitude;
+		GLfloat longitude;
+		GLfloat latitude;
 
 		/* Camera Position */
-		Vector _position;
+		Vector position;
 
 		/* Look At Vectors */
-		Vector _target;
-		Vector _eye;
-		Vector _up;
+		Vector target;
+		Vector eye;
+		Vector up;
 
 	public:
 

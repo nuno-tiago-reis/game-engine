@@ -19,8 +19,8 @@ using namespace std;
 #define BLOOM_FRAGMENT_SHADER_FILE	"shaders/bloom_fragment_shader.glsl"
 
 /* Texture Uniforms */
-#define TEXTURE_0_UNIFORM "ColorTexture"
-#define TEXTURE_1_UNIFORM "BrightnessTexture"
+#define COLOR_TEXTURE_UNIFORM "ColorTexture"
+#define BRIGHTNESS_TEXTURE_UNIFORM "BrightnessTexture"
 
 class BloomShader : public ShaderProgram {
 

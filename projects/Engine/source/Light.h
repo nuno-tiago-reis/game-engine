@@ -1,45 +1,48 @@
 #ifndef LIGHT_H
 #define	LIGHT_H
 
+#ifdef MEMORY_LEAK
+	#define _CRTDBG_MAP_ALLOC
+	#include <stdlib.h>
+	#include <crtdbg.h>
+#endif
+
+/* C++ Includes */
 #include <string>
 
+/* Math Library */
 #include "Vector.h"
 
+/* Generic Shader Program */
 #include "ShaderProgram.h"
 
-#include "Utility.h"
-
+/* Light Source Identifiers */
 #define LIGHT_SOURCE_0 0
 #define LIGHT_SOURCE_1 1
 #define LIGHT_SOURCE_2 2
 #define LIGHT_SOURCE_3 3
 #define LIGHT_SOURCE_4 4
-#define LIGHT_SOURCE_5 5
-#define LIGHT_SOURCE_6 6
-#define LIGHT_SOURCE_7 7
-#define LIGHT_SOURCE_8 8
-#define LIGHT_SOURCE_9 9
 
 class Light {
 
 	protected:
 
 		/* Light Name */
-		string _name;
+		string name;
 
-		/* Light Identifier (0-9) */
-		GLint _identifier;
+		/* Light Identifier (0-4) */
+		GLint identifier;
 
 		/* Light Attributes */
-		Vector _position;
-		Vector _color;
+		Vector position;
+		Vector color;
 
-		GLfloat _ambientIntensity;
-		GLfloat _diffuseIntensity;
-		GLfloat _specularIntensity;
+		GLfloat ambientIntensity;
+		GLfloat diffuseIntensity;
+		GLfloat specularIntensity;
 
 		/* Shader Uniform Buffer Index */
-		GLuint _uniformBufferIndex;
+		GLuint uniformBufferIndex;
 
 	public:
 

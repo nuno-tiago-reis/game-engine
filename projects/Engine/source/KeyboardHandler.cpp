@@ -4,7 +4,7 @@ KeyboardHandler* KeyboardHandler::instance = NULL;
 
 KeyboardHandler::KeyboardHandler() {
 
-	_keyboardEnabled = false;
+	this->keyboardEnabled = false;
 }
 
 KeyboardHandler::~KeyboardHandler() {
@@ -28,66 +28,66 @@ void KeyboardHandler::destroyInstance() {
 
 void KeyboardHandler::enableKeyboard() {
 
-	_previousKeyMap.clear();
-	_previousKeyMap.insert(_currentKeyMap.begin(),_currentKeyMap.end());
+	this->previousKeyMap.clear();
+	this->previousKeyMap.insert(this->currentKeyMap.begin(),this->currentKeyMap.end());
 
-	_previousSpecialKeyMap.clear();
-	_previousSpecialKeyMap.insert(_currentSpecialKeyMap.begin(),_currentSpecialKeyMap.end());
+	this->previousSpecialKeyMap.clear();
+	this->previousSpecialKeyMap.insert(this->currentSpecialKeyMap.begin(),this->currentSpecialKeyMap.end());
 
-	_keyboardEnabled = true;
+	this->keyboardEnabled = true;
 }
 
 void KeyboardHandler::disableKeyboard() {
 
-	_keyboardEnabled = false;
+	this->keyboardEnabled = false;
 }
 
 void KeyboardHandler::releasedNormalKeyListener(unsigned char key, int x, int y) {  
 
-	if(!_keyboardEnabled)
+	if(!this->keyboardEnabled)
 		return;
 
-	_currentKeyMap[key] = false;
+	this->currentKeyMap[key] = false;
 }
 
 void KeyboardHandler::releasedSpecialKeyListener(int key, int x, int y) {  
 	
-	if(!_keyboardEnabled)
+	if(!this->keyboardEnabled)
 		return;
 
-	_currentSpecialKeyMap[key] = false;
+	this->currentSpecialKeyMap[key] = false;
 }
 
 void KeyboardHandler::normalKeyListener(unsigned char key, int x, int y) {  
 
-	if(!_keyboardEnabled)
+	if(!this->keyboardEnabled)
 		return;
 
-	if(_currentKeyMap[key] == true)
-		_previousKeyMap[key] = true;
+	if(this->currentKeyMap[key] == true)
+		this->previousKeyMap[key] = true;
 
-	_currentKeyMap[key] = true;
+	this->currentKeyMap[key] = true;
 }  
 
 void KeyboardHandler::specialKeyListener(int key, int x, int y) {  
 
-	if(!_keyboardEnabled)
+	if(!this->keyboardEnabled)
 		return;
 
-	if(_currentSpecialKeyMap[key] == true)
-		_previousSpecialKeyMap[key] = true;
+	if(this->currentSpecialKeyMap[key] == true)
+		this->previousSpecialKeyMap[key] = true;
 
-	_currentSpecialKeyMap[key] = true;
+	this->currentSpecialKeyMap[key] = true;
 }  
 
 bool KeyboardHandler::isKeyPressed(unsigned char key) {
 
-	return _currentKeyMap[key];
+	return this->currentKeyMap[key];
 }
 
 bool KeyboardHandler::wasKeyPressed(unsigned char key) {
 
-	return _previousKeyMap[key];
+	return this->previousKeyMap[key];
 }
 
 bool KeyboardHandler::wasKeyPressedThisFrame(unsigned char key){
@@ -96,12 +96,12 @@ bool KeyboardHandler::wasKeyPressedThisFrame(unsigned char key){
 		
 bool KeyboardHandler::isSpecialKeyPressed(int key) {
 
-	return _currentSpecialKeyMap[key];
+	return this->currentSpecialKeyMap[key];
 }
 
 bool KeyboardHandler::wasSpecialKeyPressed(int key) {
 
-	return _previousSpecialKeyMap[key];
+	return this->previousSpecialKeyMap[key];
 }
 
 bool KeyboardHandler::wasSpecialKeyPressedThisFrame(int key){
@@ -110,5 +110,5 @@ bool KeyboardHandler::wasSpecialKeyPressedThisFrame(int key){
 
 bool KeyboardHandler::isKeyboardEnabled() {
 
-	return _keyboardEnabled;
+	return this->keyboardEnabled;
 }

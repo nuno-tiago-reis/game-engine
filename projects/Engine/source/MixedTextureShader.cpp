@@ -21,7 +21,7 @@ void MixedTextureShader::bindAttributes() {
 	glBindAttribLocation(_programID, SPECULAR, SPECULAR_ATTRIBUTE);
 	//glBindAttribLocation(_programID, SPECULAR_CONSTANTS, SPECULAR_CONSTANT_ATTRIBUTE);
 
-	Utility::checkOpenGLError("ERROR: Shader program \"" + _name + "\" attribute binding error.");
+	Utility::checkOpenGLError("ERROR: Shader program \"" + this->name + "\" attribute binding error.");
 }
 
 void MixedTextureShader::bindUniforms() {
@@ -29,8 +29,8 @@ void MixedTextureShader::bindUniforms() {
 	/* Binds Projection, View Matrices and Light Sources */
 	ShaderProgram::bindUniforms();
 
-	_uniformLocationMap["Texture0"] = glGetUniformLocation(_programID, "Texture0");
-	_uniformLocationMap["Texture1"] = glGetUniformLocation(_programID, "Texture1");
+	this->uniformLocationMap["Texture0"] = glGetUniformLocation(_programID, "Texture0");
+	this->uniformLocationMap["Texture1"] = glGetUniformLocation(_programID, "Texture1");
 
-	Utility::checkOpenGLError("ERROR: Shader Program \"" + _name + "\" uniform binding error.");
+	Utility::checkOpenGLError("ERROR: Shader Program \"" + this->name + "\" uniform binding error.");
 }

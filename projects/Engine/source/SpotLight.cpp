@@ -2,11 +2,11 @@
 
 SpotLight::SpotLight(string name) : Light(name) {
 
-	_cutOff = 45.0f;
+	this->cutOff = 45.0f;
 
-	_constantAttenuation = 0.0f;
-	_linearAttenuation = 0.0f;
-	_exponentialAttenuation = 0.0f;
+	this->constantAttenuation = 0.0f;
+	this->linearAttenuation = 0.0f;
+	this->exponentialAttenuation = 0.0f;
 }
 
 SpotLight::~SpotLight() {
@@ -18,88 +18,88 @@ void SpotLight::loadUniforms() {
 
 	/* Position */
 	for(int i=0; i<4; i++)
-		lightSourceArray[i] = _position[i];
+		lightSourceArray[i] = this->position[i];
 	/* Direction */
 	for(int i=0; i<4; i++)
-		lightSourceArray[i+4] = _direction[i];
+		lightSourceArray[i+4] = this->direction[i];
 	/* Color */
 	for(int i=0; i<4; i++)
-		lightSourceArray[i+8] = _color[i];
+		lightSourceArray[i+8] = this->color[i];
 
 	/* Cut Off */
-	lightSourceArray[12] = _cutOff;
+	lightSourceArray[12] = this->cutOff;
 	/* Intensity (Ambient, Diffuse, Specular) */
-	lightSourceArray[13] = _ambientIntensity;
-	lightSourceArray[14] = _diffuseIntensity;
-	lightSourceArray[15] = _specularIntensity;
+	lightSourceArray[13] = this->ambientIntensity;
+	lightSourceArray[14] = this->diffuseIntensity;
+	lightSourceArray[15] = this->specularIntensity;
 	/* Attenuation (Constant, Linear, Exponential) */
-	lightSourceArray[16] = _constantAttenuation;
-	lightSourceArray[17] = _linearAttenuation;
-	lightSourceArray[18] = _exponentialAttenuation;
+	lightSourceArray[16] = this->constantAttenuation;
+	lightSourceArray[17] = this->linearAttenuation;
+	lightSourceArray[18] = this->exponentialAttenuation;
 
 	GLint lightType = SPOT_LIGHT;
 
 	/* Uniform Locations */
-	glBindBuffer(GL_UNIFORM_BUFFER, _uniformBufferIndex);
+	glBindBuffer(GL_UNIFORM_BUFFER, this->uniformBufferIndex);
 
-	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier, 
+	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * this->identifier, 
 										sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, lightSourceArray);
-	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier + sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, 
+	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * this->identifier + sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, 
 										sizeof(GLint), &lightType);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	Utility::checkOpenGLError("ERROR: SpotLight \"" + _name + "\" Uniform loading failed.");
+	Utility::checkOpenGLError("ERROR: SpotLight \"" + this->name + "\" Uniform loading failed.");
 }
 
 Vector SpotLight::getDirection() {
 
-	return _direction;
+	return this->direction;
 }
 
 GLfloat SpotLight::getCutOff() {
 
-	return _cutOff;
+	return this->cutOff;
 }
 
 GLfloat SpotLight::getConstantAttenuation() {
 
-	return _constantAttenuation;
+	return this->constantAttenuation;
 }
 
 GLfloat SpotLight::getLinearAttenuation() {
 
-	return _linearAttenuation;
+	return this->linearAttenuation;
 }
 
 GLfloat SpotLight::getExponentinalAttenuation() {
 
-	return _exponentialAttenuation;
+	return this->exponentialAttenuation;
 }
 
 void SpotLight::setDirection(Vector direction) {
 
-	_direction = direction;
+	this->direction = direction;
 }
 
 void SpotLight::setCutOff(GLfloat cutOff) {
 
-	_cutOff = cutOff;
+	this->cutOff = cutOff;
 }
 
 void SpotLight::setConstantAttenuation(GLfloat constantAttenuation) {
 
-	_constantAttenuation = constantAttenuation;
+	this->constantAttenuation = constantAttenuation;
 }
 
 void SpotLight::setLinearAttenuation(GLfloat linearAttenuation) {
 
-	_linearAttenuation = linearAttenuation;
+	this->linearAttenuation = linearAttenuation;
 }
 
 void SpotLight::setExponentialAttenuation(GLfloat exponentialAttenuation) {
 
-	_exponentialAttenuation = exponentialAttenuation;
+	this->exponentialAttenuation = exponentialAttenuation;
 }
 
 void SpotLight::dump() {
@@ -109,13 +109,13 @@ void SpotLight::dump() {
 
 	/* SpotLight Direction */
 	cout << "<SpotLight Direction> = " << endl;
-	_direction.dump();
+	this->direction.dump();
 
 	/* SpotLight Cut Off */
-	cout << "<SpotLight Cut Off> = " << _cutOff << endl;
+	cout << "<SpotLight Cut Off> = " << this->cutOff << endl;
 
 	/* SpotLight Attenuation */
-	cout << "<SpotLight Constant Attenuation> = " << _constantAttenuation << endl;
-	cout << "<SpotLight Linear Attenuation> = " << _linearAttenuation << endl;
-	cout << "<SpotLight Exponential Attenuation> = " << _exponentialAttenuation << endl;
+	cout << "<SpotLight Constant Attenuation> = " << this->constantAttenuation << endl;
+	cout << "<SpotLight Linear Attenuation> = " << this->linearAttenuation << endl;
+	cout << "<SpotLight Exponential Attenuation> = " << this->exponentialAttenuation << endl;
 }

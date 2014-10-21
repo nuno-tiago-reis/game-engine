@@ -19,7 +19,7 @@ void BlinnPhongShader::bindAttributes() {
 	glBindAttribLocation(_programID, SPECULAR, SPECULAR_ATTRIBUTE);
 	glBindAttribLocation(_programID, SHININESS, SHININESS_ATTRIBUTE);
 
-	Utility::checkOpenGLError("ERROR: Shader program \"" + _name + "\" attribute binding error.");
+	Utility::checkOpenGLError("ERROR: Shader program \"" + name + "\" attribute binding error.");
 }
 
 void BlinnPhongShader::bindUniforms() {

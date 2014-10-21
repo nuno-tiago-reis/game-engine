@@ -7,10 +7,12 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Shader */
 #include "ShaderProgram.h"
 
 using namespace std;
 
+/* Mixed Texture Shader definitions */
 #define MIXED_TEXTURE_SHADER "Mixed Texture Shader"
 
 #define MIXED_TEXTURE_VERTEX_SHADER_FILE	"shaders/mixed_texture_vertex_shader.glsl"

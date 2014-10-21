@@ -7,15 +7,17 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Post-processing Effect */
 #include "PostProcessingEffect.h"
 
+/* HDR Bloom Shader */
 #include "BloomShader.h"
 
 class Bloom : public PostProcessingEffect {
 
 	private:
 	
-		BloomShader* _bloomShader;
+		BloomShader* bloomShader;
 
 	public:
 

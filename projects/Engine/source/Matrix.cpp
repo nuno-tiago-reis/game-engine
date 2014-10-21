@@ -23,25 +23,25 @@ Matrix::Matrix(Quaternion quaternion) {
 	GLfloat zt = quaternion[QZ] * quaternion[QT];
 	GLfloat zz = quaternion[QZ] * quaternion[QZ];
 
-	_matrix[0][0] = 1.0f - 2.0f * (yy + zz);
-	_matrix[0][1] = 2.0f * (xy + zt);
-	_matrix[0][2] = 2.0f * (xz - yt);
-	_matrix[0][3] = 0.0f;
+	this->matrix[0][0] = 1.0f - 2.0f * (yy + zz);
+	this->matrix[0][1] = 2.0f * (xy + zt);
+	this->matrix[0][2] = 2.0f * (xz - yt);
+	this->matrix[0][3] = 0.0f;
 
-	_matrix[1][0] = 2.0f * (xy - zt);
-	_matrix[1][1] = 1.0f - 2.0f * (xx + zz);
-	_matrix[1][2] = 2.0f * (yz + xt);
-	_matrix[1][3] = 0.0f;
+	this->matrix[1][0] = 2.0f * (xy - zt);
+	this->matrix[1][1] = 1.0f - 2.0f * (xx + zz);
+	this->matrix[1][2] = 2.0f * (yz + xt);
+	this->matrix[1][3] = 0.0f;
 
-	_matrix[2][0] = 2.0f * (xz + yt);
-	_matrix[2][1] = 2.0f * (yz - xt);
-	_matrix[2][2] = 1.0f - 2.0f * (xx + yy);
-	_matrix[2][3] = 0.0f;
+	this->matrix[2][0] = 2.0f * (xz + yt);
+	this->matrix[2][1] = 2.0f * (yz - xt);
+	this->matrix[2][2] = 1.0f - 2.0f * (xx + yy);
+	this->matrix[2][3] = 0.0f;
 
-	_matrix[3][0] = 0.0f;
-	_matrix[3][1] = 0.0f;
-	_matrix[3][2] = 0.0f;
-	_matrix[3][3] = 1.0f;
+	this->matrix[3][0] = 0.0f;
+	this->matrix[3][1] = 0.0f;
+	this->matrix[3][2] = 0.0f;
+	this->matrix[3][3] = 1.0f;
 
 	clean();
 }
@@ -50,13 +50,13 @@ Matrix::Matrix(GLfloat initialValue) {
 
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			_matrix[i][j] = initialValue;
+			this->matrix[i][j] = initialValue;
 }
 
 Matrix::Matrix(const GLfloat initialValue[16]) {
 
 	for(int i=0; i<16; i++)
-		_matrix[i/4][i%4] = initialValue[i];
+		this->matrix[i/4][i%4] = initialValue[i];
 }
 
 
@@ -64,7 +64,7 @@ Matrix::Matrix(const GLfloat initialValue[4][4]) {
 
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			_matrix[i][j] = initialValue[i][j];
+			this->matrix[i][j] = initialValue[i][j];
 }
 
 Matrix::~Matrix() {
@@ -75,28 +75,38 @@ void Matrix::loadIdentity() {
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
 			if(i==j)
-				_matrix[i][j] = 1;
+				this->matrix[i][j] = 1;
 			else 
-				_matrix[i][j] = 0;
+				this->matrix[i][j] = 0;
 }
 
 void Matrix::clean() {
 
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			if(fabs(_matrix[i][j]) < threshold) 
-				_matrix[i][j] = 0.0f;
+			if(fabs(this->matrix[i][j]) < threshold) 
+				this->matrix[i][j] = 0.0f;
 }
 
-void Matrix::scale(GLfloat xScaling, GLfloat yScaling, GLfloat zScaling) {
+void Matrix::scale(Vector scaleVector) {
+
+	scale(scaleVector[VX], scaleVector[VY], scaleVector[VZ]);
+}
+
+void Matrix::scale(GLfloat xScale, GLfloat yScale, GLfloat zScale) {
 
 	Matrix scaleMatrix;
 
-	scaleMatrix[S_X] = xScaling;
-	scaleMatrix[S_Y] = yScaling;
-	scaleMatrix[S_Z] = zScaling;
+	scaleMatrix[S_X] = xScale;
+	scaleMatrix[S_Y] = yScale;
+	scaleMatrix[S_Z] = zScale;
 
 	(*this) *= scaleMatrix;
+}
+
+void Matrix::translate(Vector translationVector) {
+
+	translate(translationVector[VX], translationVector[VY], translationVector[VZ]);
 }
 
 void Matrix::translate(GLfloat xCoordinate, GLfloat yCoordinate, GLfloat zCoordinate) {
@@ -170,7 +180,7 @@ void Matrix::transpose() {
 
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			temporary.setValue(i,j,_matrix[j][i]);
+			temporary.setValue(i,j,this->matrix[j][i]);
 
 	swap(*this,temporary);
 }
@@ -180,49 +190,49 @@ void Matrix::invert() {
 	GLfloat determinant;
 	GLfloat inverseMatrix[16];
 
-	inverseMatrix[0]=	(*this)[5]  * (*this)[10] * (*this)[15] - 
+	inverseMatrix[0] =	(*this)[5]  * (*this)[10] * (*this)[15] - 
 						(*this)[5]  * (*this)[11] * (*this)[14] - 
 						(*this)[9]  * (*this)[6]  * (*this)[15] + 
 						(*this)[9]  * (*this)[7]  * (*this)[14] +
 						(*this)[13] * (*this)[6]  * (*this)[11] - 
 						(*this)[13] * (*this)[7]  * (*this)[10];
 
-	inverseMatrix[4]= -(*this)[4]  * (*this)[10] * (*this)[15] + 
+	inverseMatrix[4] = -(*this)[4]  * (*this)[10] * (*this)[15] + 
 						(*this)[4]  * (*this)[11] * (*this)[14] + 
 						(*this)[8]  * (*this)[6]  * (*this)[15] - 
 						(*this)[8]  * (*this)[7]  * (*this)[14] - 
 						(*this)[12] * (*this)[6]  * (*this)[11] + 
 						(*this)[12] * (*this)[7]  * (*this)[10];
 
-	inverseMatrix[8]=	(*this)[4]  * (*this)[9] * (*this)[15] - 
+	inverseMatrix[8] =	(*this)[4]  * (*this)[9] * (*this)[15] - 
 						(*this)[4]  * (*this)[11] * (*this)[13] - 
 						(*this)[8]  * (*this)[5] * (*this)[15] + 
 						(*this)[8]  * (*this)[7] * (*this)[13] + 
 						(*this)[12] * (*this)[5] * (*this)[11] - 
 						(*this)[12] * (*this)[7] * (*this)[9];
 
-	inverseMatrix[12]= -(*this)[4]  * (*this)[9] * (*this)[14] + 
-						(*this)[4]  * (*this)[10] * (*this)[13] +
-						(*this)[8]  * (*this)[5] * (*this)[14] - 
-						(*this)[8]  * (*this)[6] * (*this)[13] - 
-						(*this)[12] * (*this)[5] * (*this)[10] + 
-						(*this)[12] * (*this)[6] * (*this)[9];
+	inverseMatrix[12] = -(*this)[4]  * (*this)[9] * (*this)[14] + 
+						 (*this)[4]  * (*this)[10] * (*this)[13] +
+						 (*this)[8]  * (*this)[5] * (*this)[14] - 
+						 (*this)[8]  * (*this)[6] * (*this)[13] - 
+						 (*this)[12] * (*this)[5] * (*this)[10] + 
+						 (*this)[12] * (*this)[6] * (*this)[9];
 
-	inverseMatrix[1]=  -(*this)[1]  * (*this)[10] * (*this)[15] + 
-						(*this)[1]  * (*this)[11] * (*this)[14] + 
-						(*this)[9]  * (*this)[2] * (*this)[15] - 
-						(*this)[9]  * (*this)[3] * (*this)[14] - 
-						(*this)[13] * (*this)[2] * (*this)[11] + 
-						(*this)[13] * (*this)[3] * (*this)[10];
+	inverseMatrix[1] =  -(*this)[1]  * (*this)[10] * (*this)[15] + 
+						 (*this)[1]  * (*this)[11] * (*this)[14] + 
+						 (*this)[9]  * (*this)[2] * (*this)[15] - 
+						 (*this)[9]  * (*this)[3] * (*this)[14] - 
+						 (*this)[13] * (*this)[2] * (*this)[11] + 
+						 (*this)[13] * (*this)[3] * (*this)[10];
 
-	inverseMatrix[5]=	(*this)[0]  * (*this)[10] * (*this)[15] - 
+	inverseMatrix[5] =	(*this)[0]  * (*this)[10] * (*this)[15] - 
 						(*this)[0]  * (*this)[11] * (*this)[14] - 
 						(*this)[8]  * (*this)[2] * (*this)[15] + 
 						(*this)[8]  * (*this)[3] * (*this)[14] + 
 						(*this)[12] * (*this)[2] * (*this)[11] - 
 						(*this)[12] * (*this)[3] * (*this)[10];
 
-	inverseMatrix[9]=  -(*this)[0]  * (*this)[9] * (*this)[15] + 
+	inverseMatrix[9] = -(*this)[0]  * (*this)[9] * (*this)[15] + 
 						(*this)[0]  * (*this)[11] * (*this)[13] + 
 						(*this)[8]  * (*this)[1] * (*this)[15] - 
 						(*this)[8]  * (*this)[3] * (*this)[13] - 
@@ -236,56 +246,56 @@ void Matrix::invert() {
 						(*this)[12] * (*this)[1] * (*this)[10] - 
 						(*this)[12] * (*this)[2] * (*this)[9];
 
-	inverseMatrix[2]=	(*this)[1]  * (*this)[6] * (*this)[15] - 
+	inverseMatrix[2] =	(*this)[1]  * (*this)[6] * (*this)[15] - 
 						(*this)[1]  * (*this)[7] * (*this)[14] - 
 						(*this)[5]  * (*this)[2] * (*this)[15] + 
 						(*this)[5]  * (*this)[3] * (*this)[14] + 
 						(*this)[13] * (*this)[2] * (*this)[7] - 
 						(*this)[13] * (*this)[3] * (*this)[6];
 
-	inverseMatrix[6]=  -(*this)[0]  * (*this)[6] * (*this)[15] + 
+	inverseMatrix[6] = -(*this)[0]  * (*this)[6] * (*this)[15] + 
 						(*this)[0]  * (*this)[7] * (*this)[14] + 
 						(*this)[4]  * (*this)[2] * (*this)[15] - 
 						(*this)[4]  * (*this)[3] * (*this)[14] - 
 						(*this)[12] * (*this)[2] * (*this)[7] + 
 						(*this)[12] * (*this)[3] * (*this)[6];
 
-	inverseMatrix[10]=	(*this)[0]  * (*this)[5] * (*this)[15] - 
+	inverseMatrix[10] =	(*this)[0]  * (*this)[5] * (*this)[15] - 
 						(*this)[0]  * (*this)[7] * (*this)[13] - 
 						(*this)[4]  * (*this)[1] * (*this)[15] + 
 						(*this)[4]  * (*this)[3] * (*this)[13] + 
 						(*this)[12] * (*this)[1] * (*this)[7] - 
 						(*this)[12] * (*this)[3] * (*this)[5];
 
-	inverseMatrix[14]= -(*this)[0]  * (*this)[5] * (*this)[14] + 
+	inverseMatrix[14] =-(*this)[0]  * (*this)[5] * (*this)[14] + 
 						(*this)[0]  * (*this)[6] * (*this)[13] + 
 						(*this)[4]  * (*this)[1] * (*this)[14] - 
 						(*this)[4]  * (*this)[2] * (*this)[13] - 
 						(*this)[12] * (*this)[1] * (*this)[6] + 
 						(*this)[12] * (*this)[2] * (*this)[5];
 
-	inverseMatrix[3]=  -(*this)[1] * (*this)[6] * (*this)[11] + 
+	inverseMatrix[3] = -(*this)[1] * (*this)[6] * (*this)[11] + 
 						(*this)[1] * (*this)[7] * (*this)[10] + 
 						(*this)[5] * (*this)[2] * (*this)[11] - 
 						(*this)[5] * (*this)[3] * (*this)[10] - 
 						(*this)[9] * (*this)[2] * (*this)[7] + 
 						(*this)[9] * (*this)[3] * (*this)[6];
 
-	inverseMatrix[7]=	(*this)[0] * (*this)[6] * (*this)[11] - 
+	inverseMatrix[7] =	(*this)[0] * (*this)[6] * (*this)[11] - 
 						(*this)[0] * (*this)[7] * (*this)[10] - 
 						(*this)[4] * (*this)[2] * (*this)[11] + 
 						(*this)[4] * (*this)[3] * (*this)[10] + 
 						(*this)[8] * (*this)[2] * (*this)[7] - 
 						(*this)[8] * (*this)[3] * (*this)[6];
 
-	inverseMatrix[11]= -(*this)[0] * (*this)[5] * (*this)[11] + 
+	inverseMatrix[11] =-(*this)[0] * (*this)[5] * (*this)[11] + 
 						(*this)[0] * (*this)[7] * (*this)[9] + 
 						(*this)[4] * (*this)[1] * (*this)[11] - 
 						(*this)[4] * (*this)[3] * (*this)[9] - 
 						(*this)[8] * (*this)[1] * (*this)[7] + 
 						(*this)[8] * (*this)[3] * (*this)[5];
 
-	inverseMatrix[15]=	(*this)[0] * (*this)[5] * (*this)[10] - 
+	inverseMatrix[15] = (*this)[0] * (*this)[5] * (*this)[10] - 
 						(*this)[0] * (*this)[6] * (*this)[9] - 
 						(*this)[4] * (*this)[1] * (*this)[10] + 
 						(*this)[4] * (*this)[2] * (*this)[9] + 
@@ -373,28 +383,28 @@ void Matrix::getValue(GLfloat* matrix) {
 	
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			matrix[i*4+j] = _matrix[i][j];
+			matrix[i*4+j] = this->matrix[i][j];
 }
 
 GLfloat Matrix::getValue(int row, int column) {
 
-	return _matrix[row][column];
+	return this->matrix[row][column];
 }
 
 void Matrix::setValue(const GLfloat value[16]) {
 
 	for(int i=0; i<16; i++)
-		_matrix[i/4][i%4] = value[i];
+		this->matrix[i/4][i%4] = value[i];
 }
 
 void Matrix::setValue(int row, int column, GLfloat value) {
 
-	_matrix[row][column] = value;
+	this->matrix[row][column] = value;
 }
 
 GLfloat& Matrix::operator [] (int position) {
 
-	return _matrix[position/4][position%4];
+	return this->matrix[position/4][position%4];
 }
 
 Matrix Matrix::operator + (Matrix matrix){
@@ -484,7 +494,7 @@ bool Matrix::operator == (Matrix matrix) {
 
 	for(int i=0; i<4; i++)
 		for(int j=0; j<4; j++)
-			if(!(fabs(_matrix[i][j] - matrix.getValue(i,j)) < threshold))
+			if(!(fabs(this->matrix[i][j] - matrix.getValue(i,j)) < threshold))
 				return false;
 
 	return true;
@@ -508,7 +518,7 @@ void Matrix::dump() {
 		cout << " " << i << " ";
 
 		for(int j=0; j<4; j++)
-			cout << " [" << _matrix[i][j] << "]";
+			cout << " [" << this->matrix[i][j] << "]";
 
 		cout << endl;
 	}

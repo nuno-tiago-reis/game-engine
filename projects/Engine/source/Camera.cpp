@@ -2,21 +2,21 @@
 
 Camera::Camera(string name) {
 
-	_name = name;
+	this->name = name;
 
-	_viewMatrix.loadIdentity();
-	_projectionMatrix.loadIdentity();
+	this->viewMatrix.loadIdentity();
+	this->projectionMatrix.loadIdentity();
 
-	_projectionMode = ORTHOGONAL;
+	this->projectionMode = ORTHOGONAL;
 
-	_uniformBufferIndex = UINT_MAX;
+	this->uniformBufferIndex = UINT_MAX;
 
-	_width = WIDTH;
-	_height = HEIGHT;
+	this->width = WIDTH;
+	this->height = HEIGHT;
 
-	_zoom = 1.0f;
-	_longitude = 0.0f;
-	_latitude = 0.0f;
+	this->zoom = 1.0f;
+	this->longitude = 90.0f;
+	this->latitude = 90.0f;
 
 	loadView();
 	loadOrthogonalProjection();
@@ -31,26 +31,26 @@ void Camera::update(GLint zoom, GLint longitude, GLint latitude, GLfloat elapsed
 		return;
 
 	/* Update the Zoom */
-	_zoom -= zoom * 0.05f;
+	this->zoom -= zoom * 0.05f;
 
-	if(_zoom < 0.1f)
-		_zoom = 0.1f;
+	if(this->zoom < 0.1f)
+		this->zoom = 0.1f;
 	
 	/* Update the Longitude */
-	_longitude += longitude * elapsedTime * 5.0f;
+	this->longitude += longitude * elapsedTime * 5.0f;
 
-	if(_longitude > 360.0f)
-		_longitude -= 360.0f;
-	else if(_longitude < -360.0f)
-		_longitude += 360.0f;
+	if(this->longitude > 360.0f)
+		this->longitude -= 360.0f;
+	else if(this->longitude < -360.0f)
+		this->longitude += 360.0f;
 
 	/* Update the Latitude */
-	_latitude += latitude * elapsedTime * 5.0f;
+	this->latitude += latitude * elapsedTime * 5.0f;
 
-	if(_latitude > 360.0f)
-		_latitude -= 360.0f;
-	else if(_latitude < -360.0f) 
-		_latitude += 360.0f;
+	if(this->latitude > 360.0f)
+		this->latitude -= 360.0f;
+	else if(this->latitude < -360.0f) 
+		this->latitude += 360.0f;
 
 	/* Update the Shader Uniforms */
 	loadView();
@@ -59,23 +59,23 @@ void Camera::update(GLint zoom, GLint longitude, GLint latitude, GLfloat elapsed
 
 void Camera::reshape(GLint width, GLint height) {
 
-	_width = width;
-	_height = height;
+	this->width = width;
+	this->height = height;
 
-	if(_projectionMode == PERSPECTIVE)
+	if(this->projectionMode == PERSPECTIVE)
 		loadPerspectiveProjection();
 }
 
 void Camera::loadUniforms() {
 
-	glBindBuffer(GL_UNIFORM_BUFFER, _uniformBufferIndex);
+	glBindBuffer(GL_UNIFORM_BUFFER, this->uniformBufferIndex);
 
 	/* Get the View and Projection Matrix */
 	GLfloat viewMatrix[16];
-	_viewMatrix.getValue(viewMatrix);
+	this->viewMatrix.getValue(viewMatrix);
 
 	GLfloat projectionMatrix[16];
-	_projectionMatrix.getValue(projectionMatrix);
+	this->projectionMatrix.getValue(projectionMatrix);
 
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(GLfloat[16]), viewMatrix);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(GLfloat[16]), sizeof(GLfloat[16]), projectionMatrix);
@@ -85,199 +85,199 @@ void Camera::loadUniforms() {
 
 void Camera::loadView() {
 
-	_eye[VX] = _position[VX] + _zoom * CAMERA_RADIUS * sin((_latitude - 90.0f) * DEGREES_TO_RADIANS) * cos(_longitude * DEGREES_TO_RADIANS);
-	_eye[VY] = _position[VY] + _zoom * CAMERA_RADIUS * cos((_latitude - 90.0f) * DEGREES_TO_RADIANS);
-	_eye[VZ] = _position[VZ] + _zoom * -CAMERA_RADIUS * sin((_latitude - 90.0f) * DEGREES_TO_RADIANS) * sin(_longitude * DEGREES_TO_RADIANS);
-	_eye[VW] = 1.0f;
+	this->eye[VX] = this->position[VX] + this->zoom * CAMERA_RADIUS * sin((this->latitude - 90.0f) * DEGREES_TO_RADIANS) * cos(this->longitude * DEGREES_TO_RADIANS);
+	this->eye[VY] = this->position[VY] + this->zoom * CAMERA_RADIUS * cos((this->latitude - 90.0f) * DEGREES_TO_RADIANS);
+	this->eye[VZ] = this->position[VZ] + this->zoom * -CAMERA_RADIUS * sin((this->latitude - 90.0f) * DEGREES_TO_RADIANS) * sin(this->longitude * DEGREES_TO_RADIANS);
+	this->eye[VW] = 1.0f;
 
-	_target[VX] = _position[VX];
-	_target[VY] = _position[VY];
-	_target[VZ] = _position[VZ];
-	_target[VW] = 1.0f;
+	this->target[VX] = this->position[VX];
+	this->target[VY] = this->position[VY];
+	this->target[VZ] = this->position[VZ];
+	this->target[VW] = 1.0f;
 
-	_up[VX] = 0.0f;
-	_up[VY] = cos(_latitude * DEGREES_TO_RADIANS);
-	_up[VZ] = 0.0f;
-	_up[VW] = 1.0f;
+	this->up[VX] = 0.0f;
+	this->up[VY] = cos(this->latitude * DEGREES_TO_RADIANS);
+	this->up[VZ] = 0.0f;
+	this->up[VW] = 1.0f;
 	
-	_viewMatrix.loadIdentity();
-	_viewMatrix.setView(_eye,_target,_up);
-	_viewMatrix.transpose();
+	this->viewMatrix.loadIdentity();
+	this->viewMatrix.setView(this->eye,this->target,this->up);
+	this->viewMatrix.transpose();
 }
 
 void Camera::loadOrthogonalProjection() {
 
-	_projectionMode = ORTHOGONAL;
+	this->projectionMode = ORTHOGONAL;
 
-	_projectionMatrix.loadIdentity();
-	_projectionMatrix.setOrthogonalProjection(ORTHO_LEFT,ORTHO_RIGHT,ORTHO_TOP,ORTHO_BOTTOM,ORTHO_NEAR,ORTHO_FAR);
-	_projectionMatrix.transpose();
+	this->projectionMatrix.loadIdentity();
+	this->projectionMatrix.setOrthogonalProjection(ORTHO_LEFT,ORTHO_RIGHT,ORTHO_TOP,ORTHO_BOTTOM,ORTHO_NEAR,ORTHO_FAR);
+	this->projectionMatrix.transpose();
 }
 
 void Camera::loadOrthogonalProjection(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearZ, GLfloat farZ) {
 
-	_projectionMode = ORTHOGONAL;
+	this->projectionMode = ORTHOGONAL;
 
-	_projectionMatrix.loadIdentity();
-	_projectionMatrix.setOrthogonalProjection(left,right,top,bottom,nearZ,farZ);
-	_projectionMatrix.transpose();
+	this->projectionMatrix.loadIdentity();
+	this->projectionMatrix.setOrthogonalProjection(left,right,top,bottom,nearZ,farZ);
+	//this->projectionMatrix.transpose();
 }
 
 void Camera::loadPerspectiveProjection() {
 
-	_projectionMode = PERSPECTIVE;
+	this->projectionMode = PERSPECTIVE;
 
-	_projectionMatrix.loadIdentity();
-	_projectionMatrix.setPerspectiveProjection(PERS_ANGLE,(GLfloat)_width/_height,PERS_NEAR,PERS_FAR);
-	_projectionMatrix.transpose();
+	this->projectionMatrix.loadIdentity();
+	this->projectionMatrix.setPerspectiveProjection(PERS_ANGLE,(GLfloat)this->width/this->height,PERS_NEAR,PERS_FAR);
+	//this->projectionMatrix.transpose();
 }
 
 void Camera::loadPerspectiveProjection(GLfloat angle, GLfloat aspectRatio, GLfloat nearZ, GLfloat farZ) {
 
-	_projectionMode = PERSPECTIVE;
+	this->projectionMode = PERSPECTIVE;
 
-	_projectionMatrix.loadIdentity();
-	_projectionMatrix.setPerspectiveProjection(angle,aspectRatio,nearZ,farZ);
-	_projectionMatrix.transpose();
+	this->projectionMatrix.loadIdentity();
+	this->projectionMatrix.setPerspectiveProjection(angle,aspectRatio,nearZ,farZ);
+	this->projectionMatrix.transpose();
 }
 
 string Camera::getName() {
 
-	return _name;
+	return this->name;
 }
 
 Matrix Camera::getViewMatrix() {
 
-	return _viewMatrix;
+	return this->viewMatrix;
 }
 Matrix Camera::getProjectionMatrix() {
 
-	return _projectionMatrix;
+	return this->projectionMatrix;
 }
 
 GLint Camera::getProjectionMode() {
 
-	return _projectionMode;
+	return this->projectionMode;
 }
 
 GLuint Camera::getUniformBufferIndex() {
 
-	return _uniformBufferIndex;
+	return this->uniformBufferIndex;
 }
 
 GLint Camera::getWidth() {
 
-	return _width;
+	return this->width;
 }
 
 GLint Camera::getHeight() {
 
-	return _height;
+	return this->height;
 }
 
 GLfloat Camera::getZoom() {
 
-	return _zoom;
+	return this->zoom;
 }
 
 GLfloat Camera::getLongitude() {
 
-	return _longitude;
+	return this->longitude;
 }
 
 GLfloat Camera::getLatitude() {
 	
-	return _latitude;
+	return this->latitude;
 }
 
 Vector Camera::getPosition() {
 
-	return _position;
+	return this->position;
 }
 
 Vector Camera::getTarget() {
 
-	return _target;
+	return this->target;
 }
 
 Vector Camera::getEye() {
 
-	return _eye;
+	return this->eye;
 }
 
 Vector Camera::getUp() {
 
-	return _up;
+	return this->up;
 }
 
 void Camera::setName(string name) {
 
-	_name = name;
+	this->name = name;
 }
 		
 void Camera::setViewMatrix(Matrix viewMatrix) {
 
-	_viewMatrix = viewMatrix;
+	this->viewMatrix = viewMatrix;
 }
 
 void Camera::setProjectionMatrix(Matrix projectionMatrix) {
 
-	_projectionMatrix = projectionMatrix;
+	this->projectionMatrix = projectionMatrix;
 }
 
 void Camera::setProjectionMode(GLint projectionMode) {
 
-	_projectionMode = projectionMode;
+	this->projectionMode = projectionMode;
 }
 
 void Camera::setUniformBufferIndex(GLuint uniformBufferIndex) {
 
-	_uniformBufferIndex = uniformBufferIndex;
+	this->uniformBufferIndex = uniformBufferIndex;
 }
 
 void Camera::setWidth(GLint width) {
 	
-	_width = width;
+	this->width = width;
 }
 
 void Camera::setHeight(GLint height) {
 
-	_height = height;
+	this->height = height;
 }
 
 void Camera::setZoom(GLfloat zoom) {
 
-	_zoom = zoom;
+	this->zoom = zoom;
 }
 
 void Camera::setLongitude(GLfloat longitude) {
 
-	_longitude = longitude;
+	this->longitude = longitude;
 }
 
 void Camera::setLatitude(GLfloat latitude) {
 
-	_latitude = latitude;
+	this->latitude = latitude;
 }
 
 void Camera::setPosition(Vector position) {
 
-	_position = position;
+	this->position = position;
 }
 
 void Camera::setTarget(Vector target) {
 
-	_target = target;
+	this->target = target;
 }
 
 void Camera::setEye(Vector eye) {
 
-	_eye = eye;
+	this->eye = eye;
 }
 
 void Camera::setUp(Vector up) {
 
-	_up = up;
+	this->up = up;
 }
 
 void Camera::dump() {
@@ -286,38 +286,38 @@ void Camera::dump() {
 
 	/* Camera View Matrix */
 	cout << "<Camera View Matrix> = " << endl;
-	_viewMatrix.dump();
+	this->viewMatrix.dump();
 
 	/* Camera View Matrix */
 	cout << "<Camera Projection Matrix> = " << endl;
-	_projectionMatrix.dump();
+	this->projectionMatrix.dump();
 
 	/* Camera Projection Mode (Perspective or Orthogonal)*/
-	if(_projectionMode == ORTHOGONAL)
+	if(this->projectionMode == ORTHOGONAL)
 		cout << "<Camera Projection Mode> = " << "ORTHOGONAL ;" << endl;
 	else
 		cout << "<Camera Projection Mode> = " << "PERSPECTIVE ;" << endl;
 
 	/* Viewport Width & Height */
-	cout << "<Camera Viewport Width> = " << _width << " ;" << endl;
-	cout << "<Camera Viewport Height> = " << _height << " ;" << endl;
+	cout << "<Camera Viewport Width> = " << this->width << " ;" << endl;
+	cout << "<Camera Viewport Height> = " << this->height << " ;" << endl;
 
 	/* Camera Zoom */
-	cout << "<Camera Zoom> = " << _zoom << " ;" << endl;
+	cout << "<Camera Zoom> = " << this->zoom << " ;" << endl;
 
 	/* Camera Spherical Coordinates */
-	cout << "<Camera Longitude> = " << _longitude << " ;" << endl;
-	cout << "<Camera Latitude> = " << _latitude << " ;" << endl;
+	cout << "<Camera Longitude> = " << this->longitude << " ;" << endl;
+	cout << "<Camera Latitude> = " << this->latitude << " ;" << endl;
 
 	/* Camera Position */
 	cout << "<Camera Position> = ";
-	_position.dump();
+	this->position.dump();
 	
 	/* Camera LookAt Vectors */
 	cout << "<Camera Eye> = "; 
-	_eye.dump();
+	this->eye.dump();
 	cout << "<Camera Target> = ";
-	_target.dump();
+	this->target.dump();
 	cout << "<Camera Up> = ";
-	_up.dump();
+	this->up.dump();
 }

@@ -19,8 +19,8 @@ using namespace std;
 #define MOTION_BLUR_FRAGMENT_SHADER_FILE	"shaders/motion_blur_fragment_shader.glsl"
 
 /* Texture Uniforms */
-#define TEXTURE_0_UNIFORM "Texture0"
-#define TEXTURE_1_UNIFORM "Texture1"
+#define FRAME_0_TEXTURE_UNIFORM "Texture0"
+#define FRAME_1_TEXTURE_UNIFORM "Texture1"
 
 class MotionBlurShader : public ShaderProgram {
 

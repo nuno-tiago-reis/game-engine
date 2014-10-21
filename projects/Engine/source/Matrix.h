@@ -7,47 +7,31 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+/* C++ Includes */
 #include <math.h>
 
+/* Math Library */
 #include "Vector.h"
 #include "Quaternion.h"
 
+/* Engine Constants */
 #include "Constants.h"
 
-#define M_0_0 0
-#define M_0_1 1
-#define M_0_2 2
-#define M_0_3 3
-
-#define M_1_0 4
-#define M_1_1 5
-#define M_1_2 6
-#define M_1_3 7
-
-#define M_2_0 8
-#define M_2_1 9
-#define M_2_2 10
-#define M_2_3 11
-
-#define M_3_0 12
-#define M_3_1 13
-#define M_3_2 14
-#define M_3_3 15
-
-/* Translation Matrix Constants */
+/* Translation Matrix Positions */
 #define T_X 3
 #define T_Y 7
 #define T_Z 11
 
-/* Scale Matrix Constants */
+/* Scale Matrix Positions */
 #define S_X 0
 #define S_Y 5
 #define S_Z 10
 
-/* Rotation Matrix Constants */
+/* Rotation Matrix Positions */
 #define R1_X 5
 #define R2_X 6
 #define R3_X 9
@@ -70,7 +54,7 @@ class Matrix {
 	private:
 
 		/* Matrix Content */
-		GLfloat _matrix[4][4];
+		GLfloat matrix[4][4];
 
 	public:
 
@@ -93,9 +77,14 @@ class Matrix {
 		void clean();
 
 		/* Graphical Transformations */
-		void scale(GLfloat xScaling, GLfloat yScaling, GLfloat zScaling);
+		void scale(Vector scaleVector);
+		void scale(GLfloat xScale, GLfloat yScale, GLfloat zScale);
+
 		void rotate(GLfloat angle, GLfloat xRotation, GLfloat yRotation, GLfloat zRotation);
-		void translate(GLfloat xCoordinate, GLfloat yCoordinate, GLfloat zCoordinate);
+
+		void translate(Vector transationVector);
+		void translate(GLfloat xTranslation, GLfloat yTranslation, GLfloat zTranslation);
+
 		void quaternionRotate(Quaternion quaternion);
 		void transpose();
 		void invert();

@@ -3,36 +3,36 @@
 MotionBlur::MotionBlur(string name) : PostProcessingEffect(name) {
 
 	/* Create Motion Blur Shader */
-	_motionBlurShader = new MotionBlurShader(MOTION_BLUR_SHADER);
-	_motionBlurShader->createShaderProgram();
-	_motionBlurShader->bindAttributes();
-	_motionBlurShader->linkShaderProgram();
-	_motionBlurShader->bindUniforms();
+	this->motionBlurShader = new MotionBlurShader(MOTION_BLUR_SHADER);
+	this->motionBlurShader->createShaderProgram();
+	this->motionBlurShader->bindAttributes();
+	this->motionBlurShader->linkShaderProgram();
+	this->motionBlurShader->bindUniforms();
 }
 
 MotionBlur::~MotionBlur() {
 
-	delete _motionBlurShader;
+	delete this->motionBlurShader;
 }
 
 void MotionBlur::draw() {
 
 	/* Bind the Shader Program */
-	glBindVertexArray(_vertexArrayObjectID);
+	glBindVertexArray(this->arrayObjectID);
 
-		glUseProgram(_motionBlurShader->getProgramID());
+		glUseProgram(this->motionBlurShader->getProgramID());
 
 			/* Activate Texture 0 */
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _frameBuffer->getFrameBufferTexture(0));
-			glUniform1i(glGetUniformLocation(_motionBlurShader->getProgramID(), TEXTURE_0_UNIFORM), 0);
+			glBindTexture(GL_TEXTURE_2D, this->frameBuffer->getFrameBufferTexture(0));
+			glUniform1i(glGetUniformLocation(this->motionBlurShader->getProgramID(), FRAME_0_TEXTURE_UNIFORM), 0);
 
 			Utility::checkOpenGLError("ERROR: MotionBlur Texture 0 Binding error.");
 
 			/* Activate Texture 1 */
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, _frameBuffer->getFrameBufferTexture(1));
-			glUniform1i(glGetUniformLocation(_motionBlurShader->getProgramID(), TEXTURE_1_UNIFORM), 1);
+			glBindTexture(GL_TEXTURE_2D, this->frameBuffer->getFrameBufferTexture(1));
+			glUniform1i(glGetUniformLocation(this->motionBlurShader->getProgramID(),FRAME_1_TEXTURE_UNIFORM), 1);
 
 			Utility::checkOpenGLError("ERROR: MotionBlur Texture 1 Binding error.");
 
@@ -44,9 +44,9 @@ void MotionBlur::draw() {
 			glEnable(GL_DEPTH_TEST);
 
 			/* Store the current screen content in Texture 1 */
-			glBindTexture(GL_TEXTURE_2D, _frameBuffer->getFrameBufferTexture(1));
+			glBindTexture(GL_TEXTURE_2D, this->frameBuffer->getFrameBufferTexture(1));
 
-				glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,_frameBuffer->getWidth(), _frameBuffer->getHeight());
+				glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,this->frameBuffer->getWidth(), this->frameBuffer->getHeight());
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -61,14 +61,14 @@ void MotionBlur::draw() {
 void MotionBlur::reshape(GLint width, GLint height) {
 
 	/* Reshape the Motion Blur FrameBuffer */
-	_frameBuffer->reshape(width, height);
+	this->frameBuffer->reshape(width, height);
 
 	/* Store the current screen content in Texture 1 */
-	glBindTexture(GL_TEXTURE_2D, _frameBuffer->getFrameBufferTexture(1));
+	glBindTexture(GL_TEXTURE_2D, this->frameBuffer->getFrameBufferTexture(1));
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, _frameBuffer->getFrameBufferObject());
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, this->frameBuffer->getFrameBufferObject());
 
-			glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,_frameBuffer->getWidth(), _frameBuffer->getHeight());
+			glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,this->frameBuffer->getWidth(), this->frameBuffer->getHeight());
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

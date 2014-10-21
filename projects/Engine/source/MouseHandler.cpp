@@ -4,9 +4,9 @@ MouseHandler* MouseHandler::instance = NULL;
 
 MouseHandler::MouseHandler() {
 
-	_mouseEnabled = false;
+	this->mouseEnabled = false;
 
-	_mouseWheelPosition = 0;
+	this->mouseWheelPosition = 0;
 }
 
 MouseHandler::~MouseHandler() {
@@ -30,108 +30,108 @@ void MouseHandler::destroyInstance() {
 
 void MouseHandler::enableMouse() {
 
-	_previousButtonMap.clear();
-	_previousButtonMap.insert(_currentButtonMap.begin(),_currentButtonMap.end());
+	this->previousButtonMap.clear();
+	this->previousButtonMap.insert(this->currentButtonMap.begin(),this->currentButtonMap.end());
 
-	_mouseEnabled = true;
+	this->mouseEnabled = true;
 }
 
 void MouseHandler::disableMouse() {
 
-	_mouseEnabled = false;
+	this->mouseEnabled = false;
 }
 
 void MouseHandler::mouseMovementListener(int x, int y) {
 
-	if(!_mouseEnabled)
+	if(!this->mouseEnabled)
 		return;
 
-	if(_currentButtonMap[GLUT_LEFT_BUTTON] == true) {
+	if(this->currentButtonMap[GLUT_LEFT_BUTTON] == true) {
 		
-		_currentLongitudeMap[GLUT_LEFT_BUTTON] = x;
-		_currentLatitudeMap[GLUT_LEFT_BUTTON] = y;
+		this->currentLongitudeMap[GLUT_LEFT_BUTTON] = x;
+		this->currentLatitudeMap[GLUT_LEFT_BUTTON] = y;
 	}
 
-	if(_currentButtonMap[GLUT_RIGHT_BUTTON] == true) {
+	if(this->currentButtonMap[GLUT_RIGHT_BUTTON] == true) {
 		
-		_currentLongitudeMap[GLUT_RIGHT_BUTTON] = x;
-		_currentLatitudeMap[GLUT_RIGHT_BUTTON] = y;
+		this->currentLongitudeMap[GLUT_RIGHT_BUTTON] = x;
+		this->currentLatitudeMap[GLUT_RIGHT_BUTTON] = y;
 	}
 
-	_currentLongitudeMap[DEFAULT] = x;
-	_currentLatitudeMap[DEFAULT] = y;
+	this->currentLongitudeMap[DEFAULT] = x;
+	this->currentLatitudeMap[DEFAULT] = y;
 }
 
 void MouseHandler::mousePassiveMovementListener(int x, int y) {
 
-	if(!_mouseEnabled)
+	if(!this->mouseEnabled)
 		return;
 
-	_currentLongitudeMap[DEFAULT] = x;
-	_currentLatitudeMap[DEFAULT] = y;
+	this->currentLongitudeMap[DEFAULT] = x;
+	this->currentLatitudeMap[DEFAULT] = y;
 }
 
 void MouseHandler::mouseEventListener(int button, int state, int x, int y) {  
 
-	if(!_mouseEnabled)
+	if(!this->mouseEnabled)
 		return;
 
 	if(state == GLUT_UP)
-		_currentButtonMap[button] = false;
+		this->currentButtonMap[button] = false;
 	else if(state == GLUT_DOWN)
-		_currentButtonMap[button] = true;
+		this->currentButtonMap[button] = true;
 
-	_currentLongitudeMap[button] = _oldLongitudeMap[button] = x;
-	_currentLatitudeMap[button] = _oldLatitudeMap[button] = y;
+	this->currentLongitudeMap[button] = this->oldLongitudeMap[button] = x;
+	this->currentLatitudeMap[button] = this->oldLatitudeMap[button] = y;
 
-	_currentLongitudeMap[DEFAULT] = x;
-	_currentLatitudeMap[DEFAULT] = y;
+	this->currentLongitudeMap[DEFAULT] = x;
+	this->currentLatitudeMap[DEFAULT] = y;
 }
 
 void MouseHandler::mouseWheelListener(int button, int direction, int x, int y) {
 
-	if(!_mouseEnabled)
+	if(!this->mouseEnabled)
 		return;
 
 	if(direction > 0)
-		_mouseWheelPosition++;
+		this->mouseWheelPosition++;
 	else
-		_mouseWheelPosition--;
+		this->mouseWheelPosition--;
 }
 
 bool MouseHandler::isButtonPressed(int button) {
 
-	return _currentButtonMap[button];
+	return this->currentButtonMap[button];
 }
 
 bool MouseHandler::wasButtonPressed(int button) {
 
-	return _previousButtonMap[button];
+	return this->previousButtonMap[button];
 }
 
 int MouseHandler::getLongitude(int button) {
 
-	GLint longitude = _currentLongitudeMap[button] - _oldLongitudeMap[button];
+	GLint longitude = this->currentLongitudeMap[button] - this->oldLongitudeMap[button];
 
-	_oldLongitudeMap[button] = _currentLongitudeMap[button];
+	this->oldLongitudeMap[button] = this->currentLongitudeMap[button];
 
 	return longitude;
 }
 
 int MouseHandler::getLatitude(int button) {
 
-	GLint latitude =  _currentLatitudeMap[button] - _oldLatitudeMap[button];
+	GLint latitude =  this->currentLatitudeMap[button] - this->oldLatitudeMap[button];
 
-	_oldLatitudeMap[button] = _currentLatitudeMap[button];
+	this->oldLatitudeMap[button] = this->currentLatitudeMap[button];
 
 	return latitude;
 }
 
 int MouseHandler::getMouseWheelPosition() { 
 
-	GLint position = _mouseWheelPosition;
+	GLint position = this->mouseWheelPosition;
 
-	_mouseWheelPosition = 0;
+	this->mouseWheelPosition = 0;
 
 	return position;
 }
@@ -140,25 +140,25 @@ int* MouseHandler::getMouseClickPosition(int button) {
 
 	GLint *position = new int[2];
 
-	position[0] = _currentLongitudeMap[button];
-	position[1] = _currentLatitudeMap[button];
+	position[0] = this->currentLongitudeMap[button];
+	position[1] = this->currentLatitudeMap[button];
 
 	return position;
 }
 
 bool MouseHandler::isOutsideViewport() {
 
-	//cout << "Longitude: " << _currentLongitudeMap[DEFAULT] / 640 - 1.0f << endl;
-	//cout << "Latitude: " << 1.0f - (2.0f * _currentLatitudeMap[DEFAULT]) / 640 << endl;
+	//cout << "Longitude: " << this->currentLongitudeMap[DEFAULT] / 640 - 1.0f << endl;
+	//cout << "Latitude: " << 1.0f - (2.0f * this->currentLatitudeMap[DEFAULT]) / 640 << endl;
 
-	//cout << _currentLongitudeMap[GLUT_LEFT_BUTTON]  << _currentLatitudeMap[GLUT_LEFT_BUTTON] << endl;
-	//cout << _currentLongitudeMap[GLUT_RIGHT_BUTTON]  << _currentLatitudeMap[GLUT_RIGHT_BUTTON] << endl;
-	//cout << _currentLongitudeMap[DEFAULT]  << _currentLatitudeMap[DEFAULT] << endl;
+	//cout << this->currentLongitudeMap[GLUT_LEFT_BUTTON]  << this->currentLatitudeMap[GLUT_LEFT_BUTTON] << endl;
+	//cout << this->currentLongitudeMap[GLUT_RIGHT_BUTTON]  << this->currentLatitudeMap[GLUT_RIGHT_BUTTON] << endl;
+	//cout << this->currentLongitudeMap[DEFAULT]  << this->currentLatitudeMap[DEFAULT] << endl;
 
 	return false;
 }
 
 bool MouseHandler::isMouseEnabled() {
 
-	return _mouseEnabled;
+	return this->mouseEnabled;
 }

@@ -7,13 +7,17 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+/* C++ Includes */
 #include <iostream>
 
+/* Engine Constants */
 #include "Constants.h"
 
+/* Coordinate Constants */
 #define VX 0
 #define VY 1
 #define VZ 2
@@ -26,7 +30,7 @@ class Vector {
 	private:
 
 		/* Matrix Content */
-		GLfloat _vector[4];
+		GLfloat vector[4];
 
 	public:
 
@@ -43,16 +47,14 @@ class Vector {
 		/* Vector Operations */
 		GLfloat magnitude();
 
+		void loadIdentity();
+
 		void clean();
-
 		void negate();
-
 		void normalize();
 
 		static Vector projection(Vector u, Vector v);
-
 		static Vector crossProduct(Vector u, Vector v);
-
 		static GLfloat dotProduct(Vector u, Vector v);		
 
 		/* Getters  */

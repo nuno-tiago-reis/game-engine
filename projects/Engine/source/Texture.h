@@ -7,57 +7,68 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
-#include "GL/freeglut.h"
+#include "GL/glut.h"
+/* OpenGL Error Check */
+#include "Utility.h"
 
+/* Texture Library */
 #include "soil.h"
 
+/* C++ Includes */
 #include <string>
-
-#include "Utility.h"
 
 class Texture {
 
 	protected:
 
-		/* Texture FileName */
-		string _fileName;
+		/* Texture Name */
+		string _name;
+		/* Texture Filename */
+		string _filename;
 
 		/* OpenGL Texture Handler */
-		GLuint _textureHandler;
-
+		GLuint _handler;
 		/* OpenGL Texture Format (ex. GL_TEXTURE_2D) */
-		GLenum _textureFormat;
+		GLenum _format;
+		/* OpenGL Texture Shader Uniform */
+		string _uniform;
 
 	public:
 
 		/* Constructors & Destructors */
-		Texture(GLuint textureFormat, string fileName);
-		Texture(GLuint textureFormat);
-		Texture();
+		Texture(string name, GLuint format, string uniform, string fileName);
+		Texture(string name, GLuint format, string uniform);
 
 		~Texture();
 
 		/* Loading Methods */
-		virtual void load();
+		virtual void loadTexture();
+		virtual void loadUniforms(GLuint programID, GLuint textureID);
 
 		/* Bind & Unbind to OpenGL Methods */
 		virtual void bind(GLuint textureID);
 		virtual void unbind(GLuint textureID);
 
 		/* Getters */
-		string getFileName();
+		string getName();
+		string getFilename();
 
-		GLuint getTextureHandler();
-
-		GLenum getTextureFormat();
+		GLuint getHandler();
+		GLenum getFormat();
+		string getUniform();
 
 		/* Setters */
-		void setFileName(string fileName);
+		void setName(string name);
+		void setFilename(string fileName);
 
-		void setTextureHandler(GLuint textureHandler);
+		void setHandler(GLuint handler);
+		void setFormat(GLenum format);
+		void setUniform(string unifor);
 
-		void setTextureFormat(GLenum textureFormat);
+		/* Debug Methods */
+		void dump();
 };
 
 #endif

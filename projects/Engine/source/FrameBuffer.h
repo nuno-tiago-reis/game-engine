@@ -7,9 +7,10 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
-
+/* OpenGL Error Check */
 #include "Utility.h"
 
 class FrameBuffer {
@@ -17,14 +18,14 @@ class FrameBuffer {
 	private:
 
 		/* Buffer Dimensions */
-		GLint _width;
-		GLint _height;
+		GLint width;
+		GLint height;
 		
 		/* Buffer Handlers */
-		GLuint _frameBufferObject;
-		GLuint _frameBufferTexture[2];
+		GLuint frameBufferObject;
+		GLuint frameBufferTexture[2];
 
-		GLuint _renderBufferObject;
+		GLuint renderBufferObject;
 
 	public:
 

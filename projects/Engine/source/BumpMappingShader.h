@@ -7,27 +7,29 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Shader */
 #include "ShaderProgram.h"
 
 using namespace std;
 
-#define BUMPMAP_SHADER "Bump Mapping"
+/* Bump Mapping Shader definitions */
+#define BUMP_MAPPING_SHADER "Bump Mapping"
 
-#define BUMPMAP_VERTEX_SHADER_FILE		"shaders/bump_map_vertex_shader.glsl"
-#define BUMPMAP_FRAGMENT_SHADER_FILE	"shaders/bump_map_fragment_shader.glsl"
+#define BUMP_MAPPING_VERTEX_SHADER_FILE		"shaders/bump_map_vertex_shader.glsl"
+#define BUMP_MAPPING_FRAGMENT_SHADER_FILE	"shaders/bump_map_fragment_shader.glsl"
 
 #define DIFFUSE_TEXTURE_UNIFORM "DiffuseTexture"
-#define NORMAL_TEXTURE_UNIFORM "NormalTexture"
+#define NORMAL_TEXTURE_UNIFORM	"NormalTexture"
 
-class BumpMapShader : public ShaderProgram {
+class BumpMappingShader : public ShaderProgram {
 
 	protected:
 
 	public:
 
 		/* Constructors & Destructors */
-		BumpMapShader(string name);
-		~BumpMapShader();
+		BumpMappingShader(string name);
+		~BumpMappingShader();
 
 		/* GPU Creation & Destruction Methods */
 		void bindAttributes();

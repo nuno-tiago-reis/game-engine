@@ -7,7 +7,7 @@ MatrixStack::MatrixStack() {
 
 MatrixStack::~MatrixStack() {
 
-	_matrixStack.clear();
+	this->stack.clear();
 }
 
 MatrixStack* MatrixStack::getInstance() {
@@ -27,17 +27,17 @@ void MatrixStack::destroyInstance() {
 
 void MatrixStack::push(Matrix matrix) {
 
-	_matrixStack.push_back(matrix);
+	this->stack.push_back(matrix);
 }
 
 Matrix MatrixStack::pop() {
 
-	if(_matrixStack.empty() == true)
+	if(this->stack.empty() == true)
 		return Matrix();
 
-	Matrix matrix = _matrixStack.back();
+	Matrix matrix = this->stack.back();
 
-	_matrixStack.pop_back();
+	this->stack.pop_back();
 
 	return matrix;
 }
@@ -46,11 +46,11 @@ Matrix MatrixStack::pop(int count) {
 
 	Matrix matrix;
 
-	while(count-- > 0 && _matrixStack.empty() == false) {
+	while(count-- > 0 && this->stack.empty() == false) {
 
-		matrix = _matrixStack.back();
+		matrix = this->stack.back();
 
-		 _matrixStack.pop_back();
+		 this->stack.pop_back();
 	}
 
 	return matrix;
@@ -58,21 +58,21 @@ Matrix MatrixStack::pop(int count) {
 
 Matrix MatrixStack::peek() {
 
-	if(_matrixStack.empty() == true)
+	if(this->stack.empty() == true)
 		return Matrix();
 
-	return _matrixStack.back();
+	return this->stack.back();
 }
 
 void MatrixStack::clean() {
 
-	while(_matrixStack.empty() == false)
-		_matrixStack.pop_back();
+	while(this->stack.empty() == false)
+		this->stack.pop_back();
 }
 
 int MatrixStack::getMatrixCount() {
 
-	return _matrixStack.size();
+	return this->stack.size();
 }
 
 void MatrixStack::dump() {
@@ -80,10 +80,10 @@ void MatrixStack::dump() {
 	cout << "<MatrixStack Dump>" << endl;
 
 	/* MatrixStack Size */
-	cout << "<MatrixStack Size> = " << _matrixStack.size() << " ;" << endl;
+	cout << "<MatrixStack Size> = " << this->stack.size() << " ;" << endl;
 
 	/* Matrix Stack */
 	cout << "<MatrixStack Matrix Stack> = " << endl;
-	for(list<Matrix>::iterator matrixIterator = _matrixStack.begin(); matrixIterator != _matrixStack.end(); matrixIterator++)
+	for(list<Matrix>::iterator matrixIterator = this->stack.begin(); matrixIterator != this->stack.end(); matrixIterator++)
 		matrixIterator->dump();
 }

@@ -25,21 +25,21 @@ class MouseHandler {
 		static MouseHandler* instance;
 
 		/* Mouse Enabling Toggle */
-		bool _mouseEnabled;
+		bool mouseEnabled;
 
 		/* Mouse Wheel Position */
-		GLint _mouseWheelPosition;
+		GLint mouseWheelPosition;
 
 		/* Pressed Button Maps */
-		map<int, bool> _currentButtonMap;
-		map<int, bool> _previousButtonMap;
+		map<int, bool> currentButtonMap;
+		map<int, bool> previousButtonMap;
 
 		/* Mouse Movement Attributes */
-		map<int, int> _oldLongitudeMap;
-		map<int, int> _oldLatitudeMap;
+		map<int, int> oldLongitudeMap;
+		map<int, int> oldLatitudeMap;
 
-		map<int, int> _currentLongitudeMap;
-		map<int, int> _currentLatitudeMap;
+		map<int, int> currentLongitudeMap;
+		map<int, int> currentLatitudeMap;
 
 		/* Constructors & Destructors - Private due to Singleton */
 		MouseHandler();

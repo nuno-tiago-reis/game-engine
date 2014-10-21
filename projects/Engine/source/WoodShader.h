@@ -7,26 +7,28 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Shader */
 #include "ShaderProgram.h"
 
 using namespace std;
 
-#define REAL_WOOD_SHADER "Realistic Wood"
+/* Wood Shader definitions */
+#define WOOD_SHADER "Realistic Wood"
 
 #define WOOD_TEXTURE_VERTEX_SHADER_FILE		"shaders/real_wood_vertex_shader.glsl"
 #define WOOD_TEXTURE_FRAGMENT_SHADER_FILE	"shaders/real_wood_fragment_shader.glsl"
 
-#define NOISE_UNIFORM "Noise"
-#define NOISE_SCALE_UNIFORM "NoiseScale"
+#define NOISE_TEXTURE_UNIFORM	"Noise"
+#define NOISE_SCALE_UNIFORM		"NoiseScale"
 
-class RealWoodShader : public ShaderProgram {
+class WoodShader : public ShaderProgram {
 
 	protected:
 
 	public:
 
-		RealWoodShader(string name);
-		~RealWoodShader();
+		WoodShader(string name);
+		~WoodShader();
 
 		/* GPU Creation & Destruction Methods */
 		void bindAttributes();

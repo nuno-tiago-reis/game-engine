@@ -7,10 +7,12 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Shader */
 #include "ShaderProgram.h"
 
 using namespace std;
 
+/* Blinn-phong Shader definitions */
 #define BLINN_PHONG_SHADER "Blinn Phong"
 
 #define BLINN_PHONG_VERTEX_SHADER_FILE		"shaders/blinn_phong_vertex_shader.glsl"

@@ -7,30 +7,24 @@
 	#include <crtdbg.h>
 #endif
 
-#include "GL/glew.h"
-#include "GL/glut.h"
-
+/* Generic Object */
 #include "Object.h"
 
+/* Matrix Stack */
 #include "MatrixStack.h"
-
-#include "ShaderProgram.h"
 
 class SceneNode {
 
 	private:
 
 		/* Scene Node Identifier */
-		string _name;
+		string name;
 
-		/* Scene Node Shader */
-		ShaderProgram* _shaderProgram;
-
-		/* Scene Node Graphic Object */
-		Object* _graphicObject;
+		/* Scene Node Graphic Object (may be NULL) */
+		Object* object;
 
 		/* Scene Node Map */
-		map<string,SceneNode*> _sceneNodeMap;
+		map<string,SceneNode*> nodeMap;
 
 	public:
 		
@@ -39,7 +33,7 @@ class SceneNode {
 		~SceneNode();
 
 		/* Scene Graph Methods */
-		void draw(ShaderProgram* shader);
+		void draw();
 
 		void update();
 		void update(GLfloat elapsedTime);
@@ -48,27 +42,20 @@ class SceneNode {
 		void addChildNode(SceneNode* sceneNode);
 
 		bool removeChildNode(string childNodeName);
-
 		bool removeChildNode(string childNodeName, int depth);
 
 		SceneNode* getChildNode(string childNodeName);
-
 		SceneNode* getChildNode(string childNodeName, int depth);
 
-		/* Graphic Object Manipulation Methods */
-		void setObject(Object* graphicObject);
-
-		Object* getObject();	
-
-		/* Shader Manipulation Methods */
-		void setShaderProgram(ShaderProgram* shaderProgram);
-
-		ShaderProgram* getShaderProgram();	
-
 		/* Getters */
+		string getName();
+
+		Object* getObject();
+
+		/* Setters */
 		void setName(string name);
 
-		string getName();
+		void setObject(Object* object);
 
 		/* Debug Methods */
 		void dump();

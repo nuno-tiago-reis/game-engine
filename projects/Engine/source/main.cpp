@@ -10,9 +10,10 @@
 #include "XML_Reader.h"
 #include "OBJ_Reader.h"
 
-/* Graphic Objects */
+/* Object */
 #include "Object.h"
-#include "JointObject.h"
+
+#include "ParticleSystem.h"
 
 /* Post Processing Effects */
 #include "Bloom.h"
@@ -26,13 +27,15 @@
 /* Shaders */
 #include "BlinnPhongShader.h"
 #include "MixedTextureShader.h"
-#include "BumpMapShader.h"
-#include "RealWoodShader.h"
-#include "SphereMapShader.h"
-#include "CubeMapShader.h"
+#include "BumpMappingShader.h"
+#include "WoodShader.h"
+#include "SphereMappingShader.h"
+#include "CubeMappingShader.h"
+#include "FireShader.h"
 
 /* Textures */
 #include "Texture.h"
+#include "CubeTexture.h"
 #include "GeneratedTexture.h"
 
 /* Scene Manager */
@@ -125,7 +128,7 @@ void display() {
 	//for every effect
 
 	/* Draw to the Motion Blur Bufer */
-	glBindFramebuffer(GL_FRAMEBUFFER, motionBlur->getFrameBuffer()->getFrameBufferObject());
+	glBindFramebuffer(GL_FRAMEBUFFER, bloom->getFrameBuffer()->getFrameBufferObject());
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -134,13 +137,13 @@ void display() {
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
 
 	/* Draw to the Motion Blur Bufer */
-	glBindFramebuffer(GL_FRAMEBUFFER, bloom->getFrameBuffer()->getFrameBufferObject());
+	//glBindFramebuffer(GL_FRAMEBUFFER, bloom->getFrameBuffer()->getFrameBufferObject());
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		motionBlur->draw();
+		//motionBlur->draw();
 
-	glBindFramebuffer(GL_FRAMEBUFFER,0);
+	//glBindFramebuffer(GL_FRAMEBUFFER,0);
 
 	/* Draw to the Screen */
 	bloom->draw();
@@ -300,53 +303,50 @@ void setupShaders() {
 
 	sceneManager->addShaderProgram(blinnPhongShader);
 
-	/* Create Mixed Texture Map Shader* /
-	MixedTextureShader* mixedTextureShader = new MixedTextureShader(MIXED_TEXTURE_SHADER);
-	mixedTextureShader->createShaderProgram();
-	mixedTextureShader->bindAttributes();
-	mixedTextureShader->linkShaderProgram();
-	mixedTextureShader->bindUniforms();
-
-	sceneManager->addShaderProgram(mixedTextureShader);
-
 	/* Create Bump Map Shader*/
-	BumpMapShader* bumpMapShader = new BumpMapShader(BUMPMAP_SHADER);
-	bumpMapShader->createShaderProgram();
-	bumpMapShader->bindAttributes();
-	bumpMapShader->linkShaderProgram();
-	bumpMapShader->bindUniforms();
+	BumpMappingShader* bumpMappingShader = new BumpMappingShader(BUMP_MAPPING_SHADER);
+	bumpMappingShader->createShaderProgram();
+	bumpMappingShader->bindAttributes();
+	bumpMappingShader->linkShaderProgram();
+	bumpMappingShader->bindUniforms();
 
-	sceneManager->addShaderProgram(bumpMapShader);
+	sceneManager->addShaderProgram(bumpMappingShader);
 
 	/* Create Sphere Map Shader */
-	SphereMapShader* sphereMapShader = new SphereMapShader(SPHERE_MAP_SHADER);
-	sphereMapShader->createShaderProgram();
-	sphereMapShader->bindAttributes();
-	sphereMapShader->linkShaderProgram();
-	sphereMapShader->bindUniforms();
+	SphereMappingShader* sphereMappingShader = new SphereMappingShader(SPHERE_MAPPING_SHADER);
+	sphereMappingShader->createShaderProgram();
+	sphereMappingShader->bindAttributes();
+	sphereMappingShader->linkShaderProgram();
+	sphereMappingShader->bindUniforms();
 
-	sceneManager->addShaderProgram(sphereMapShader);
+	sceneManager->addShaderProgram(sphereMappingShader);
 
 	/* Create Cube Map Shader */
-	CubeMapShader* cubeMapShader = new CubeMapShader(CUBE_MAP_SHADER);
-	cubeMapShader->createShaderProgram();
-	cubeMapShader->bindAttributes();
-	cubeMapShader->linkShaderProgram();
-	cubeMapShader->bindUniforms();
+	CubeMappingShader* cubeMappingShader = new CubeMappingShader(CUBE_MAPPING_SHADER);
+	cubeMappingShader->createShaderProgram();
+	cubeMappingShader->bindAttributes();
+	cubeMappingShader->linkShaderProgram();
+	cubeMappingShader->bindUniforms();
 
-	sceneManager->addShaderProgram(cubeMapShader);
+	sceneManager->addShaderProgram(cubeMappingShader);
 
 	/* Create Real Wood Shader */
-	RealWoodShader* realWoodShader = new RealWoodShader(REAL_WOOD_SHADER);
-	realWoodShader->createShaderProgram();
-	realWoodShader->bindAttributes();
-	realWoodShader->linkShaderProgram();
-	realWoodShader->bindUniforms();
+	WoodShader* woodShader = new WoodShader(WOOD_SHADER);
+	woodShader->createShaderProgram();
+	woodShader->bindAttributes();
+	woodShader->linkShaderProgram();
+	woodShader->bindUniforms();
 
-	sceneManager->addShaderProgram(realWoodShader);
+	sceneManager->addShaderProgram(woodShader);
 
-	/* Set Active Shader */
-	sceneManager->setActiveShaderProgram(blinnPhongShader);
+	/* Create Fire Shader */
+	FireShader* fireShader = new FireShader(FIRE_SHADER);
+	fireShader->createShaderProgram();
+	fireShader->bindAttributes();
+	fireShader->linkShaderProgram();
+	fireShader->bindUniforms();
+
+	sceneManager->addShaderProgram(fireShader);
 }
 
 void setupLights() {
@@ -442,128 +442,218 @@ void init(int argc, char* argv[]) {
 
 	setupCameras();
 
-	/* Parse Models and Transformations */
-	OBJ_Reader* objReader = OBJ_Reader::getInstance();
-	XML_Reader* xmlReader = XML_Reader::getInstance();
-
-	xmlReader->openTransformationFile(TRANSFORMATION_FILE);
-
-	/* Table */
-	/*Object* table = new Object(TABLE);
-	table->activateWoodTexture(0.5f,1.0f,2,0.32f);
-
-	objReader->loadModel("Table.obj","Table.mtl", table);
-	xmlReader->loadTransformation(table);
-
-	sceneManager->addObject(table);*/
-
 	/* Table Surface */
 	Object* tableSurface = new Object(TABLE_SURFACE);
-	tableSurface->activateMixedTexture("textures/tampo_diffuse.png","textures/tampo_diffuse.png");
 
-	objReader->loadModel("TableSurface.obj","TableSurface.mtl", tableSurface);
-	xmlReader->loadTransformation(tableSurface);
+		/* Set the Objects Mesh */
+		Mesh* tableSurfaceMesh = new Mesh("Surface", "TableSurface.obj", "TableSurface.mtl");
+		tableSurface->setMesh(tableSurfaceMesh);
+
+		/* Set the Objects Transform */
+		Transform* tableSurfaceTransform = new Transform(TABLE_SURFACE);
+		tableSurfaceTransform->setPosition(Vector(0.0f,-7.5f, 0.0f, 1.0f));
+		tableSurfaceTransform->setScale(Vector(10.0f, 1.0f, 10.0f, 1.0f));
+
+		tableSurface->setTransform(tableSurfaceTransform);
+
+		/* Set the Objects Material */
+		Material* tableSurfaceMaterial = new Material(TABLE_SURFACE, sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
+		tableSurface->setMaterial(tableSurfaceMaterial);
 
 	sceneManager->addObject(tableSurface);
 
-	/* Test Object */
-	Object* testObject = new Object("Test Object");
-	testObject->setPosition(Vector(0.0f,2.5f,0.0f,1.0f));
-	//testObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
-	testObject->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
-	testObject->activateWoodTexture(0.5f,1.0f,2,0.32f);
+	/* Wood-Texture */
+	Object* woodObject = new Object(WOOD_OBJECT);
 
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", testObject);
+		/* Set the Objects Mesh */
+		Mesh* woodObjectMesh = new Mesh("Teapot", "teapot/teapot2.obj", "teapot/GoldTeapot.mtl");
+		woodObject->setMesh(woodObjectMesh);
 
-	sceneManager->addObject(testObject);
+		/* Set the Objects Transform */
+		Transform* woodObjectTransform = new Transform(WOOD_OBJECT);
+		woodObjectTransform->setPosition(Vector(0.0f,2.0f,0.0f,1.0f));
+		woodObjectTransform->setScale(Vector(0.025f,0.025f,0.025f,1.0f));
+
+		woodObject->setTransform(woodObjectTransform);
+
+		/* Set the Objects Material */
+		Material* woodObjectMaterial = new Material(WOOD_OBJECT, sceneManager->getShaderProgram(WOOD_SHADER));
+
+		Texture* woodTexture = new GeneratedTexture("Wood Texture", GL_TEXTURE_3D,  0.5f, 1.0f, 2, 0.32f, NOISE_TEXTURE_UNIFORM);
+		woodTexture->loadTexture();
+		woodObjectMaterial->addTexture(woodTexture);
+
+		woodObject->setMaterial(woodObjectMaterial);
+
+	sceneManager->addObject(woodObject);
 
 	/* Blinn-Phong */
 	Object* blinnPhongObject = new Object(BLINN_PHONG_OBJECT);
-	blinnPhongObject->setPosition(Vector(-10.0f,2.5f,0.0f,1.0f));
-	blinnPhongObject->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
 
-	objReader->loadModel("Torus.obj","Torus.mtl", blinnPhongObject);
+		/* Set the Objects Mesh */
+		Mesh* blinnPhongObjectMesh = new Mesh("Teapot", "teapot/teapot2.obj", "teapot/SilverTeapot.mtl");
+		blinnPhongObject->setMesh(blinnPhongObjectMesh);
+
+		/* Set the Objects Transform */
+		Transform* blinnPhongObjectTransform = new Transform(BLINN_PHONG_OBJECT);
+		blinnPhongObjectTransform->setPosition(Vector(-10.0f,2.5f,0.0f,1.0f));
+		blinnPhongObjectTransform->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
+		blinnPhongObjectTransform->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
+
+		blinnPhongObject->setTransform(blinnPhongObjectTransform);
+
+		/* Set the Objects Material */
+		Material* blinnPhongObjectMaterial = new Material(BLINN_PHONG_OBJECT, sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
+		blinnPhongObject->setMaterial(blinnPhongObjectMaterial);
 
 	sceneManager->addObject(blinnPhongObject);
 
 	/* Bump Mapping */
 	Object* bumpMappingObject = new Object(BUMP_MAPPING_OBJECT);
-	bumpMappingObject->setPosition(Vector(10.0f,2.5f,0.0f,1.0f));
-	bumpMappingObject->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
-	bumpMappingObject->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
-	bumpMappingObject->activateBumpTexture("textures/fieldstone_diffuse.jpg","textures/fieldstone_normal.jpg");
 
-	objReader->loadModel("teapot/teapot2.obj","teapot/GoldTeapot.mtl", bumpMappingObject);
+		/* Set the Objects Mesh */
+		Mesh* bumpMappingObjectMesh = new Mesh("Teapot", "teapot/teapot2.obj", "teapot/SilverTeapot.mtl");
+		bumpMappingObject->setMesh(bumpMappingObjectMesh);
+
+		/* Set the Objects Transform */
+		Transform* bumpMappingObjectTransform = new Transform(BUMP_MAPPING_OBJECT);
+		bumpMappingObjectTransform->setPosition(Vector(10.0f,2.5f,0.0f,1.0f));
+		bumpMappingObjectTransform->setRotation(Vector(0.0f,90.0f,0.0f,1.0f));
+		bumpMappingObjectTransform->setScale(Vector(0.25f,0.25f,0.25f,1.0f));
+
+		bumpMappingObject->setTransform(bumpMappingObjectTransform);
+
+		/* Set the Objects Material */
+		Material* bumpMappingObjectMaterial = new Material(BUMP_MAPPING_OBJECT, sceneManager->getShaderProgram(BUMP_MAPPING_SHADER));
+
+		Texture* diffuseTexture = new Texture("Stonefield Diffuse Texture", GL_TEXTURE_2D, DIFFUSE_TEXTURE_UNIFORM, "textures/fieldstone_diffuse.jpg");
+		diffuseTexture->loadTexture();
+		bumpMappingObjectMaterial->addTexture(diffuseTexture);
+
+		Texture* normalTexture = new Texture("Stonefield Normal Texture", GL_TEXTURE_2D, NORMAL_TEXTURE_UNIFORM, "textures/fieldstone_normal.jpg");
+		normalTexture->loadTexture();
+		bumpMappingObjectMaterial->addTexture(normalTexture);
+
+		bumpMappingObject->setMaterial(bumpMappingObjectMaterial);
 
 	sceneManager->addObject(bumpMappingObject);
 
 	/* Sphere Environmental Mapping */
-	Object* sphereEnvironmentalMappingObject = new Object(SPHERE_MAPPING_OBJECT);
-	sphereEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,-10.0f,1.0f));
-	sphereEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
-	sphereEnvironmentalMappingObject->activateSphereMapTexture("textures/SphereMap.jpg");
+	Object* sphereMappingObject = new Object(SPHERE_MAPPING_OBJECT);
 
-	objReader->loadModel("Sphere.obj","Sphere.mtl", sphereEnvironmentalMappingObject);
+		/* Set the Objects Mesh */
+		Mesh* sphereMappingObjectMesh = new Mesh("Sphere", "Sphere.obj","Sphere.mtl");
+		sphereMappingObject->setMesh(sphereMappingObjectMesh);
 
-	sceneManager->addObject(sphereEnvironmentalMappingObject);
+		/* Set the Objects Transform */
+		Transform* sphereMappingObjectTransform = new Transform(SPHERE_MAPPING_OBJECT);
+		sphereMappingObjectTransform->setPosition(Vector(0.0f, 2.5f,-10.0f,1.0f));
+		sphereMappingObjectTransform->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
 
-	/* Cube  Environmental Mapping */
-	Object* cubeEnvironmentalMappingObject = new Object(CUBE_MAPPING_OBJECT);
-	cubeEnvironmentalMappingObject->setPosition(Vector(0.0f, 2.5f,10.0f,1.0f));
-	cubeEnvironmentalMappingObject->setRotation(Vector(0.0f,180.0f,0.0f,1.0f));
-	cubeEnvironmentalMappingObject->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
-	cubeEnvironmentalMappingObject->activateCubeMapTexture(
-		"textures/beach/posx.jpg","textures/beach/negx.jpg",
-		"textures/beach/posy.jpg","textures/beach/negy.jpg",
-		"textures/beach/posz.jpg","textures/beach/negz.jpg");	
+		sphereMappingObject->setTransform(sphereMappingObjectTransform);
 
-	objReader->loadModel("Sphere.obj","Sphere.mtl", cubeEnvironmentalMappingObject);
+		/* Set the Objects Material */
+		Material* sphereMappingObjectMaterial = new Material(SPHERE_MAPPING_OBJECT, sceneManager->getShaderProgram(SPHERE_MAPPING_SHADER));
 
-	sceneManager->addObject(cubeEnvironmentalMappingObject);
+		Texture* sphereMappingTexture = new Texture("House Texture", GL_TEXTURE_2D, SPHERE_MAPPING_UNIFORM, "textures/SphereMap.jpg");
+		sphereMappingTexture->loadTexture();
+		sphereMappingObjectMaterial->addTexture(sphereMappingTexture);
+
+		sphereMappingObject->setMaterial(sphereMappingObjectMaterial);
+
+	sceneManager->addObject(sphereMappingObject);
+
+	/* Cube Environmental Mapping */
+	Object* cubeMappingObject = new Object(CUBE_MAPPING_OBJECT);
+
+		/* Set the Objects Mesh */
+		Mesh* cubeMappingObjectMesh = new Mesh("Sphere", "Sphere.obj","Sphere.mtl");
+		cubeMappingObject->setMesh(cubeMappingObjectMesh);
+
+		/* Set the Objects Transform */
+		Transform* cubeMappingObjectTransform = new Transform(SPHERE_MAPPING_OBJECT);
+		cubeMappingObjectTransform->setPosition(Vector(0.0f, 2.5f,10.0f,1.0f));
+		cubeMappingObjectTransform->setRotation(Vector(0.0f,180.0f,0.0f,1.0f));
+		cubeMappingObjectTransform->setScale(Vector(2.5f,2.5f,2.5f,1.0f));
+
+		cubeMappingObject->setTransform(cubeMappingObjectTransform);
+
+		/* Set the Objects Material */
+		Material* cubeMappingObjectMaterial = new Material(CUBE_MAPPING_OBJECT, sceneManager->getShaderProgram(CUBE_MAPPING_SHADER));
+
+		Texture* cubeMappingTexture = new CubeTexture(
+			"Beach Texture",
+			"textures/beach/posx.jpg","textures/beach/negx.jpg",
+			"textures/beach/posy.jpg","textures/beach/negy.jpg",
+			"textures/beach/posz.jpg","textures/beach/negz.jpg", 
+			SPHERE_MAPPING_UNIFORM);
+		cubeMappingTexture->loadTexture();
+		cubeMappingObjectMaterial->addTexture(cubeMappingTexture);
+
+		cubeMappingObject->setMaterial(cubeMappingObjectMaterial);
+
+	sceneManager->addObject(cubeMappingObject);
+
+	/* Particle System */
+	ParticleSystem* particleSystem = new ParticleSystem(TEST_PARTICLE_SYSTEM, 250, 4.0f);
+
+		/* Set the Objects Mesh */
+		Mesh* particleSystemMesh = new Mesh("Particle", "Cube.obj", "Cube.mtl");
+
+		particleSystem->setMesh(particleSystemMesh);
+
+		/* Set the Objects Transform */
+		Transform* particleSystemTransform = new Transform(TEST_PARTICLE_SYSTEM);
+		particleSystemTransform->setPosition(Vector(0.0f, 2.5f, 0.0f, 1.0f));
+
+		particleSystem->setTransform(particleSystemTransform);
+
+		/* Set the Objects Material */
+		Material* particleSystemMaterial = new Material(TEST_PARTICLE_SYSTEM, sceneManager->getShaderProgram(FIRE_SHADER));
+
+		particleSystem->setMaterial(particleSystemMaterial);
+
+		/* Initialize the Particles */
+		particleSystem->init();
+	
+	sceneManager->addObject(particleSystem);
 
 	/* Destroy the Readers */
 	OBJ_Reader::destroyInstance();
 	XML_Reader::destroyInstance();
 
 	/* Create Scene Graph Nodes */
-	/*SceneNode* tableNode = new SceneNode(TABLE);
-	tableNode->setObject(table);
-	tableNode->setShaderProgram(sceneManager->getShaderProgram(REAL_WOOD_SHADER));*/
-
 	SceneNode* tableSurfaceNode = new SceneNode(TABLE_SURFACE);
 	tableSurfaceNode->setObject(tableSurface);
-	tableSurfaceNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
 
-	SceneNode* testObjectNode = new SceneNode("Test Object");
-	testObjectNode->setObject(testObject);
-	testObjectNode->setShaderProgram(sceneManager->getShaderProgram(REAL_WOOD_SHADER));
+	SceneNode* woodObjectNode = new SceneNode(WOOD_OBJECT);
+	woodObjectNode->setObject(woodObject);
 
 	SceneNode* blinnPhongObjectNode = new SceneNode(BLINN_PHONG_OBJECT);
 	blinnPhongObjectNode->setObject(blinnPhongObject);
-	blinnPhongObjectNode->setShaderProgram(sceneManager->getShaderProgram(BLINN_PHONG_SHADER));
 
 	SceneNode* bumpMappingObjectNode = new SceneNode(BUMP_MAPPING_OBJECT);
 	bumpMappingObjectNode->setObject(bumpMappingObject);
-	bumpMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(BUMPMAP_SHADER));
 
 	SceneNode* sphereEnvironmentalMappingObjectNode = new SceneNode(SPHERE_MAPPING_OBJECT);
-	sphereEnvironmentalMappingObjectNode->setObject(sphereEnvironmentalMappingObject);
-	sphereEnvironmentalMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(SPHERE_MAP_SHADER));
+	sphereEnvironmentalMappingObjectNode->setObject(sphereMappingObject);
 
 	SceneNode* cubeEnvironmentalMappingObjectNode = new SceneNode(CUBE_MAPPING_OBJECT);
-	cubeEnvironmentalMappingObjectNode->setObject(cubeEnvironmentalMappingObject);
-	cubeEnvironmentalMappingObjectNode->setShaderProgram(sceneManager->getShaderProgram(CUBE_MAP_SHADER));
+	cubeEnvironmentalMappingObjectNode->setObject(cubeMappingObject);
+
+	SceneNode* particleSystemNode = new SceneNode(TEST_PARTICLE_SYSTEM);
+	particleSystemNode->setObject(particleSystem);
 
 	/* Add the Root Nodes to the Scene */
-	//sceneManager->addSceneNode(tableNode);
 	sceneManager->addSceneNode(tableSurfaceNode);
 
-	sceneManager->addSceneNode(testObjectNode);
-
+	sceneManager->addSceneNode(woodObjectNode);
 	sceneManager->addSceneNode(blinnPhongObjectNode);
 	sceneManager->addSceneNode(bumpMappingObjectNode);
 	sceneManager->addSceneNode(sphereEnvironmentalMappingObjectNode);
 	sceneManager->addSceneNode(cubeEnvironmentalMappingObjectNode);
+
+	sceneManager->addSceneNode(particleSystemNode);
 
 	/* FMOD Sound Loading */
 	Sound* arrowSound = new Sound(ARROW_SOUND_NAME,ARROW_SOUND_FILE);

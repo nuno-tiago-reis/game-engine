@@ -27,7 +27,7 @@ void XML_Reader::destroyInstance() {
 	instance = NULL;
 }
 
-void XML_Reader::openTransformationFile(string filename) {
+void XML_Reader::openTransformFile(string filename) {
 
 	_transformationDocument->LoadFile(filename.c_str());
 
@@ -40,13 +40,13 @@ void XML_Reader::openTransformationFile(string filename) {
 	}
 }
 
-void XML_Reader::loadTransformation(Object *graphicObject) {
+void XML_Reader::loadTransform(Transform* transform) {
 
-	cout << "XML_Reader::loadTransformation(" << graphicObject->getName() << ");" << endl;
+	cout << "XML_Reader::loadTransform(" << transform->getName() << ");" << endl;
 
 	for(XMLNode* modelXML = _transformationDocument->FirstChildElement()->FirstChildElement("model"); modelXML != NULL; modelXML = modelXML->NextSibling()) {
 
-		if(graphicObject->getName().compare(modelXML->ToElement()->Attribute("identifier")) != 0)
+		if(transform->getName().compare(modelXML->ToElement()->Attribute("identifier")) != 0)
 			continue;
 
 		/*XMLNode* boundingVolumeXML = modelXML->FirstChildElement("boundingVolume");
@@ -80,7 +80,7 @@ void XML_Reader::loadTransformation(Object *graphicObject) {
 		position[1] = initialTransformationXML->ToElement()->FloatAttribute("py");
 		position[2] = initialTransformationXML->ToElement()->FloatAttribute("pz");
 
-		graphicObject->setPosition(position);
+		transform->setPosition(position);
 
 		Vector scale;
 		
@@ -88,7 +88,7 @@ void XML_Reader::loadTransformation(Object *graphicObject) {
 		scale[1] = initialTransformationXML->ToElement()->FloatAttribute("sy");
 		scale[2] = initialTransformationXML->ToElement()->FloatAttribute("sz");
 
-		graphicObject->setScale(scale);
+		transform->setScale(scale);
 
 		Vector rotation;
 
@@ -96,13 +96,13 @@ void XML_Reader::loadTransformation(Object *graphicObject) {
 		rotation[1] = initialTransformationXML->ToElement()->FloatAttribute("ry");
 		rotation[2] = initialTransformationXML->ToElement()->FloatAttribute("rz");
 
-		graphicObject->setRotation(rotation);
+		transform->setRotation(rotation);
 
 		break;
 	}
 }
 
-void XML_Reader::saveTransformation(Object *graphicObject) {
+void XML_Reader::saveTransform(Transform* transform) {
 
 	XMLDocument* document = new XMLDocument();
 
@@ -111,29 +111,29 @@ void XML_Reader::saveTransformation(Object *graphicObject) {
 	XMLElement* model = document->NewElement("model");
 
 	for(XMLNode* modelIterator = document->FirstChildElement()->FirstChildElement("model"); modelIterator != NULL; modelIterator = modelIterator->NextSibling())
-		if(graphicObject->getName().compare(modelIterator->ToElement()->Attribute("identifier")) == 0) {
+		if(transform->getName().compare(modelIterator->ToElement()->Attribute("identifier")) == 0) {
 
 			document->FirstChildElement("geometry")->DeleteChild(modelIterator); 
 			break;
 		}
 
-	model->SetAttribute("identifier",graphicObject->getName().c_str());
+	model->SetAttribute("identifier",transform->getName().c_str());
 
 		XMLElement* initial = document->NewElement("initial");
 
-		Vector position = graphicObject->getPosition();
+		Vector position = transform->getPosition();
 
 		initial->SetAttribute("px",position[0]);
 		initial->SetAttribute("py",position[1]);
 		initial->SetAttribute("pz",position[2]);
 
-		Vector scale = graphicObject->getScale();
+		Vector scale = transform->getScale();
 
 		initial->SetAttribute("sx",scale[0]);
 		initial->SetAttribute("sy",scale[1]);
 		initial->SetAttribute("sz",scale[2]);
 
-		Vector rotation = graphicObject->getRotation();
+		Vector rotation = transform->getRotation();
 
 		initial->SetAttribute("rx",rotation[0]);
 		initial->SetAttribute("ry",rotation[1]);

@@ -2,13 +2,13 @@
 
 Light::Light(string name) {
 
-	_name = name;
+	this->name = name;
 
-	_identifier = 0;
+	this->identifier = 0;
 
-	_ambientIntensity = 0.0f;
-	_diffuseIntensity = 0.0f;
-	_specularIntensity = 0.0f;
+	this->ambientIntensity = 0.0f;
+	this->diffuseIntensity = 0.0f;
+	this->specularIntensity = 0.0f;
 }
 
 Light::~Light() {
@@ -19,97 +19,97 @@ void Light::loadUniforms() {
 
 string Light::getName() {
 	
-	return _name;
+	return this->name;
 }
 
 GLint Light::getIdentifier() {
 
-	return _identifier;
+	return this->identifier;
 }
 
 Vector Light::getPosition() {
 
-	return _position;
+	return this->position;
 }
 
 Vector Light::getColor() {
 
-	return _color;
+	return this->color;
 }
 
 GLfloat Light::getAmbientIntensity() {
 
-	return _ambientIntensity;
+	return this->ambientIntensity;
 }
 
 GLfloat Light::getDiffuseIntensity() {
 
-	return _diffuseIntensity;
+	return this->diffuseIntensity;
 }
 
 GLfloat Light::getSpecularIntensity() {
 
-	return _specularIntensity;
+	return this->specularIntensity;
 }
 
 GLuint Light::getUniformBufferIndex() {
 
-	return _uniformBufferIndex;
+	return this->uniformBufferIndex;
 }
 
 void Light::setName(string name) {
 
-	_name = name;
+	this->name = name;
 }
 
 void Light::setIdentifier(GLint identifier) {
 
-	_identifier = identifier;
+	this->identifier = identifier;
 }
 
 void Light::setPosition(Vector position) {
 
-	_position = position;
+	this->position = position;
 }
 
 void Light::setColor(Vector color) {
 
-	_color = color;
+	this->color = color;
 }
 
 void Light::setAmbientIntensity(GLfloat ambientIntensity) {
 
-	_ambientIntensity = ambientIntensity;
+	this->ambientIntensity = ambientIntensity;
 }
 
 void Light::setDiffuseIntensity(GLfloat diffuseIntensity) {
 
-	_diffuseIntensity = diffuseIntensity;
+	this->diffuseIntensity = diffuseIntensity;
 }
 
 void Light::setSpecularIntensity(GLfloat specularIntensity) {
 
-	_specularIntensity = specularIntensity;
+	this->specularIntensity = specularIntensity;
 }
 
 void Light::setUniformBufferIndex(GLuint uniformBufferIndex) {
 
-	_uniformBufferIndex = uniformBufferIndex;
+	this->uniformBufferIndex = uniformBufferIndex;
 }
 
 void Light::dump() {
 
-	cout << "<Light \"" << _name << "\" Dump>" << endl;
+	cout << "<Light \"" << this->name << "\" Dump>" << endl;
 
 	/* Light Position */
 	cout << "<Light Position> = " << endl;
-	_position.dump();
+	this->position.dump();
 
 	/* Light Color */
 	cout << "<Light Color> = " << endl;
-	_color.dump();
+	this->color.dump();
 
 	/* Light Intensity */
-	cout << "<Light Ambient Intensity> = " << _ambientIntensity << endl;
-	cout << "<Light Diffuse Intensity> = " << _diffuseIntensity << endl;
+	cout << "<Light Ambient Intensity> = " << this->ambientIntensity << endl;
+	cout << "<Light Diffuse Intensity> = " << this->diffuseIntensity << endl;
 }

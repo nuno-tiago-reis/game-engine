@@ -2,9 +2,9 @@
 
 PostProcessingEffect::PostProcessingEffect(string name) {
 
-	_name = name;
+	this->name = name;
 
-	_frameBuffer = new FrameBuffer();
+	this->frameBuffer = new FrameBuffer();
 
 	/* Create the quad for the post processing effect to be drawn to */
 	GLfloat vertices[] = {	-1.0f, -1.0f, 
@@ -12,12 +12,12 @@ PostProcessingEffect::PostProcessingEffect(string name) {
 							-1.0f,  1.0f, 
 							 1.0f,  1.0f };
 
-	glGenVertexArrays(1, &_vertexArrayObjectID);
-	glBindVertexArray(_vertexArrayObjectID);
+	glGenVertexArrays(1, &this->arrayObjectID);
+	glBindVertexArray(this->arrayObjectID);
 
-	glGenBuffers(1, &_vertexBufferObjectID);
+	glGenBuffers(1, &this->bufferObjectID);
 
-	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObjectID);
+	glBindBuffer(GL_ARRAY_BUFFER, this->bufferObjectID);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -32,53 +32,53 @@ PostProcessingEffect::PostProcessingEffect(string name) {
 
 PostProcessingEffect::~PostProcessingEffect() {
 
-	delete _frameBuffer;
+	delete this->frameBuffer;
 
-	glDeleteBuffers(1, &_vertexBufferObjectID);
-	glDeleteVertexArrays(1, &_vertexArrayObjectID);
+	glDeleteBuffers(1, &this->bufferObjectID);
+	glDeleteVertexArrays(1, &this->arrayObjectID);
 }
 
 void PostProcessingEffect::init(GLint width, GLint height) {
 
-	_frameBuffer->init(width, height);
+	this->frameBuffer->init(width, height);
 }
 
 string PostProcessingEffect::getName() {
 
-	return _name;
+	return this->name;
 }
 
 FrameBuffer* PostProcessingEffect::getFrameBuffer() {
 
-	return _frameBuffer;
+	return this->frameBuffer;
 }
 
-GLuint PostProcessingEffect::getVertexArrayObjectID() {
+GLuint PostProcessingEffect::getArrayObjectID() {
 
-	return _vertexArrayObjectID;
+	return this->arrayObjectID;
 }
 
-GLuint PostProcessingEffect::getVertexBufferObjectID() {
+GLuint PostProcessingEffect::getBufferObjectID() {
 
-	return _vertexBufferObjectID;
+	return this->bufferObjectID;
 }
 
 void PostProcessingEffect::setName(string name) {
 
-	_name = name;
+	this->name = name;
 }
 
 void PostProcessingEffect::setFrameBuffer(FrameBuffer* frameBuffer) {
 
-	_frameBuffer = frameBuffer;
+	this->frameBuffer = frameBuffer;
 }
 
-void PostProcessingEffect::setVertexArrayObjectID(GLuint vertexArrayObjectID) {
+void PostProcessingEffect::setArrayObjectID(GLuint arrayObjectID) {
 
-	_vertexArrayObjectID = vertexArrayObjectID;
+	this->arrayObjectID = arrayObjectID;
 }
 
-void PostProcessingEffect::setVertexBufferObjectID(GLuint vextexBufferObjectID) {
+void PostProcessingEffect::setBufferObjectID(GLuint vextexBufferObjectID) {
 
-	_vertexBufferObjectID = vextexBufferObjectID;
+	this->bufferObjectID = vextexBufferObjectID;
 }

@@ -15,17 +15,17 @@ void DirectionalLight::loadUniforms() {
 		lightSourceArray[i] = 0.0f;
 	/* Direction */
 	for(int i=0; i<4; i++)
-		lightSourceArray[i+4] = _direction[i];
+		lightSourceArray[i+4] = this->direction[i];
 	/* Color */
 	for(int i=0; i<4; i++)
-		lightSourceArray[i+8] = _color[i];
+		lightSourceArray[i+8] = this->color[i];
 
 	/* Cut Off */
 	lightSourceArray[12] = 0.0f;
 	/* Intensity (Ambient, Diffuse, Specular) */
-	lightSourceArray[13] = _ambientIntensity;
-	lightSourceArray[14] = _diffuseIntensity;
-	lightSourceArray[15] = _specularIntensity;
+	lightSourceArray[13] = this->ambientIntensity;
+	lightSourceArray[14] = this->diffuseIntensity;
+	lightSourceArray[15] = this->specularIntensity;
 	/* Attenuation (Constant, Linear, Exponential) */
 	lightSourceArray[16] = 0.0f;
 	lightSourceArray[17] = 0.0f;
@@ -34,26 +34,26 @@ void DirectionalLight::loadUniforms() {
 	GLint lightType = DIRECTIONAL_LIGHT;
 
 	/* Uniform Locations */
-	glBindBuffer(GL_UNIFORM_BUFFER, _uniformBufferIndex);
+	glBindBuffer(GL_UNIFORM_BUFFER, this->uniformBufferIndex);
 
-	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier, 
+	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * this->identifier, 
 										sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, lightSourceArray);
-	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * _identifier + sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, 
+	glBufferSubData(GL_UNIFORM_BUFFER, (sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE + sizeof(GLint)) * this->identifier + sizeof(GLfloat) * LIGHT_SOURCE_STRUCT_SIZE, 
 										sizeof(GLint), &lightType);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	Utility::checkOpenGLError("ERROR: DirectionalLight \"" + _name + "\" Uniform loading failed.");
+	Utility::checkOpenGLError("ERROR: DirectionalLight \"" + this->name + "\" Uniform loading failed.");
 }
 
 Vector DirectionalLight::getDirection() {
 
-	return _direction;
+	return this->direction;
 }
 
 void DirectionalLight::setDirection(Vector direction) {
 
-	_direction = direction;
+	this->direction = direction;
 }
 
 void DirectionalLight::dump() {
@@ -63,5 +63,5 @@ void DirectionalLight::dump() {
 
 	/* DirectionalLight Direction */
 	cout << "<DirectionalLight Direction> = " << endl;
-	_direction.dump();
+	this->direction.dump();
 }

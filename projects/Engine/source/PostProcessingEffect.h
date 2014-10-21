@@ -7,12 +7,19 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
+/* OpenGL Error Check */
+#include "Utility.h"
 
+/* C++ Includes */
+#include <string>
+
+/* Post-processing Frame Buffer */
 #include "FrameBuffer.h"
 
-#include "Utility.h"
+/* Engine Constants */
 #include "Constants.h"
 
 /* Position Attribute */
@@ -24,14 +31,14 @@ class PostProcessingEffect {
 	protected:
 
 		/* Post Processing Effect Identifier */
-		string _name;
+		string name;
 
 		/* Post Processing Effect Frame Buffer */
-		FrameBuffer* _frameBuffer;
+		FrameBuffer* frameBuffer;
 
 		/* Vertex Array IDs */
-		GLuint _vertexArrayObjectID;
-		GLuint _vertexBufferObjectID;
+		GLuint arrayObjectID;
+		GLuint bufferObjectID;
 
 	public:
 
@@ -51,16 +58,16 @@ class PostProcessingEffect {
 
 		FrameBuffer* getFrameBuffer();
 
-		GLuint getVertexArrayObjectID();
-		GLuint getVertexBufferObjectID();
+		GLuint getArrayObjectID();
+		GLuint getBufferObjectID();
 
 		/* Setters */
 		void setName(string name);
 
 		void setFrameBuffer(FrameBuffer* frameBuffer);
 
-		void setVertexArrayObjectID(GLuint vertexArrayObjectID);
-		void setVertexBufferObjectID(GLuint vextexBufferObjectID);
+		void setArrayObjectID(GLuint arrayObjectID);
+		void setBufferObjectID(GLuint bufferObjectID);
 };
 
 #endif

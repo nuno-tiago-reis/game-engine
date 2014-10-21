@@ -7,11 +7,10 @@
 	#include <crtdbg.h>
 #endif
 
-#include "GL/glew.h"
-#include "GL/glut.h"
-
+/* C++ Includes */
 #include <list>
 
+/* Math Library */
 #include "Matrix.h"
 
 using namespace std;
@@ -24,7 +23,7 @@ class MatrixStack {
 		static MatrixStack *instance;
 
 		/* Matrix Stack */
-		list<Matrix> _matrixStack;
+		list<Matrix> stack;
 
 		/* Constructors & Destructors */
 		MatrixStack();

@@ -26,9 +26,9 @@ void OBJ_Reader::destroyInstance() {
 vector<int> &split(const string &s, char delim, vector<int> &elems);
 vector<int> split(const string &s, char delim);
 
-void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object* graphicObject) {
+void OBJ_Reader::loadMesh(string meshFilename, string materialFilename, Mesh* mesh) {
 
-	cout << "OBJ_Reader::loadModel(" << modelFilename << "," << materialFilename << "," << graphicObject->getName() << ");" << endl;
+	cout << "OBJ_Reader::loadMesh(" << meshFilename << "," << materialFilename << "," << mesh->getName() << ");" << endl;
 
 	string line;
 
@@ -36,7 +36,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	bool hasMaterial = false;
 
 	string activeMaterial;
-	map<string,Material> materialMap;	
+	map<string,MaterialStruct> materialMap;	
 
 	ifstream materialFile(LOCATION + materialFilename);
 
@@ -102,7 +102,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	int normalNumber = 0;
 	int textureCoordinateNumber = 0;
 
-	ifstream modelFile(LOCATION + modelFilename);
+	ifstream modelFile(LOCATION + meshFilename);
 
 	while(getline(modelFile, line)) {
 
@@ -128,7 +128,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	modelFile.close();
 
 	/* Reading the Model .obj - Second pass */
-	modelFile.open(LOCATION + modelFilename);
+	modelFile.open(LOCATION + meshFilename);
 
 	/* Storage Structures */
 	Coordinate3D *vertexArray = new Coordinate3D[vertexNumber];
@@ -350,10 +350,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 			cerr << "FAILED CALCULATING TANGENT" << endl;
 	}
 
-	BufferObject* bufferObject = new BufferObject(bufferVertices,faceNumber * 3);
-	bufferObject->createBufferObject();
-
-	graphicObject->setBufferObject(bufferObject);
+	mesh->setVertices(bufferVertices, faceNumber * 3);
 
 	/* Cleanup */
 	delete[] vertexArray;
@@ -365,6 +362,7 @@ void OBJ_Reader::loadModel(string modelFilename, string materialFilename, Object
 	
 	delete[] bufferVertices;
 	delete[] bufferVerticesID;
+
 }
 
 vector<int> &split(const string &s, char delim, vector<int> &elems) {

@@ -14,11 +14,13 @@
 
 #define MAX_SOUND_CHANNELS 32
 
-/* FreeGlut Library */
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
+/* OpenGL Error Check */
+#include "Utility.h"
 
-/* STL Data Storage and Iteration */
+/* C++ Includes */
 #include <map>
 #include <iterator>
 
@@ -39,18 +41,12 @@
 
 /* Object - Object Map*/
 #include "Object.h"
-#include "JointObject.h"
-
-/* Noise Generator */
-#include "PerlinNoise.h"
 
 /* User Interaction Handlers */
 #include "KeyboardHandler.h"
 #include "MouseHandler.h"
 
-/* Error Checking */
-#include "Utility.h"
-
+/* Engine Names */
 #include "Names.h"
 
 class SceneManager {
@@ -60,39 +56,29 @@ class SceneManager {
 		/* Singleton Instance */
 		static SceneManager *instance;
 
-		int _rotationAxis;
-		int _currentObject;
-
-		/* Picking */
-		bool _malletPicked;
-		GLfloat _malletDepth;
-
-		/* Interpolation */
-		GLfloat _timeCounter;
+		int rotationAxis;
+		int currentObject;
 
 		/* FMOD Sound System */
-		FMOD::System* _fmodSystem;
+		FMOD::System* fmodSystem;
 		FMOD::Channel* channel[MAX_SOUND_CHANNELS];
-
-		/* Box2D Physics World */
 		
 		/* Active Camera */
 		Camera* _activeCamera;
-		/* Active Shader Program */
-		ShaderProgram* _activeShaderProgram;
 
 		/* Sound Map */
-		map<string,Sound*> _soundMap;
+		map<string,Sound*> soundMap;
 		/* Light Map  */
-		map<string,Light*> _lightMap;
+		map<string,Light*> lightMap;
 		/* Camera Map  */
-		map<string,Camera*> _cameraMap;
-		/* Shader Program Map  */
-		map<string,ShaderProgram*> _shaderProgramMap;
+		map<string,Camera*> cameraMap;
+
 		/* Object Map  */
-		map<string,Object*> _objectMap;
+		map<string,Object*> objectMap;
 		/* Scene Graph Map  */
-		map<string,SceneNode*> _sceneNodeMap;
+		map<string,SceneNode*> sceneNodeMap;
+		/* Shader Program Map  */
+		map<string,ShaderProgram*> shaderProgramMap;
 
 		/* Constructors & Destructors */
 		SceneManager();
@@ -115,8 +101,6 @@ class SceneManager {
 
 		void reshape(GLint width, GLint height);
 
-		void rotateJoint(Object* object, Vector rotationDelta, GLfloat elapsedTime);
-
 		/* Scene Interaction Methods */
 		void readKeyboard(GLfloat elapsedTime);
 		void readMouse(GLfloat elapsedTime);
@@ -125,11 +109,9 @@ class SceneManager {
 
 		/* Getters */
 		Camera* getActiveCamera();
-		ShaderProgram* getActiveShaderProgram();
 
 		/* Setters */
 		void setActiveCamera(Camera* camera);
-		void setActiveShaderProgram(ShaderProgram* shaderProgram);
 
 		/* Sound Map Manipulation Methods */
 		void addSound(Sound* sound);

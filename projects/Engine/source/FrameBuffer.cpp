@@ -2,45 +2,45 @@
 
 FrameBuffer::FrameBuffer() {
 
-	_width = 0;
-	_height = 0;
+	this->width = 0;
+	this->height = 0;
 
-	_frameBufferObject = 0;
+	this->frameBufferObject = 0;
 
-	_frameBufferTexture[0] = 0;
-	_frameBufferTexture[1] = 0;
+	this->frameBufferTexture[0] = 0;
+	this->frameBufferTexture[1] = 0;
 
-	_renderBufferObject = 0;
+	this->renderBufferObject = 0;
 }
 
 FrameBuffer::~FrameBuffer() {
 
-	glDeleteRenderbuffers(1, &_renderBufferObject);
+	glDeleteRenderbuffers(1, &this->renderBufferObject);
 
-	glDeleteTextures(1, &_frameBufferTexture[0]);
-	glDeleteTextures(1, &_frameBufferTexture[1]);
+	glDeleteTextures(1, &this->frameBufferTexture[0]);
+	glDeleteTextures(1, &this->frameBufferTexture[1]);
 
-	glDeleteFramebuffers(1, &_frameBufferObject);
+	glDeleteFramebuffers(1, &this->frameBufferObject);
 		
 	Utility::checkOpenGLError("Failed to destroy FrameBuffer");
 }
 
 void FrameBuffer::init(GLint width, GLint height) {
 
-	_width = width;
-	_height = height;
+	this->width = width;
+	this->height = height;
 
 	/* Framebuffer to link everything together */
-	glGenFramebuffers(1, &_frameBufferObject);
+	glGenFramebuffers(1, &this->frameBufferObject);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->frameBufferObject);
 
 	Utility::checkOpenGLError("Failed to create FrameBuffer");
 
 	/* First Texture */
-	glGenTextures(1, &_frameBufferTexture[0]);
+	glGenTextures(1, &this->frameBufferTexture[0]);
 
-	glBindTexture(GL_TEXTURE_2D, _frameBufferTexture[0]);
+	glBindTexture(GL_TEXTURE_2D, this->frameBufferTexture[0]);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -48,14 +48,14 @@ void FrameBuffer::init(GLint width, GLint height) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _frameBufferTexture[0], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->frameBufferTexture[0], 0);
 
 	Utility::checkOpenGLError("ERROR: Failed to create FrameBuffer Texture 0");
 
 	/* Second Texture for the Motion Blur*/
-	glGenTextures(1, &_frameBufferTexture[1]);
+	glGenTextures(1, &this->frameBufferTexture[1]);
 
-	glBindTexture(GL_TEXTURE_2D, _frameBufferTexture[1]);
+	glBindTexture(GL_TEXTURE_2D, this->frameBufferTexture[1]);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -66,12 +66,12 @@ void FrameBuffer::init(GLint width, GLint height) {
 	Utility::checkOpenGLError("ERROR: Failed to create FrameBuffer Texture 1");
 
 	/* Depth buffer */
-	glGenRenderbuffers(1, &_renderBufferObject);
+	glGenRenderbuffers(1, &this->renderBufferObject);
 
-	glBindRenderbuffer(GL_RENDERBUFFER, _renderBufferObject);
+	glBindRenderbuffer(GL_RENDERBUFFER, this->renderBufferObject);
 
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _renderBufferObject);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->renderBufferObject);
 
 	Utility::checkOpenGLError("ERROR: Failed to create FrameBuffer RenderBuffer");
 
@@ -81,25 +81,25 @@ void FrameBuffer::init(GLint width, GLint height) {
 
 void FrameBuffer::reshape(GLint width, GLint height) {
 
-	_width = width;
-	_height = height;
+	this->width = width;
+	this->height = height;
 
 	/* First Texture */
-	glBindTexture(GL_TEXTURE_2D, _frameBufferTexture[0]);
+	glBindTexture(GL_TEXTURE_2D, this->frameBufferTexture[0]);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	/* Second Texture for the Motion Blur*/
-	glBindTexture(GL_TEXTURE_2D, _frameBufferTexture[1]);
+	glBindTexture(GL_TEXTURE_2D, this->frameBufferTexture[1]);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
  
 	/* Depth buffer */
-	glBindRenderbuffer(GL_RENDERBUFFER, _renderBufferObject);
+	glBindRenderbuffer(GL_RENDERBUFFER, this->renderBufferObject);
 
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
 
@@ -108,50 +108,50 @@ void FrameBuffer::reshape(GLint width, GLint height) {
 
 GLint FrameBuffer::getWidth() {
 
-	return _width;
+	return this->width;
 }
 
 GLint FrameBuffer::getHeight() {
 
-	return _height;
+	return this->height;
 }
 
 GLuint FrameBuffer::getFrameBufferObject() {
 
-	return _frameBufferObject;
+	return this->frameBufferObject;
 }
 
 GLuint FrameBuffer::getFrameBufferTexture(int index) {
 
-	return _frameBufferTexture[index];
+	return this->frameBufferTexture[index];
 }
 
 GLuint FrameBuffer::getRenderBufferObject() {
 
-	return _renderBufferObject;
+	return this->renderBufferObject;
 }
 
 void FrameBuffer::setWidth(GLint width) {
 
-	_width = width;
+	this->width = width;
 }
 
 void FrameBuffer::setHeight(GLint height) {
 
-	_height = height;
+	this->height = height;
 }
 
 void FrameBuffer::setFrameBufferObject(GLuint frameBufferObjectHandler) {
 
-	_frameBufferObject = frameBufferObjectHandler;
+	this->frameBufferObject = frameBufferObjectHandler;
 }
 
 void FrameBuffer::setFrameBufferTexture(GLuint frameBufferTextureHandler, int index) {
 
-	_frameBufferTexture[index] = frameBufferTextureHandler;
+	this->frameBufferTexture[index] = frameBufferTextureHandler;
 }
 
 void FrameBuffer::setRenderBufferObject(GLuint renderBufferObject) {
 
-	_renderBufferObject = renderBufferObject;
+	this->renderBufferObject = renderBufferObject;
 }

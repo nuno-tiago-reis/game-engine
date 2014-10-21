@@ -7,15 +7,21 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
 
+/* C++ Includes */
 #include <math.h>
 
+/* Math Library */
 #include "Vector.h"
+#include "Quaternion.h"
 
+/* Engine Constants */
 #include "Constants.h"
 
+/* Coordinate Constants */
 #define QT 0
 #define QX 1
 #define QY 2
@@ -28,7 +34,7 @@ class Quaternion {
 	private:
 
 		/* Quaternion Content */
-		GLfloat _quaternion[4];
+		GLfloat quaternion[4];
 
 	public:
 

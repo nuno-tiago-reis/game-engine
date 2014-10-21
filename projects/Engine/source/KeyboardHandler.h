@@ -22,14 +22,14 @@ class KeyboardHandler {
 		static KeyboardHandler *instance;
 
 		/* Keyboard Enabling Toggle */
-		bool _keyboardEnabled;
+		bool keyboardEnabled;
 
 		/* Pressed Key Maps */
-		map<unsigned char, bool> _currentKeyMap;
-		map<unsigned char, bool> _previousKeyMap;
+		map<unsigned char, bool> currentKeyMap;
+		map<unsigned char, bool> previousKeyMap;
 
-		map<int, bool> _currentSpecialKeyMap;
-		map<int, bool> _previousSpecialKeyMap;
+		map<int, bool> currentSpecialKeyMap;
+		map<int, bool> previousSpecialKeyMap;
 
 		/* Constructors & Destructors - Private due to Singleton */
 		KeyboardHandler();

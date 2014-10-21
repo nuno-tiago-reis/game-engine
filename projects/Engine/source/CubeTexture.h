@@ -7,18 +7,13 @@
 	#include <crtdbg.h>
 #endif
 
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-#include <map>
-
+/* Generic Texture */
 #include "Texture.h"
 
-#include "soil.h"
+/* C++ Includes */
+#include <map>
 
-#include <string>
-
-#include "Utility.h"
-
+/* Cube Texture Definitions */
 #define POSITIVE_X "Positive X"
 #define NEGATIVE_X "Negative X"
 
@@ -27,8 +22,6 @@
 
 #define POSITIVE_Z "Positive Z"
 #define NEGATIVE_Z "Negative Z"
-
-#define FULL_TEXTURE "Full Texture"
 
 class CubeTexture : public Texture {
 
@@ -40,14 +33,16 @@ class CubeTexture : public Texture {
 	public:
 
 		/* Constructors & Destructors */
-		CubeTexture(string positiveXFileName, string negativeXFileName, string positiveYFileName,
-			string negativeYFileName, string positiveZFileName,string negativeZFileName);
-		CubeTexture(string fullTextureFileName);
+		CubeTexture(
+			string name,
+			string positiveXFileName, string negativeXFileName, string positiveYFileName,
+			string negativeYFileName, string positiveZFileName,string negativeZFileName,
+			string uniform);
 
 		~CubeTexture();
 
 		/* Loading Methods */
-		void load();
+		void loadTexture();
 
 		/* Bind & Unbind to OpenGL Methods */
 		void bind(GLuint textureID);

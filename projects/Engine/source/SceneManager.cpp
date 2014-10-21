@@ -4,59 +4,50 @@ SceneManager* SceneManager::instance = NULL;
 
 SceneManager::SceneManager() {
 
-	_rotationAxis = 0;
-	_currentObject = 0;
-
-	_malletPicked = false;
-	_malletDepth = 0.0f;
-
-	_timeCounter = 0.0f;
+	this->rotationAxis = 0;
+	this->currentObject = 0;
 
 	_activeCamera = NULL;
-	_activeShaderProgram = NULL;
 
 	/* FMOD Sound System Initialization */
-	FMOD::System_Create(&_fmodSystem);
+	FMOD::System_Create(&this->fmodSystem);
 
-	_fmodSystem->init(MAX_SOUND_CHANNELS,FMOD_INIT_NORMAL,0);
+	this->fmodSystem->init(MAX_SOUND_CHANNELS,FMOD_INIT_NORMAL,0);
 }
 
 SceneManager::~SceneManager() {
 
 	/* Destroy Scene Objects */
 	map<string,SceneNode*>::const_iterator sceneNodeIterator;
-	for(sceneNodeIterator = _sceneNodeMap.begin(); sceneNodeIterator != _sceneNodeMap.end(); sceneNodeIterator++)
+	for(sceneNodeIterator = this->sceneNodeMap.begin(); sceneNodeIterator != this->sceneNodeMap.end(); sceneNodeIterator++)
 		delete sceneNodeIterator->second;
 
 	/* Destroy Shaders */
 	map<string,ShaderProgram*>::const_iterator shaderProgramIterator;
-	for(shaderProgramIterator = _shaderProgramMap.begin(); shaderProgramIterator != _shaderProgramMap.end(); shaderProgramIterator++)
+	for(shaderProgramIterator = this->shaderProgramMap.begin(); shaderProgramIterator != this->shaderProgramMap.end(); shaderProgramIterator++)
 		delete shaderProgramIterator->second;
 
 	/* Destroy Camera */
 	map<string,Camera*>::const_iterator cameraIterator;
-	for(cameraIterator = _cameraMap.begin(); cameraIterator != _cameraMap.end(); cameraIterator++)
+	for(cameraIterator = this->cameraMap.begin(); cameraIterator != this->cameraMap.end(); cameraIterator++)
 		delete cameraIterator->second;
 
 	/* Destroy Light */
 	map<string,Light*>::const_iterator lightIterator;
-	for(lightIterator = _lightMap.begin(); lightIterator != _lightMap.end(); lightIterator++)
+	for(lightIterator = this->lightMap.begin(); lightIterator != this->lightMap.end(); lightIterator++)
 		delete lightIterator->second;
 
 	/* Destroy Sound */
 	map<string,Sound*>::const_iterator soundIterator;
-	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
+	for(soundIterator = this->soundMap.begin(); soundIterator != this->soundMap.end(); soundIterator++)
 		delete soundIterator->second;
 
 	/* Sound System Shutdown */
-	_fmodSystem->close();
-	_fmodSystem->release();
+	this->fmodSystem->close();
+	this->fmodSystem->release();
 
 	/* Destroy Matrix Stack */
 	MatrixStack::destroyInstance();
-	
-	/* Destroy Perlin Noise Generator */
-	PerlinNoise::destroyInstance();
 
 	/* Destroy User Interaction Handlers */
 	MouseHandler::destroyInstance();
@@ -84,17 +75,11 @@ void SceneManager::init() {
 
 	/* Load Sounds */
 	map<string,Sound*>::const_iterator soundIterator;
-	for(soundIterator = _soundMap.begin(); soundIterator != _soundMap.end(); soundIterator++)
-		soundIterator->second->createSound(_fmodSystem);
+	for(soundIterator = this->soundMap.begin(); soundIterator != this->soundMap.end(); soundIterator++)
+		soundIterator->second->createSound(this->fmodSystem);
 }
 
 void SceneManager::loadUniforms() {
-
-	if(_activeShaderProgram == NULL) {
-
-		cerr << "Active Shader Program not initialized." << endl;
-		return;
-	}
 
 	if(_activeCamera == NULL) {
 	
@@ -104,16 +89,16 @@ void SceneManager::loadUniforms() {
 
 	/* Load Light Uniforms */
 	map<string,Light*>::const_iterator lightIterator;
-	for(lightIterator = _lightMap.begin(); lightIterator != _lightMap.end(); lightIterator++) {
+	for(lightIterator = this->lightMap.begin(); lightIterator != this->lightMap.end(); lightIterator++) {
 
-		lightIterator->second->setUniformBufferIndex(_activeShaderProgram->getUniformBufferIndex(LIGHT_SOURCES_UNIFORM));
+		lightIterator->second->setUniformBufferIndex(this->shaderProgramMap.begin()->second->getUniformBufferIndex(LIGHT_SOURCES_UNIFORM));
 		lightIterator->second->loadUniforms();
 	}
 
 	/* Load Camera Uniforms */
 	map<string,Camera*>::const_iterator cameraIterator;
-	for(cameraIterator = _cameraMap.begin(); cameraIterator != _cameraMap.end(); cameraIterator++)
-		cameraIterator->second->setUniformBufferIndex(_activeShaderProgram->getUniformBufferIndex(MATRICES_UNIFORM));
+	for(cameraIterator = this->cameraMap.begin(); cameraIterator != this->cameraMap.end(); cameraIterator++)
+		cameraIterator->second->setUniformBufferIndex(this->shaderProgramMap.begin()->second->getUniformBufferIndex(MATRICES_UNIFORM));
 
 	_activeCamera->loadUniforms();
 }
@@ -122,15 +107,8 @@ void SceneManager::draw() {
 
 	map<string,SceneNode*>::const_iterator sceneNodeIterator;
 
-	for(sceneNodeIterator = _sceneNodeMap.begin(); sceneNodeIterator != _sceneNodeMap.end(); sceneNodeIterator++)
-		sceneNodeIterator->second->draw(_activeShaderProgram);
-}
-
-void SceneManager::rotateJoint(Object* object, Vector rotationDelta, GLfloat elapsedTime) {
-
-	Vector rotation = object->getRotation();
-	
-	object->setRotation(rotation + rotationDelta * elapsedTime);
+	for(sceneNodeIterator = this->sceneNodeMap.begin(); sceneNodeIterator != this->sceneNodeMap.end(); sceneNodeIterator++)
+		sceneNodeIterator->second->draw();
 }
 
 void SceneManager::update(GLfloat elapsedTime) {
@@ -141,7 +119,7 @@ void SceneManager::update(GLfloat elapsedTime) {
 
 	Object* activeTeapot;
 
-	switch(_currentObject) {
+	switch(this->currentObject) {
 	
 		case 0:	_activeCamera->setPosition(Vector(0.0f,0.0f,0.0f,1.0f));
 				_activeCamera->loadPerspectiveProjection();
@@ -149,71 +127,71 @@ void SceneManager::update(GLfloat elapsedTime) {
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[TABLE_SURFACE];
+				activeTeapot = this->objectMap[TABLE_SURFACE];
 				break;
 
-		case 1:	_activeCamera->setPosition(_objectMap[BUMP_MAPPING_OBJECT]->getPosition());
+		case 1:	_activeCamera->setPosition(this->objectMap[BUMP_MAPPING_OBJECT]->getTransform()->getPosition());
 				_activeCamera->loadPerspectiveProjection();
 				_activeCamera->loadView();
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[BUMP_MAPPING_OBJECT];
+				activeTeapot = this->objectMap[BUMP_MAPPING_OBJECT];
 				break;
 
-		case 2:	_activeCamera->setPosition(_objectMap[SPHERE_MAPPING_OBJECT]->getPosition());
+		case 2:	_activeCamera->setPosition(this->objectMap[SPHERE_MAPPING_OBJECT]->getTransform()->getPosition());
 				_activeCamera->loadPerspectiveProjection();
 				_activeCamera->loadView();
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[SPHERE_MAPPING_OBJECT];
+				activeTeapot = this->objectMap[SPHERE_MAPPING_OBJECT];
 				break;
 
-		case 3:	_activeCamera->setPosition(_objectMap[CUBE_MAPPING_OBJECT]->getPosition());
+		case 3:	_activeCamera->setPosition(this->objectMap[CUBE_MAPPING_OBJECT]->getTransform()->getPosition());
 				_activeCamera->loadPerspectiveProjection();
 				_activeCamera->loadView();
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[CUBE_MAPPING_OBJECT];
+				activeTeapot = this->objectMap[CUBE_MAPPING_OBJECT];
 				break;
 
-		case 4:	_activeCamera->setPosition(_objectMap[BLINN_PHONG_OBJECT]->getPosition());
+		case 4:	_activeCamera->setPosition(this->objectMap[BLINN_PHONG_OBJECT]->getTransform()->getPosition());
 				_activeCamera->loadPerspectiveProjection();
 				_activeCamera->loadView();
 
 				_activeCamera->loadUniforms();
 
-				activeTeapot = _objectMap[BLINN_PHONG_OBJECT];
+				activeTeapot = this->objectMap[BLINN_PHONG_OBJECT];
 				break;
 	}
 
 	Vector rotation;
 
-	switch(_rotationAxis) {
+	switch(this->rotationAxis) {
 
-		case 1:	rotation = activeTeapot->getRotation();
+		case 1:	rotation = activeTeapot->getTransform()->getRotation();
 				rotation[VX] += 50.00f * elapsedTime;
-				activeTeapot->setRotation(rotation);
+				activeTeapot->getTransform()->setRotation(rotation);
 				break;
 
-		case 2:	rotation = activeTeapot->getRotation();
+		case 2:	rotation = activeTeapot->getTransform()->getRotation();
 				rotation[VY] += 50.00f * elapsedTime;
-				activeTeapot->setRotation(rotation);
+				activeTeapot->getTransform()->setRotation(rotation);
 				break;
 
-		case 3:	rotation = activeTeapot->getRotation();
+		case 3:	rotation = activeTeapot->getTransform()->getRotation();
 				rotation[VZ] += 50.00f * elapsedTime;
-				activeTeapot->setRotation(rotation);
+				activeTeapot->getTransform()->setRotation(rotation);
 				break;
 	}
 
-	_fmodSystem->update();
+	this->fmodSystem->update();
 
 	/* Update Scene Graph */
 	map<string,SceneNode*>::const_iterator sceneNodeIterator;
-	for(sceneNodeIterator = _sceneNodeMap.begin(); sceneNodeIterator != _sceneNodeMap.end(); sceneNodeIterator++)
+	for(sceneNodeIterator = this->sceneNodeMap.begin(); sceneNodeIterator != this->sceneNodeMap.end(); sceneNodeIterator++)
 		sceneNodeIterator->second->update(elapsedTime);
 }
 
@@ -221,7 +199,7 @@ void SceneManager::reshape(GLint width, GLint height) {
 
 	map<string,Camera*>::const_iterator cameraIterator;
 
-	for(cameraIterator = _cameraMap.begin(); cameraIterator != _cameraMap.end(); cameraIterator++)
+	for(cameraIterator = this->cameraMap.begin(); cameraIterator != this->cameraMap.end(); cameraIterator++)
 		cameraIterator->second->reshape(width,height);
 
 	loadUniforms();
@@ -239,53 +217,53 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 	/* Light Buttons */
 	if(handler->isSpecialKeyPressed(GLUT_KEY_UP) && handler->wasSpecialKeyPressed(GLUT_KEY_UP) == true) {
 
-		Vector position = _lightMap["Positional Light 1"]->getPosition();
+		Vector position = this->lightMap["Positional Light 1"]->getPosition();
 
 		position[VY] += 5.0f * elapsedTime;
 
-		_lightMap["Positional Light 1"]->setPosition(position);
-		_lightMap["Positional Light 1"]->loadUniforms();
+		this->lightMap["Positional Light 1"]->setPosition(position);
+		this->lightMap["Positional Light 1"]->loadUniforms();
 	}
 
 	if(handler->isSpecialKeyPressed(GLUT_KEY_DOWN) && handler->wasSpecialKeyPressed(GLUT_KEY_DOWN) == true) {
 
-		Vector position = _lightMap["Positional Light 1"]->getPosition();
+		Vector position = this->lightMap["Positional Light 1"]->getPosition();
 
 		position[VY] -= 5.0f * elapsedTime;
 
-		_lightMap["Positional Light 1"]->setPosition(position);
-		_lightMap["Positional Light 1"]->loadUniforms();
+		this->lightMap["Positional Light 1"]->setPosition(position);
+		this->lightMap["Positional Light 1"]->loadUniforms();
 	}
 
 	if(handler->isSpecialKeyPressed(GLUT_KEY_RIGHT) && handler->wasSpecialKeyPressed(GLUT_KEY_RIGHT) == true) {
 
-		Vector position = _lightMap["Spot Light 2"]->getPosition();
+		Vector position = this->lightMap["Spot Light 2"]->getPosition();
 
 		position[VY] += 5.0f * elapsedTime;
 
-		_lightMap["Spot Light 2"]->setPosition(position);
-		_lightMap["Spot Light 2"]->loadUniforms();
+		this->lightMap["Spot Light 2"]->setPosition(position);
+		this->lightMap["Spot Light 2"]->loadUniforms();
 	}
 
 	if(handler->isSpecialKeyPressed(GLUT_KEY_LEFT) && handler->wasSpecialKeyPressed(GLUT_KEY_LEFT) == true) {
 
-		Vector position = _lightMap["Spot Light 2"]->getPosition();
+		Vector position = this->lightMap["Spot Light 2"]->getPosition();
 
 		position[VY] -= 5.0f * elapsedTime;
 
-		_lightMap["Spot Light 2"]->setPosition(position);
-		_lightMap["Spot Light 2"]->loadUniforms();
+		this->lightMap["Spot Light 2"]->setPosition(position);
+		this->lightMap["Spot Light 2"]->loadUniforms();
 	}
 
 	/* Sound Buttons */
 	if(handler->isSpecialKeyPressed(GLUT_KEY_F1) && handler->wasSpecialKeyPressed(GLUT_KEY_F1) == false) {
 
-			_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[RAYQUAZA_SOUND_NAME]->getFmodSound(), false, &channel[0]);
+		this->fmodSystem->playSound(FMOD_CHANNEL_FREE, this->soundMap[RAYQUAZA_SOUND_NAME]->getFmodSound(), false, &channel[0]);
 	}
 
 	if(handler->isSpecialKeyPressed(GLUT_KEY_F2) && handler->wasSpecialKeyPressed(GLUT_KEY_F2) == false) {
 
-		_fmodSystem->playSound(FMOD_CHANNEL_FREE, _soundMap[MUSIC_SOUND_NAME]->getFmodSound(), false, &channel[1]);
+		this->fmodSystem->playSound(FMOD_CHANNEL_FREE, this->soundMap[MUSIC_SOUND_NAME]->getFmodSound(), false, &channel[1]);
 	}
 
 	if(handler->isSpecialKeyPressed(GLUT_KEY_F3) && handler->wasSpecialKeyPressed(GLUT_KEY_F3) == false) {
@@ -308,24 +286,24 @@ void SceneManager::readKeyboard(GLfloat elapsedTime) {
 	/* Teapot Selection Button */
 	if(handler->isKeyPressed('n'))
 		if(!handler->wasKeyPressed('n'))
-			_currentObject = ++_currentObject % 5;
+			this->currentObject = ++this->currentObject % 5;
 
 	/* Teapot Rotation Button */
 	if(handler->isKeyPressed('x'))
 		if(!handler->wasKeyPressed('x'))
-			_rotationAxis = 1;
+			this->rotationAxis = 1;
 
 	if(handler->isKeyPressed('y'))
 		if(!handler->wasKeyPressed('y'))
-			_rotationAxis = 2;
+			this->rotationAxis = 2;
 
 	if(handler->isKeyPressed('z'))
 		if(!handler->wasKeyPressed('z'))
-			_rotationAxis = 3;
+			this->rotationAxis = 3;
 
 	if(handler->isKeyPressed('s'))
 		if(!handler->wasKeyPressed('s'))
-			_rotationAxis = 0;
+			this->rotationAxis = 0;
 
 	if(handler->wasKeyPressedThisFrame('q'))
 		exit(0);
@@ -359,7 +337,7 @@ void SceneManager::readMouse(GLfloat elapsedTime) {
 	}
 	else if(handler->wasButtonPressed(GLUT_LEFT_BUTTON)) {
 
-		_malletPicked = false;
+		//_malletPicked = false;
 	}
 
 	handler->enableMouse();
@@ -367,7 +345,7 @@ void SceneManager::readMouse(GLfloat elapsedTime) {
 
 void SceneManager::rayCast(GLint* mousePosition, GLfloat elapsedTime) {
 
-	Matrix invertedProjectionMatrix = _activeCamera->getProjectionMatrix();
+	/*Matrix invertedProjectionMatrix = _activeCamera->getProjectionMatrix();
 	invertedProjectionMatrix.invert();
 	invertedProjectionMatrix.transpose();
 
@@ -430,8 +408,8 @@ void SceneManager::rayCast(GLint* mousePosition, GLfloat elapsedTime) {
 
 	rayOrigin.clean();
 
-	Object* mallet = _objectMap[MALLET];
-	Object* platform = _objectMap[PLATFORM];
+	Object* mallet = this->objectMap[MALLET];
+	Object* platform = this->objectMap[PLATFORM];
 
 	GLfloat malletIntersectionPoint = mallet->isIntersecting(rayOrigin,rayDirection);
 	GLfloat platformIntersectionPoint = platform->isIntersecting(rayOrigin,rayDirection);
@@ -457,7 +435,7 @@ void SceneManager::rayCast(GLint* mousePosition, GLfloat elapsedTime) {
 		velocity[VW] = 1.0f;
 
 		mallet->setVelocity(velocity);
-	}
+	}*/
 
 	/*if(platformIntersectionPoint != NULL)
 		cout << "Intersected " << platform->getName() << " " << platformIntersectionPoint << " " << rand()%100 << endl;*/
@@ -475,102 +453,110 @@ Camera* SceneManager::getActiveCamera() {
 
 void SceneManager::addCamera(Camera* camera) {
 
-	_cameraMap[camera->getName()] = camera;
+	this->cameraMap[camera->getName()] = camera;
 }
 
 void SceneManager::removeCamera(string cameraName) {
 
-	_cameraMap.erase(cameraName);
+	this->cameraMap.erase(cameraName);
 }
 
 Camera* SceneManager::getCamera(string cameraName) {
 
-	return _cameraMap[cameraName];
-}
+	if(this->cameraMap.find(cameraName) == this->cameraMap.end())
+		return NULL;
 
-void SceneManager::setActiveShaderProgram(ShaderProgram* shaderProgram) {
-
-	_activeShaderProgram = shaderProgram;
-}
-
-ShaderProgram* SceneManager::getActiveShaderProgram() {
-
-	return _activeShaderProgram;
+	return this->cameraMap[cameraName];
 }
 
 void SceneManager::addSound(Sound* sound) {
 
-	_soundMap[sound->getName()] = sound;
+	this->soundMap[sound->getName()] = sound;
 }
 
 void SceneManager::removeSound(string soundName) {
 
-	_soundMap.erase(soundName);
+	this->soundMap.erase(soundName);
 }
 
 Sound* SceneManager::getSound(string soundName) {
 
-	return _soundMap[soundName];
+	if(this->soundMap.find(soundName) == this->soundMap.end())
+		return NULL;
+
+	return this->soundMap[soundName];
 }
 
 void SceneManager::addLight(Light* light) {
 
-	_lightMap[light->getName()] = light;
+	this->lightMap[light->getName()] = light;
 }
 
 void SceneManager::removeLight(string lightName) {
 
-	_lightMap.erase(lightName);
+	this->lightMap.erase(lightName);
 }
 
 Light* SceneManager::getLight(string lightName) {
 
-	return _lightMap[lightName];
+	if(this->lightMap.find(lightName) == this->lightMap.end())
+		return NULL;
+
+	return this->lightMap[lightName];
 }
 
 void SceneManager::addShaderProgram(ShaderProgram* shaderProgram) {
 
-	_shaderProgramMap[shaderProgram->getName()] = shaderProgram;
+	this->shaderProgramMap[shaderProgram->getName()] = shaderProgram;
 }
 
 void SceneManager::removeShaderProgram(string shaderProgramName) {
 
-	_shaderProgramMap.erase(shaderProgramName);
+	this->shaderProgramMap.erase(shaderProgramName);
 }
 
 ShaderProgram* SceneManager::getShaderProgram(string shaderProgramName) {
 
-	return _shaderProgramMap[shaderProgramName];
+	if(this->shaderProgramMap.find(shaderProgramName) == this->shaderProgramMap.end())
+		return NULL;
+
+	return this->shaderProgramMap[shaderProgramName];
 }
 
 void SceneManager::addObject(Object* graphicObject) {
 
-	_objectMap[graphicObject->getName()] = graphicObject;
+	this->objectMap[graphicObject->getName()] = graphicObject;
 }
 
 void SceneManager::removeObject(string graphicObjectName) {
 
-	_objectMap.erase(graphicObjectName);
+	this->objectMap.erase(graphicObjectName);
 }
 
 Object* SceneManager::getObject(string graphicObjectName) {
 
-	return _objectMap[graphicObjectName];
+	if(this->objectMap.find(graphicObjectName) == this->objectMap.end())
+		return NULL;
+
+	return this->objectMap[graphicObjectName];
 }
 
 void SceneManager::addSceneNode(SceneNode* sceneNode) {
 
-	_sceneNodeMap[sceneNode->getName()] = sceneNode;
+	this->sceneNodeMap[sceneNode->getName()] = sceneNode;
 }
 
 void SceneManager::removeSceneNode(string sceneNodeName) {
 
-	_sceneNodeMap.erase(sceneNodeName);
+	this->sceneNodeMap.erase(sceneNodeName);
 }
 
 SceneNode* SceneManager::getSceneNode(string sceneNodeName) {
 
-	return _sceneNodeMap[sceneNodeName];
+	if(this->sceneNodeMap.find(sceneNodeName) == this->sceneNodeMap.end())
+		return NULL;
+
+	return this->sceneNodeMap[sceneNodeName];
 }
 
 void SceneManager::dump() {
@@ -579,39 +565,35 @@ void SceneManager::dump() {
 
 	/* Active Camera*/
 	cout << "<SceneManager Active Camera> = " << endl;
-	_activeCamera->dump(); 
-
-	/* Active Shader Program */
-	cout << "<SceneManager Active Shader Program> = " << endl;
-	_activeShaderProgram->dump(); 
+	_activeCamera->dump();
 
 	/* Sound Map */
 	cout << "<SceneManager Sound List> = " << endl;
-	for(map<string,Sound*>::const_iterator soundMap = _soundMap.begin(); soundMap != _soundMap.end(); soundMap++)
+	for(map<string,Sound*>::const_iterator soundMap = this->soundMap.begin(); soundMap != this->soundMap.end(); soundMap++)
 		soundMap->second->dump();
 
 	/* Light Map */
 	cout << "<SceneManager Light List> = " << endl;
-	for(map<string,Light*>::const_iterator lightIterator = _lightMap.begin(); lightIterator != _lightMap.end(); lightIterator++)
+	for(map<string,Light*>::const_iterator lightIterator = this->lightMap.begin(); lightIterator != this->lightMap.end(); lightIterator++)
 		lightIterator->second->dump();
 
 	/* Camera Map */
 	cout << "<SceneManager Camera List> = " << endl;
-	for(map<string,Camera*>::const_iterator cameraIterator = _cameraMap.begin(); cameraIterator != _cameraMap.end(); cameraIterator++)
+	for(map<string,Camera*>::const_iterator cameraIterator = this->cameraMap.begin(); cameraIterator != this->cameraMap.end(); cameraIterator++)
 		cameraIterator->second->dump();
 
 	/* Shader Program Map */
 	cout << "<SceneManager Shader List> = " << endl;
-	for(map<string,ShaderProgram*>::const_iterator shaderProgramIterator = _shaderProgramMap.begin(); shaderProgramIterator != _shaderProgramMap.end(); shaderProgramIterator++)
+	for(map<string,ShaderProgram*>::const_iterator shaderProgramIterator = this->shaderProgramMap.begin(); shaderProgramIterator != this->shaderProgramMap.end(); shaderProgramIterator++)
 		shaderProgramIterator->second->dump();
 
 	/* Graphic Object Map */
 	cout << "<SceneManager Object List> = " << endl;
-	for(map<string,Object*>::const_iterator graphicObjectIterator = _objectMap.begin(); graphicObjectIterator != _objectMap.end(); graphicObjectIterator++)
+	for(map<string,Object*>::const_iterator graphicObjectIterator = this->objectMap.begin(); graphicObjectIterator != this->objectMap.end(); graphicObjectIterator++)
 		graphicObjectIterator->second->dump();
 
 	/* Scene Node Map */
 	cout << "<SceneManager Scene Node List> = " << endl;
-	for(map<string,SceneNode*>::const_iterator sceneNodeIterator = _sceneNodeMap.begin(); sceneNodeIterator != _sceneNodeMap.end(); sceneNodeIterator++)
+	for(map<string,SceneNode*>::const_iterator sceneNodeIterator = this->sceneNodeMap.begin(); sceneNodeIterator != this->sceneNodeMap.end(); sceneNodeIterator++)
 		sceneNodeIterator->second->dump();
 }

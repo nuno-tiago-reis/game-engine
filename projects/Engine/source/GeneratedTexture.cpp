@@ -1,7 +1,7 @@
 #include "GeneratedTexture.h"
 
-GeneratedTexture::GeneratedTexture(GLenum textureFormat, GLfloat noiseAlpha, GLfloat noiseBeta, GLint noiseOctaves, GLfloat noiseScale) 
-	: Texture(textureFormat) {
+GeneratedTexture::GeneratedTexture(string name, GLenum textureFormat, GLfloat noiseAlpha, GLfloat noiseBeta, GLint noiseOctaves, GLfloat noiseScale, string uniform) 
+	: Texture(name, textureFormat, uniform) {
 
 	_noiseAlpha = noiseAlpha;
 	_noiseBeta = noiseBeta;
@@ -13,10 +13,10 @@ GeneratedTexture::GeneratedTexture(GLenum textureFormat, GLfloat noiseAlpha, GLf
 GeneratedTexture::~GeneratedTexture() {
 }
 
-void GeneratedTexture::load() {
+void GeneratedTexture::loadTexture() {
 
+	/* Initialize the Perlin Noise Generator */
 	PerlinNoise* perlinNoise = PerlinNoise::getInstance();
-
 	perlinNoise->init();
 
 	for(int i=0;i<W;i++) {
@@ -34,29 +34,41 @@ void GeneratedTexture::load() {
 		}
 	}
 
-	glGenTextures(1, &_textureHandler);
+	glGenTextures(1, &_handler);
 
-	glBindTexture(_textureFormat, _textureHandler);
+	glBindTexture(_format, _handler);
 
-	glTexParameteri(_textureFormat, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(_textureFormat, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(_textureFormat, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glTexParameteri(_format, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(_format, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(_format, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(_format, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
-	glTexImage3D(_textureFormat, 0, GL_R32F, H, W, D, 0, GL_RED, GL_FLOAT, _noiseTexture);
+	glTexImage3D(_format, 0, GL_R32F, H, W, D, 0, GL_RED, GL_FLOAT, _noiseTexture);
 
-	glBindTexture(_textureFormat, 0);
+	glBindTexture(_format, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" loading failed.");
+	Utility::checkOpenGLError("ERROR: Texture \"" + _filename + "\" loading failed.");
+
+	/* Destroy Perlin Noise Generator */
+	PerlinNoise::destroyInstance();
+}
+
+void GeneratedTexture::loadUniforms(GLuint programID, GLuint textureID) {
+
+	glProgramUniform1i(programID, glGetUniformLocation(programID, NOISE_TEXTURE_UNIFORM), textureID);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" NOISE_TEXTURE_UNIFORM "\" error.");
+
+	glProgramUniform1f(programID,glGetUniformLocation(programID,NOISE_SCALE_UNIFORM), _noiseScale);
+	Utility::checkOpenGLError("ERROR: Uniform Location \"" NOISE_SCALE_UNIFORM "\" error.");
 }
 
 void GeneratedTexture::bind(GLuint textureID) {
 
 	glActiveTexture(textureID);
-	glBindTexture(_textureFormat, _textureHandler);
+	glBindTexture(_format, _handler);
 
-	Utility::checkOpenGLError("ERROR: Texture \"" + _fileName + "\" binding failed.");
+	Utility::checkOpenGLError("ERROR: Texture \"" + _filename + "\" binding failed.");
 }
 
 GLfloat GeneratedTexture::getNoiseAlpha() {

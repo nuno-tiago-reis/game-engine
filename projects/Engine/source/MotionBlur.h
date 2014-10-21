@@ -7,15 +7,17 @@
 	#include <crtdbg.h>
 #endif
 
+/* Generic Post-processing Effect */
 #include "PostProcessingEffect.h"
 
+/* Motion Blur Shader */
 #include "MotionBlurShader.h"
 
 class MotionBlur : public PostProcessingEffect {
 
 	private:
 	
-		MotionBlurShader* _motionBlurShader;
+		MotionBlurShader* motionBlurShader;
 
 	public:
 

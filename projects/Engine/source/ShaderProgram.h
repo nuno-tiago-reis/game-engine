@@ -7,15 +7,16 @@
 	#include <crtdbg.h>
 #endif
 
+/* OpenGL definitions */
 #include "GL/glew.h"
 #include "GL/glut.h"
+/* OpenGL Error Check */
+#include "Utility.h"
 
+/* C++ Includes */
 #include <fstream>
 #include <climits>
-
 #include <map>
-
-#include "Utility.h"
 
 /* Model Matrix Uniforms */
 #define MODEL_MATRIX_UNIFORM "ModelMatrix"
@@ -62,31 +63,31 @@ class ShaderProgram {
 	protected:
 
 		/* Shader Identifier */
-		string _name;
+		string name;
 
 		/* Shader Program File Paths */
-		string _vertexShaderFile;
-		string _fragmentShaderFile;
+		string vertexShaderFile;
+		string fragmentShaderFile;
 
 		/* Shader Program Code */
-		const char* _vertexShader;
-		const char* _fragmentShader;
+		const char* vertexShader;
+		const char* fragmentShader;
 
 		/* Shader Program ID */
 		GLuint _programID;
 
 		/* Shader Vertex & Fragment Program IDs */
-		GLuint _vertexShaderID;
-		GLuint _fragmentShaderID;
+		GLuint vertexShaderID;
+		GLuint fragmentShaderID;
 
 		/* Shader Uniform Attributes */
-		map<string,GLint> _uniformLocationMap;
+		map<string,GLint> uniformLocationMap;
 
-		map<string,GLuint> _uniformBlockIndexMap;
-		map<string,GLuint> _uniformBlockBindingPointMap;
+		map<string,GLuint> uniformBlockIndexMap;
+		map<string,GLuint> uniformBlockBindingPointMap;
 
 		static bool bufferCreated;
-		static map<string,GLuint> _uniformBufferIndexMap;
+		static map<string,GLuint> uniformBufferIndexMap;
 
 	public:
 
