@@ -111,7 +111,7 @@ void Camera::loadOrthogonalProjection() {
 
 	this->projectionMatrix.loadIdentity();
 	this->projectionMatrix.setOrthogonalProjection(ORTHO_LEFT,ORTHO_RIGHT,ORTHO_TOP,ORTHO_BOTTOM,ORTHO_NEAR,ORTHO_FAR);
-	this->projectionMatrix.transpose();
+	//this->projectionMatrix.transpose();
 }
 
 void Camera::loadOrthogonalProjection(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat nearZ, GLfloat farZ) {
